@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/DTS">
+        <file alias="action_login">action_login.png</file>
+        <file alias="action_logout">action_logout.png</file>
+        <file alias="action_runconfig">action_runconfig.png</file>
+        <file alias="action_synconfig">action_synconfig.png</file>
+        <file alias="action_sysconfig">action_sysconfig.png</file>
+        <file alias="main">main.png</file>
+        <file alias="main_run">main_run.png</file>
+        <file alias="res_delete">res_delete.png</file>
+        <file alias="res_error">res_error.png</file>
+        <file alias="res_ok">res_ok.png</file>
+        <file alias="workshop">workshop.png</file>
+    </qresource>
+</RCC>
