@@ -175,8 +175,8 @@ class SOAP_CMAC _tempuri__GetDateResponse {
 /* complex XSD type 'tempuri:GetDocCode': */
 class SOAP_CMAC _tempuri__GetDocCode {
       public:
-        /// Optional element 'tempuri:DocName' of XSD type 'xsd:string'
-        char *DocName;
+        /// Required element 'tempuri:DocValue' of XSD type 'xsd:int'
+        int DocValue;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -198,7 +198,7 @@ class SOAP_CMAC _tempuri__GetDocCode {
         virtual _tempuri__GetDocCode *soap_alloc(void) const { return SOAP_NEW(_tempuri__GetDocCode); }
       public:
         /// Constructor with initializations
-        _tempuri__GetDocCode() : DocName(), soap() { }
+        _tempuri__GetDocCode() : DocValue(), soap() { }
         virtual ~_tempuri__GetDocCode() { }
         /// Friend allocator used by soap_new__tempuri__GetDocCode(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__GetDocCode * SOAP_FMAC2 soap_instantiate__tempuri__GetDocCode(struct soap*, int, const char*, const char*, size_t*);

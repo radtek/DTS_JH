@@ -17,4 +17,4 @@ SOURCES += \
     $$PWD/stdsoap2.cpp
 
 
-LIBS += $$[QT_HOST_LIBS]/../../../Tools/mingw530_32/i686-w64-mingw32/lib/libws2_32.a
+LIBS += $$PWD/lib/libws2_32.a

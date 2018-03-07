@@ -140,6 +140,8 @@ void GCfgManager::SetConfig(const QVariantMap &config)
     {
         _Config[it.key()] = it.value();
     }
+
+    Slot_QTimer_timeout_SetSync();
 }
 
 bool GCfgManager::CreateApp(const QVariantMap &config)

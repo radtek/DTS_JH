@@ -2632,23 +2632,25 @@ inline _tempuri__GetDocCode * soap_new__tempuri__GetDocCode(struct soap *soap, i
 }
 
 inline _tempuri__GetDocCode * soap_new_req__tempuri__GetDocCode(
-	struct soap *soap)
+	struct soap *soap,
+	int DocValue)
 {
 	_tempuri__GetDocCode *_p = soap_new__tempuri__GetDocCode(soap);
 	if (_p)
 	{	_p->soap_default(soap);
+		_p->_tempuri__GetDocCode::DocValue = DocValue;
 	}
 	return _p;
 }
 
 inline _tempuri__GetDocCode * soap_new_set__tempuri__GetDocCode(
 	struct soap *soap,
-	char *DocName)
+	int DocValue)
 {
 	_tempuri__GetDocCode *_p = soap_new__tempuri__GetDocCode(soap);
 	if (_p)
 	{	_p->soap_default(soap);
-		_p->_tempuri__GetDocCode::DocName = DocName;
+		_p->_tempuri__GetDocCode::DocValue = DocValue;
 	}
 	return _p;
 }

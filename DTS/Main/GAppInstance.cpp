@@ -146,8 +146,8 @@ GERROR GAppInstance::StartProcess(const QString &MyAppID)
         return GERROR_FAIL;
     }
 
-    WTaskDownload::Instance().Initialize();
-    WTaskUpload::Instance().Initialize();
+    //WTaskDownload::Instance().Initialize();
+    // WTaskUpload::Instance().Initialize();
     WTaskWebService::Instance().Initialize();
     WTaskWorkOrder::Instance().Instance();
 

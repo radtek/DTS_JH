@@ -18,7 +18,7 @@ A commercial use license is available from Genivia Inc., contact@genivia.com
 
 #include "soapH.h"
 
-SOAP_SOURCE_STAMP("@(#) soapC.cpp ver 2.8.51 2018-01-10 03:42:15 GMT")
+SOAP_SOURCE_STAMP("@(#) soapC.cpp ver 2.8.51 2018-03-07 01:15:03 GMT")
 
 
 #ifndef WITH_NOGLOBAL
@@ -5586,7 +5586,7 @@ SOAP_FMAC3 _tempuri__GetDocCodeResponse * SOAP_FMAC4 soap_get__tempuri__GetDocCo
 void _tempuri__GetDocCode::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__GetDocCode::DocName);
+	soap_default_int(soap, &this->_tempuri__GetDocCode::DocValue);
 	/* transient soap skipped */
 }
 
@@ -5594,7 +5594,6 @@ void _tempuri__GetDocCode::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__GetDocCode::DocName);
 #endif
 }
 
@@ -5608,7 +5607,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetDocCode(struct soap *soap, const
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__GetDocCode), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:DocName", -1, (char*const*)&a->_tempuri__GetDocCode::DocName, ""))
+	if (soap_out_int(soap, "tempuri:DocValue", -1, &a->_tempuri__GetDocCode::DocValue, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -5632,14 +5631,14 @@ SOAP_FMAC3 _tempuri__GetDocCode * SOAP_FMAC4 soap_in__tempuri__GetDocCode(struct
 	}
 	if (soap->alloced)
 		a->soap_default(soap);
-	size_t soap_flag_DocName1 = 1;
+	size_t soap_flag_DocValue1 = 1;
 	if (soap->body && *soap->href != '#')
 	{
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
-			if (soap_flag_DocName1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:DocName", (char**)&a->_tempuri__GetDocCode::DocName, "xsd:string"))
-				{	soap_flag_DocName1--;
+			if (soap_flag_DocValue1 && soap->error == SOAP_TAG_MISMATCH)
+			{	if (soap_in_int(soap, "tempuri:DocValue", &a->_tempuri__GetDocCode::DocValue, "xsd:int"))
+				{	soap_flag_DocValue1--;
 					continue;
 				}
 			}
@@ -5652,6 +5651,14 @@ SOAP_FMAC3 _tempuri__GetDocCode * SOAP_FMAC4 soap_in__tempuri__GetDocCode(struct
 		}
 		if (soap_element_end_in(soap, tag))
 			return NULL;
+		if ((soap->mode & SOAP_XML_STRICT) && (soap_flag_DocValue1 > 0))
+		{	soap->error = SOAP_OCCURS;
+			return NULL;
+		}
+	}
+	else if ((soap->mode & SOAP_XML_STRICT) && *soap->href != '#')
+	{	soap->error = SOAP_OCCURS;
+		return NULL;
 	}
 	else
 	{	a = (_tempuri__GetDocCode *)soap_id_forward(soap, soap->href, (void*)a, 0, SOAP_TYPE__tempuri__GetDocCode, SOAP_TYPE__tempuri__GetDocCode, sizeof(_tempuri__GetDocCode), 0, soap_finsert, soap_fbase);

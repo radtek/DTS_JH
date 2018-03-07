@@ -61,8 +61,8 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_Capacity_Workers</TableRemote>
         <TableLocal>MES_Capacity_Workers</TableLocal>
-        <ColumnRemote>UID,WorkerCode,Dict_WorkStationType,Level,CreateTime,CreateUser,UpdateTime,UpdateUser,State,WorkShopCode,WorkLineCode,ProductCodes</ColumnRemote>
-        <ColumnLocal>UID,WorkerCode,Dict_WorkStationType,Level,CreateTime,CreateUser,UpdateTime,UpdateUser,State,WorkShopCode,WorkLineCode,ProductCodes</ColumnLocal>
+        <ColumnRemote>UID,WorkerCode,Dict_WorkStationType,Level,WorkShopCode,WorkLineCode,ProductCodes,WorkStationCodes,WorkerName,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnRemote>
+        <ColumnLocal>UID,WorkerCode,Dict_WorkStationType,Level,WorkShopCode,WorkLineCode,ProductCodes,WorkStationCodes,WorkerName,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_DataBaseLoad">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -101,8 +101,8 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_Device_Info</TableRemote>
         <TableLocal>MES_Device_Info</TableLocal>
-        <ColumnRemote>UID,DeviceCode,Dict_DeviceIncreaseModeCode,WorkShopCode,WorkLineCode,DeviceSupplier,Dict_DeviceTypeCode,DeviceName,DeviceSize,InEntryTime,UsingTime,ServiceLife,Dict_DeviceStatusCode,OriginalValue,SoftwareSupplier,Charger,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,UsedTimes,AssetCode,StoragePlace,RemindStyle,RemindDays,BeforeRemindDays,LastMainTainDate,DistanceRemindDays,RemindTimes,BeforeRemindTimes,LastRemindTimes,DistanceRemindTimes,TotalTimes,Manufacturer,Serialnumber,ProductDate,MaintainGroup,ABCCategory,ProductUsed,DeviceWeight,DevicePower,DevicePrice,InstallCost,SalvageValueRate,StartUsedDept,StartUsedAddress,IsSpecialEquip,LedgerType,BarCode,TMCode,WorkLineType</ColumnRemote>
-        <ColumnLocal>UID,DeviceCode,Dict_DeviceIncreaseModeCode,WorkShopCode,WorkLineCode,DeviceSupplier,Dict_DeviceTypeCode,DeviceName,DeviceSize,InEntryTime,UsingTime,ServiceLife,Dict_DeviceStatusCode,OriginalValue,SoftwareSupplier,Charger,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,UsedTimes,AssetCode,StoragePlace,RemindStyle,RemindDays,BeforeRemindDays,LastMainTainDate,DistanceRemindDays,RemindTimes,BeforeRemindTimes,LastRemindTimes,DistanceRemindTimes,TotalTimes,Manufacturer,Serialnumber,ProductDate,MaintainGroup,ABCCategory,ProductUsed,DeviceWeight,DevicePower,DevicePrice,InstallCost,SalvageValueRate,StartUsedDept,StartUsedAddress,IsSpecialEquip,LedgerType,BarCode,TMCode,WorkLineType</ColumnLocal>
+        <ColumnRemote>UID,DeviceCode,Dict_DeviceIncreaseModeCode,WorkShopCode,WorkLineCode,DeviceSupplier,Dict_DeviceTypeCode,DeviceName,DeviceSize,InEntryTime,UsingTime,ServiceLife,Dict_DeviceStatusCode,OriginalValue,SoftwareSupplier,Charger,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,UsedTimes,AssetCode,StoragePlace,RemindStyle,RemindDays,BeforeRemindDays,LastMainTainDate,DistanceRemindDays,RemindTimes,BeforeRemindTimes,LastRemindTimes,DistanceRemindTimes,TotalTimes,Manufacturer,Serialnumber,ProductDate,MaintainGroup,ABCCategory,ProductUsed,DeviceWeight,DevicePower,DevicePrice,InstallCost,SalvageValueRate,StartUsedDept,StartUsedAddress,IsSpecialEquip,LedgerType,BarCode,TMCode,WorkLineType,BecomeAssetDate,StateChangedDate,DeviceType</ColumnRemote>
+        <ColumnLocal>UID,DeviceCode,Dict_DeviceIncreaseModeCode,WorkShopCode,WorkLineCode,DeviceSupplier,Dict_DeviceTypeCode,DeviceName,DeviceSize,InEntryTime,UsingTime,ServiceLife,Dict_DeviceStatusCode,OriginalValue,SoftwareSupplier,Charger,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,UsedTimes,AssetCode,StoragePlace,RemindStyle,RemindDays,BeforeRemindDays,LastMainTainDate,DistanceRemindDays,RemindTimes,BeforeRemindTimes,LastRemindTimes,DistanceRemindTimes,TotalTimes,Manufacturer,Serialnumber,ProductDate,MaintainGroup,ABCCategory,ProductUsed,DeviceWeight,DevicePower,DevicePrice,InstallCost,SalvageValueRate,StartUsedDept,StartUsedAddress,IsSpecialEquip,LedgerType,BarCode,TMCode,WorkLineType,BecomeAssetDate,StateChangedDate,DeviceType</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_Device_MI">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -133,8 +133,8 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_Device_MaintainMaster</TableRemote>
         <TableLocal>MES_Device_MaintainMaster</TableLocal>
-        <ColumnRemote>UID,CreateTime,CreateUser,MouldCode,State,PlanCode,MaintainDate,MaintainPerson,AcceptancePerson,Remark,MaintainTimeLength,WorkShopCode,DeviceCode,IsPlanned</ColumnRemote>
-        <ColumnLocal>UID,CreateTime,CreateUser,MouldCode,State,PlanCode,MaintainDate,MaintainPerson,AcceptancePerson,Remark,MaintainTimeLength,WorkShopCode,DeviceCode,IsPlanned</ColumnLocal>
+        <ColumnRemote>UID,CreateTime,CreateUser,MouldCode,State,PlanCode,MaintainDate,MaintainPerson,AcceptancePerson,Remark,MaintainTimeLength,WorkShopCode,DeviceCode,IsPlanned,LedgerType</ColumnRemote>
+        <ColumnLocal>UID,CreateTime,CreateUser,MouldCode,State,PlanCode,MaintainDate,MaintainPerson,AcceptancePerson,Remark,MaintainTimeLength,WorkShopCode,DeviceCode,IsPlanned,LedgerType</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_Device_MaintainMasterItems">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -165,8 +165,8 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_Device_MaintainPlan</TableRemote>
         <TableLocal>MES_Device_MaintainPlan</TableLocal>
-        <ColumnRemote>UID,DeviceCode,Dict_DeviceMaintainTypeCode,MaintainTime,MaintainTimes,MaintainPlanCode,WorkShopCode,PlanState,MouldCode,ManHour,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,LedgerType</ColumnRemote>
-        <ColumnLocal>UID,DeviceCode,Dict_DeviceMaintainTypeCode,MaintainTime,MaintainTimes,MaintainPlanCode,WorkShopCode,PlanState,MouldCode,ManHour,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,LedgerType</ColumnLocal>
+        <ColumnRemote>UID,DeviceCode,Dict_DeviceMaintainTypeCode,MaintainTime,MaintainTimes,MaintainPlanCode,WorkShopCode,PlanState,MouldCode,ManHour,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,LedgerType,DeviceAssetCode</ColumnRemote>
+        <ColumnLocal>UID,DeviceCode,Dict_DeviceMaintainTypeCode,MaintainTime,MaintainTimes,MaintainPlanCode,WorkShopCode,PlanState,MouldCode,ManHour,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,LedgerType,DeviceAssetCode</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_Device_Mould">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -232,6 +232,14 @@
         <ColumnRemote>UID,GaugeCode,GaugeName,CheckPeriod,FirstCheckDate,UsedMan,GaugeState,UsedDept,VehicleModel,ProductCompany,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnRemote>
         <ColumnLocal>UID,GaugeCode,GaugeName,CheckPeriod,FirstCheckDate,UsedMan,GaugeState,UsedDept,VehicleModel,ProductCompany,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnLocal>
     </ItemSQL>
+    <ItemSQL id="MES_MG_MeasureDevice">
+        <DBRemote>REMOTE_HOST</DBRemote>
+        <DBLocal>LOCAL_HOST</DBLocal>
+        <TableRemote>MES_MG_MeasureDevice</TableRemote>
+        <TableLocal>MES_MG_MeasureDevice</TableLocal>
+        <ColumnRemote>UID,DeviceName,DeviceCode,FactoryNo,DeviceSize,AccuracyLevel,Keeper,VerifyPeriod,MeasuringRange,BuyDate,UsedDept,ProductCompany,DeviceState,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,OutNo,ArrivalTime</ColumnRemote>
+        <ColumnLocal>UID,DeviceName,DeviceCode,FactoryNo,DeviceSize,AccuracyLevel,Keeper,VerifyPeriod,MeasuringRange,BuyDate,UsedDept,ProductCompany,DeviceState,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,OutNo,ArrivalTime</ColumnLocal>
+    </ItemSQL>
     <ItemSQL id="MES_MG_MeasureInfo">
         <DBRemote>REMOTE_HOST</DBRemote>
         <DBLocal>LOCAL_HOST</DBLocal>
@@ -261,16 +269,16 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_PCheck_DocItems</TableRemote>
         <TableLocal>MES_PCheck_DocItems</TableLocal>
-        <ColumnRemote>UID,MasterCode,ItemCode,ItemResult,ItemValue,MouldItemCode,GuideBookCode,GuideBookBarCode,DeviceCode,DeviceBarCode,ItemRemark</ColumnRemote>
-        <ColumnLocal>UID,MasterCode,ItemCode,ItemResult,ItemValue,MouldItemCode,GuideBookCode,GuideBookBarCode,DeviceCode,DeviceBarCode,ItemRemark</ColumnLocal>
+        <ColumnRemote>UID,MasterCode,ItemCode,ItemResult,ItemValue,MouldItemCode,CheckStyle,DeviceClassify,DeviceCode,DeviceBarCode,ItemRemark</ColumnRemote>
+        <ColumnLocal>UID,MasterCode,ItemCode,ItemResult,ItemValue,MouldItemCode,CheckStyle,DeviceClassify,DeviceCode,DeviceBarCode,ItemRemark</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_PCheck_DocMaster">
         <DBRemote>REMOTE_HOST</DBRemote>
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_PCheck_DocMaster</TableRemote>
         <TableLocal>MES_PCheck_DocMaster</TableLocal>
-        <ColumnRemote>UID,DocCode,MouldCode,CheckDate,WorkOrderCode,DocResult,DocRemark,CheckStyle,WorkShopCode,WorkLineCode,WorkStationCode,CreateTime,CreateUser,UpdateTime,UpdateUser,State,CheckMan,ProductCode</ColumnRemote>
-        <ColumnLocal>UID,DocCode,MouldCode,CheckDate,WorkOrderCode,DocResult,DocRemark,CheckStyle,WorkShopCode,WorkLineCode,WorkStationCode,CreateTime,CreateUser,UpdateTime,UpdateUser,State,CheckMan,ProductCode</ColumnLocal>
+        <ColumnRemote>UID,DocCode,MouldCode,CheckDate,WorkOrderCode,DocResult,DocRemark,CheckStyle,WorkShopCode,WorkLineCode,WorkStationCode,CreateTime,CreateUser,UpdateTime,UpdateUser,State,CheckMan,ProductCode,Auditor</ColumnRemote>
+        <ColumnLocal>UID,DocCode,MouldCode,CheckDate,WorkOrderCode,DocResult,DocRemark,CheckStyle,WorkShopCode,WorkLineCode,WorkStationCode,CreateTime,CreateUser,UpdateTime,UpdateUser,State,CheckMan,ProductCode,Auditor</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_PCheck_Mould">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -285,8 +293,8 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_PCheck_MouldItems</TableRemote>
         <TableLocal>MES_PCheck_MouldItems</TableLocal>
-        <ColumnRemote>UID,MouldCode,ItemCode,ItemState,CheckPoint,SpecialFlag,CheckContent,CheckStyle,CheckStandard,CheckParam,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnRemote>
-        <ColumnLocal>UID,MouldCode,ItemCode,ItemState,CheckPoint,SpecialFlag,CheckContent,CheckStyle,CheckStandard,CheckParam,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnLocal>
+        <ColumnRemote>UID,MouldCode,ItemCode,ItemState,SpecialFlag,CheckContent,CheckStyle,CheckStandard,ParamType,MinValue,MaxValue,CreateTime,CreateUser,UpdateTime,UpdateUser,State,CheckPoint,CheckParam</ColumnRemote>
+        <ColumnLocal>UID,MouldCode,ItemCode,ItemState,SpecialFlag,CheckContent,CheckStyle,CheckStandard,ParamType,MinValue,MaxValue,CreateTime,CreateUser,UpdateTime,UpdateUser,State,CheckPoint,CheckParam</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_PCheck_Mould_Station">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -301,8 +309,8 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_Plan_DailyRecords</TableRemote>
         <TableLocal>MES_Plan_DailyRecords</TableLocal>
-        <ColumnRemote>UID,PlanDate,Dict_PDType,PDCode,PlanBatch,WorkShopCode,WorkLineCode,MTeam,MCode,MName,DeliveryTime,PlanDailyYields,QuotaQuantity,PlanTimeConsuming,priority,State,QASubmitted,WorkLineType,Remark,ProduceBatch</ColumnRemote>
-        <ColumnLocal>UID,PlanDate,Dict_PDType,PDCode,PlanBatch,WorkShopCode,WorkLineCode,MTeam,MCode,MName,DeliveryTime,PlanDailyYields,QuotaQuantity,PlanTimeConsuming,priority,State,QASubmitted,WorkLineType,Remark,ProduceBatch</ColumnLocal>
+        <ColumnRemote>UID,PlanDate,Dict_PDType,PDCode,PlanBatch,WorkShopCode,WorkLineCode,MTeam,MCode,MName,DeliveryTime,PlanDailyYields,QuotaQuantity,PlanTimeConsuming,priority,State,QASubmitted,WorkLineType,Remark,ProduceBatch,IsBox</ColumnRemote>
+        <ColumnLocal>UID,PlanDate,Dict_PDType,PDCode,PlanBatch,WorkShopCode,WorkLineCode,MTeam,MCode,MName,DeliveryTime,PlanDailyYields,QuotaQuantity,PlanTimeConsuming,priority,State,QASubmitted,WorkLineType,Remark,ProduceBatch,IsBox</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_Plan_Files">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -365,8 +373,8 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_QA_DocItems</TableRemote>
         <TableLocal>MES_QA_DocItems</TableLocal>
-        <ColumnRemote>UID,DocCode,QAMCode,ItemCode,ItemValue,ItemResult,OrderNum,Dict_WorkStationType,ItemName,Dict_MouldItemTypeCode,isBasics,ItemValueStandard,ItemValueMax,ItemValueMin,ItemRemark</ColumnRemote>
-        <ColumnLocal>UID,DocCode,QAMCode,ItemCode,ItemValue,ItemResult,OrderNum,Dict_WorkStationType,ItemName,Dict_MouldItemTypeCode,isBasics,ItemValueStandard,ItemValueMax,ItemValueMin,ItemRemark</ColumnLocal>
+        <ColumnRemote>UID,DocCode,QAMCode,ItemCode,ItemValue,ItemResult,OrderNum,ItemName,Dict_MouldItemTypeCode,ItemValueStandard,ItemValueMax,ItemValueMin,ItemRemark,isBasics,Dict_WorkStationType</ColumnRemote>
+        <ColumnLocal>UID,DocCode,QAMCode,ItemCode,ItemValue,ItemResult,OrderNum,ItemName,Dict_MouldItemTypeCode,ItemValueStandard,ItemValueMax,ItemValueMin,ItemRemark,isBasics,Dict_WorkStationType</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_QA_DocMaster">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -381,40 +389,40 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_QA_Items</TableRemote>
         <TableLocal>MES_QA_Items</TableLocal>
-        <ColumnRemote>UID,Dict_MouldTypeCode,ItemCode,ItemName,Dict_MouldItemTypeCode,isBasics,ItemValueStandard,ItemValueMin,ItemValueMax,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnRemote>
-        <ColumnLocal>UID,Dict_MouldTypeCode,ItemCode,ItemName,Dict_MouldItemTypeCode,isBasics,ItemValueStandard,ItemValueMin,ItemValueMax,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnLocal>
+        <ColumnRemote>UID,Dict_MouldTypeCode,ItemCode,ItemName,Dict_MouldItemTypeCode,ItemValueStandard,ItemValueMin,ItemValueMax,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,isBasics</ColumnRemote>
+        <ColumnLocal>UID,Dict_MouldTypeCode,ItemCode,ItemName,Dict_MouldItemTypeCode,ItemValueStandard,ItemValueMin,ItemValueMax,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,isBasics</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_QA_Mould">
         <DBRemote>REMOTE_HOST</DBRemote>
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_QA_Mould</TableRemote>
         <TableLocal>MES_QA_Mould</TableLocal>
-        <ColumnRemote>UID,QAMCode,QAMName,Dict_MouldTypeCode,WorkShopCode,WorkLineCode,WorkStationCode,WorkStationTypeCode,MCode,Remark,CreateTime,CreateUser,UpdateUser,UpdateTime,State,WorkInstructionCode,MFigureNo,DeviceCode,MouldState,MouldRemark</ColumnRemote>
-        <ColumnLocal>UID,QAMCode,QAMName,Dict_MouldTypeCode,WorkShopCode,WorkLineCode,WorkStationCode,WorkStationTypeCode,MCode,Remark,CreateTime,CreateUser,UpdateUser,UpdateTime,State,WorkInstructionCode,MFigureNo,DeviceCode,MouldState,MouldRemark</ColumnLocal>
+        <ColumnRemote>UID,QAMCode,QAMName,Dict_MouldTypeCode,WorkShopCode,WorkLineCode,WorkStationCode,WorkStationTypeCode,MCode,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,WorkInstructionCode,MFigureNo,DeviceCode,MouldState,MouldRemark</ColumnRemote>
+        <ColumnLocal>UID,QAMCode,QAMName,Dict_MouldTypeCode,WorkShopCode,WorkLineCode,WorkStationCode,WorkStationTypeCode,MCode,Remark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,WorkInstructionCode,MFigureNo,DeviceCode,MouldState,MouldRemark</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_QA_MouldItems">
         <DBRemote>REMOTE_HOST</DBRemote>
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_QA_MouldItems</TableRemote>
         <TableLocal>MES_QA_MouldItems</TableLocal>
-        <ColumnRemote>UID,QAMCode,ItemCode,OrderNum,Dict_WorkStationType,ItemValueStandard,ItemValueMin,ItemValueMax,QAMIRemark,CreateTime,CreateUser,UpdateUser,UpdateTime,State,isBasics,WorkProcedureCode</ColumnRemote>
-        <ColumnLocal>UID,QAMCode,ItemCode,OrderNum,Dict_WorkStationType,ItemValueStandard,ItemValueMin,ItemValueMax,QAMIRemark,CreateTime,CreateUser,UpdateUser,UpdateTime,State,isBasics,WorkProcedureCode</ColumnLocal>
+        <ColumnRemote>UID,QAMCode,ItemCode,WorkProcedureCode,OrderNum,ItemValueStandard,ItemValueMin,ItemValueMax,QAMIRemark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,isBasics,Dict_WorkStationType</ColumnRemote>
+        <ColumnLocal>UID,QAMCode,ItemCode,WorkProcedureCode,OrderNum,ItemValueStandard,ItemValueMin,ItemValueMax,QAMIRemark,CreateTime,CreateUser,UpdateTime,UpdateUser,State,isBasics,Dict_WorkStationType</ColumnLocal>
     </ItemSQL>
-    <ItemSQL id="MES_QA_NonDocItems">
+    <ItemSQL id="MES_QA_NonChild">
         <DBRemote>REMOTE_HOST</DBRemote>
         <DBLocal>LOCAL_HOST</DBLocal>
-        <TableRemote>MES_QA_NonDocItems</TableRemote>
-        <TableLocal>MES_QA_NonDocItems</TableLocal>
-        <ColumnRemote>UID,DocNonCode,Dict_NonTypeCode,Batch,MCode,MBarcode,MCodeChild,MCBarcode,Total,Dict_NonTreatmentTypeCode,Dict_NonCodes,Remark,CreateTime,State,WorkShopCode,WorkLineCode</ColumnRemote>
-        <ColumnLocal>UID,DocNonCode,Dict_NonTypeCode,Batch,MCode,MBarcode,MCodeChild,MCBarcode,Total,Dict_NonTreatmentTypeCode,Dict_NonCodes,Remark,CreateTime,State,WorkShopCode,WorkLineCode</ColumnLocal>
+        <TableRemote>MES_QA_NonChild</TableRemote>
+        <TableLocal>MES_QA_NonChild</TableLocal>
+        <ColumnRemote>UID,NonDocCode,Qty,NonCode</ColumnRemote>
+        <ColumnLocal>UID,NonDocCode,Qty,NonCode</ColumnLocal>
     </ItemSQL>
-    <ItemSQL id="MES_QA_NonMaster">
+    <ItemSQL id="MES_QA_NonDocInfo">
         <DBRemote>REMOTE_HOST</DBRemote>
         <DBLocal>LOCAL_HOST</DBLocal>
-        <TableRemote>MES_QA_NonMaster</TableRemote>
-        <TableLocal>MES_QA_NonMaster</TableLocal>
-        <ColumnRemote>UID,DocNonCode,QAUser,DiscoveryTime,Dict_NonFrom,Dict_NonType,PlanCode,WOCode,WorkShopCode,WorkLineCode,MCode,MCodeChild,TotalNonM,TotalNonCode,Remark,State,CreateUser,CreateTime,UpdateUser,UpdateTime,DiscoveryPlace,DiscoveryWorkLine,Dict_NonTreatmentType,MRCode</ColumnRemote>
-        <ColumnLocal>UID,DocNonCode,QAUser,DiscoveryTime,Dict_NonFrom,Dict_NonType,PlanCode,WOCode,WorkShopCode,WorkLineCode,MCode,MCodeChild,TotalNonM,TotalNonCode,Remark,State,CreateUser,CreateTime,UpdateUser,UpdateTime,DiscoveryPlace,DiscoveryWorkLine,Dict_NonTreatmentType,MRCode</ColumnLocal>
+        <TableRemote>MES_QA_NonDocInfo</TableRemote>
+        <TableLocal>MES_QA_NonDocInfo</TableLocal>
+        <ColumnRemote>NonDocCode,woCode,Dict_NonType,PartName,PartCode,PlanBatch,PickCode,PartCodeChild,PartBatch,NonQty,Dict_Path,WorkShopCode,PathLineCode,Dict_NonFrom,BarCodes,Dict_Disposal,DisposalRemark,CreateTime,UserID,Remark,State,NonRemark</ColumnRemote>
+        <ColumnLocal>NonDocCode,woCode,Dict_NonType,PartName,PartCode,PlanBatch,PickCode,PartCodeChild,PartBatch,NonQty,Dict_Path,WorkShopCode,PathLineCode,Dict_NonFrom,BarCodes,Dict_Disposal,DisposalRemark,CreateTime,UserID,Remark,State,NonRemark</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_Spare_Info">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -445,8 +453,8 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_WorkOrder</TableRemote>
         <TableLocal>MES_WorkOrder</TableLocal>
-        <ColumnRemote>UID,PDCode,PlanBatch,ProduceBatch,PlanMadeDate,PlanDate,Dict_PDType,WOCode,WorkShopCode,WorkLineCode,MCode,PocessCode,MName,MTeam,PlanDailyYields,QASubmitted,priority,OrderNum,remark,TotalLineFlow,TotalWarehousing,TotalPrimaryMolding,TotalCompleted,TotalBrokenParts,DeliveryTime,State,TotalPackageBox,TotalSampleParts,TotalRepairParts</ColumnRemote>
-        <ColumnLocal>UID,PDCode,PlanBatch,ProduceBatch,PlanMadeDate,PlanDate,Dict_PDType,WOCode,WorkShopCode,WorkLineCode,MCode,PocessCode,MName,MTeam,PlanDailyYields,QASubmitted,priority,OrderNum,remark,TotalLineFlow,TotalWarehousing,TotalPrimaryMolding,TotalCompleted,TotalBrokenParts,DeliveryTime,State,TotalPackageBox,TotalSampleParts,TotalRepairParts</ColumnLocal>
+        <ColumnRemote>UID,WOCode,PDCode,PlanBatch,ProduceBatch,PlanMadeDate,PlanDate,Dict_PDType,WorkShopCode,WorkLineCode,MCode,PocessCode,MName,MTeam,PlanDailyYields,QASubmitted,priority,OrderNum,remark,TotalLineFlow,TotalWarehousing,TotalPrimaryMolding,TotalCompleted,TotalBrokenParts,DeliveryTime,State,TotalPackageBox,TotalSampleParts,TotalRepairParts,IsBox,WorkTeam,WorkShift</ColumnRemote>
+        <ColumnLocal>UID,WOCode,PDCode,PlanBatch,ProduceBatch,PlanMadeDate,PlanDate,Dict_PDType,WorkShopCode,WorkLineCode,MCode,PocessCode,MName,MTeam,PlanDailyYields,QASubmitted,priority,OrderNum,remark,TotalLineFlow,TotalWarehousing,TotalPrimaryMolding,TotalCompleted,TotalBrokenParts,DeliveryTime,State,TotalPackageBox,TotalSampleParts,TotalRepairParts,IsBox,WorkTeam,WorkShift</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_WorkOrder_UpdateLog">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -461,8 +469,8 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_db_BOM</TableRemote>
         <TableLocal>MES_db_BOM</TableLocal>
-        <ColumnRemote>UID,MCode,MCodeChild,Size,StartTime,EndTime,CreateUser,CreateTime,UpdateUser,UpdateTime,State</ColumnRemote>
-        <ColumnLocal>UID,MCode,MCodeChild,Size,StartTime,EndTime,CreateUser,CreateTime,UpdateUser,UpdateTime,State</ColumnLocal>
+        <ColumnRemote>UID,MCode,MCodeChild,Size,StartTime,EndTime,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnRemote>
+        <ColumnLocal>UID,MCode,MCodeChild,Size,StartTime,EndTime,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_db_CUSTOMER">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -485,8 +493,8 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_db_Dict</TableRemote>
         <TableLocal>MES_db_Dict</TableLocal>
-        <ColumnRemote>UID,Dcode,PDCode,DName,DClass,DType,DRemark,CreateTime,CreateUser,UpdateUser,UpdateTime,State</ColumnRemote>
-        <ColumnLocal>UID,Dcode,PDCode,DName,DClass,DType,DRemark,CreateTime,CreateUser,UpdateUser,UpdateTime,State</ColumnLocal>
+        <ColumnRemote>UID,Dcode,PDCode,DName,DClass,DType,DRemark,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnRemote>
+        <ColumnLocal>UID,Dcode,PDCode,DName,DClass,DType,DRemark,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_db_MaterialInfo">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -517,32 +525,32 @@
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_db_WorkLine</TableRemote>
         <TableLocal>MES_db_WorkLine</TableLocal>
-        <ColumnRemote>UID,WorkShopCode,Dict_WorkLineType,WorkLineCode,WorkLineName,WorkLineBarCode,CreateTime,CreateUser,UpdateUser,UpdateTime,State</ColumnRemote>
-        <ColumnLocal>UID,WorkShopCode,Dict_WorkLineType,WorkLineCode,WorkLineName,WorkLineBarCode,CreateTime,CreateUser,UpdateUser,UpdateTime,State</ColumnLocal>
+        <ColumnRemote>UID,WorkShopCode,Dict_WorkLineType,WorkLineCode,WorkLineName,WorkLineBarCode,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnRemote>
+        <ColumnLocal>UID,WorkShopCode,Dict_WorkLineType,WorkLineCode,WorkLineName,WorkLineBarCode,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_db_WorkShopd">
         <DBRemote>REMOTE_HOST</DBRemote>
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_db_WorkShopd</TableRemote>
         <TableLocal>MES_db_WorkShopd</TableLocal>
-        <ColumnRemote>UID,WorkShopCode,WorkShopName,WorkShopShortName,WorkShopBarCode,CreateTime,CreateUser,UpdateUser,UpdateTime,State</ColumnRemote>
-        <ColumnLocal>UID,WorkShopCode,WorkShopName,WorkShopShortName,WorkShopBarCode,CreateTime,CreateUser,UpdateUser,UpdateTime,State</ColumnLocal>
+        <ColumnRemote>UID,WorkShopCode,WorkShopName,WorkShopShortName,WorkShopBarCode,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnRemote>
+        <ColumnLocal>UID,WorkShopCode,WorkShopName,WorkShopShortName,WorkShopBarCode,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_db_WorkStation">
         <DBRemote>REMOTE_HOST</DBRemote>
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_db_WorkStation</TableRemote>
         <TableLocal>MES_db_WorkStation</TableLocal>
-        <ColumnRemote>UID,WorkLineCode,Dict_WorkStationType,WorkStationCode,WorkStationName,WorkStationBarCode,CreateTime,CreateUser,UpdateUser,UpdateTime,State,WorkStationShortName,IsPackage</ColumnRemote>
-        <ColumnLocal>UID,WorkLineCode,Dict_WorkStationType,WorkStationCode,WorkStationName,WorkStationBarCode,CreateTime,CreateUser,UpdateUser,UpdateTime,State,WorkStationShortName,IsPackage</ColumnLocal>
+        <ColumnRemote>UID,WorkLineCode,Dict_WorkStationType,WorkStationCode,WorkStationName,WorkStationBarCode,WorkStationShortName,IsPackage,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnRemote>
+        <ColumnLocal>UID,WorkLineCode,Dict_WorkStationType,WorkStationCode,WorkStationName,WorkStationBarCode,WorkStationShortName,IsPackage,CreateTime,CreateUser,UpdateTime,UpdateUser,State</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="MES_db_WorkerInfo">
         <DBRemote>REMOTE_HOST</DBRemote>
         <DBLocal>LOCAL_HOST</DBLocal>
         <TableRemote>MES_db_WorkerInfo</TableRemote>
         <TableLocal>MES_db_WorkerInfo</TableLocal>
-        <ColumnRemote>UID,WorkLineCode,WorkerCode,WorkerName,WorkerBarCode,CreateTime,CreateUser,UpdateUser,UpdateTime,State,Dict_WorkShopRoleCode,Team,Tel,WorkerState,Remark,WorkShopCode,Duty</ColumnRemote>
-        <ColumnLocal>UID,WorkLineCode,WorkerCode,WorkerName,WorkerBarCode,CreateTime,CreateUser,UpdateUser,UpdateTime,State,Dict_WorkShopRoleCode,Team,Tel,WorkerState,Remark,WorkShopCode,Duty</ColumnLocal>
+        <ColumnRemote>UID,WorkLineCode,WorkerCode,WorkerName,WorkerBarCode,CreateTime,CreateUser,UpdateTime,UpdateUser,State,Dict_WorkShopRoleCode,Team,Tel,WorkerState,Remark,WorkShopCode,Duty</ColumnRemote>
+        <ColumnLocal>UID,WorkLineCode,WorkerCode,WorkerName,WorkerBarCode,CreateTime,CreateUser,UpdateTime,UpdateUser,State,Dict_WorkShopRoleCode,Team,Tel,WorkerState,Remark,WorkShopCode,Duty</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="PCS_Data_Assembly">
         <DBRemote>REMOTE_HOST</DBRemote>
@@ -607,6 +615,22 @@
         <TableLocal>PCS_Data_Transfer</TableLocal>
         <ColumnRemote>UID,AssemblyID,OrderID,StationID,TransferBarcode,AssemblyState,RepairState,RetestState,CreateTime,FinishTime</ColumnRemote>
         <ColumnLocal>UID,AssemblyID,OrderID,StationID,TransferBarcode,AssemblyState,RepairState,RetestState,CreateTime,FinishTime</ColumnLocal>
+    </ItemSQL>
+    <ItemSQL id="PCS_Material_Batch">
+        <DBRemote>REMOTE_HOST</DBRemote>
+        <DBLocal>LOCAL_HOST</DBLocal>
+        <TableRemote>PCS_Material_Batch</TableRemote>
+        <TableLocal>PCS_Material_Batch</TableLocal>
+        <ColumnRemote>UID,WorkshopID,WorklineID,OrderID,MaterialID,MaterialBatch,PackageBatch,BatchQuantity,BatchState</ColumnRemote>
+        <ColumnLocal>UID,WorkshopID,WorklineID,OrderID,MaterialID,MaterialBatch,PackageBatch,BatchQuantity,BatchState</ColumnLocal>
+    </ItemSQL>
+    <ItemSQL id="PCS_Operator_Hours">
+        <DBRemote>REMOTE_HOST</DBRemote>
+        <DBLocal>LOCAL_HOST</DBLocal>
+        <TableRemote>PCS_Operator_Hours</TableRemote>
+        <TableLocal>PCS_Operator_Hours</TableLocal>
+        <ColumnRemote>UID,WorkshopID,WorklineID,OrderID,OperatorID,LogMarker,LogTime,LogState</ColumnRemote>
+        <ColumnLocal>UID,WorkshopID,WorklineID,OrderID,OperatorID,LogMarker,LogTime,LogState</ColumnLocal>
     </ItemSQL>
     <ItemSQL id="PCS_Upload_Info">
         <DBRemote>REMOTE_HOST</DBRemote>
