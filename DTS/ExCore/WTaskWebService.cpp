@@ -60,8 +60,8 @@ GERROR WTaskWebService::UnInitialize()
     if (_RunThread.isRunning())
     {
         _RunThread.terminate();
+        _RunThread.wait();
     }
-    _RunThread.quit();
 
     return GERROR_OK;
 }

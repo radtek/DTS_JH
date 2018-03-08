@@ -39,9 +39,9 @@ private:
     QBool taskDownloadWorkOrder();
 
 public Q_SLOTS:
-    void Slot_taskDownloadTable();
-    void Slot_taskUploadTable();
-    void Slot_taskDownloadWorkOrder();
+    void slotTaskDownloadTable();
+    void slotTaskUploadTable();
+    void slotTaskDownloadWorkOrder();
 
 private:
     bool m_bStop;

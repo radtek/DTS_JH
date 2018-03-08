@@ -68,7 +68,7 @@ GLogManager::~GLogManager()
 
     if (_RunThread.isRunning())
     {
-        _RunThread.quit();
+        _RunThread.exit(0);
     }
 }
 

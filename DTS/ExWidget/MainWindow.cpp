@@ -69,7 +69,6 @@ void MainWindow::Slot_Action_triggered_Exit()
     {
         return;
     }
-    qCfgManager->UnInitialize();
 
     WTaskSynDatabase::Instance().UnInitialize();
     WTaskWebService::Instance().UnInitialize();

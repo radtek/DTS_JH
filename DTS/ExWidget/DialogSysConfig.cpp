@@ -37,6 +37,11 @@ void DialogSysConfig::initUI()
     this->setWindowIcon(QIcon(PICTURE_ACTION_SYSCONFIG));
     this->setWindowFlags(Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 
+    _UI.spinLWSPort->setFocusPolicy(Qt::NoFocus);
+    _UI.spinLDBPort->setFocusPolicy(Qt::NoFocus);
+    _UI.spinRWSPort->setFocusPolicy(Qt::NoFocus);
+    _UI.spinRDBPort->setFocusPolicy(Qt::NoFocus);
+
     _UI.editAppID->setDisabled(m_bUpdate);
     _UI.labelTipsLWS->setHidden(m_bUpdate);
     _UI.labelTipsRWS->setHidden(m_bUpdate);

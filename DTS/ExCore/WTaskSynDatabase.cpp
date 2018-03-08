@@ -51,7 +51,10 @@ GERROR WTaskSynDatabase::UnInitialize()
 {
     setStop(true);
 
-    this->quit();
+    if (this->isRunning())
+    {
+        this->wait();
+    }
 
     return GERROR_OK;
 }
@@ -84,15 +87,15 @@ void WTaskSynDatabase::run()
         }
         if (nTimeCount % qCfgManager->_Config.value(CONFIG_RUN_TM_DNLD, DEFAULT_CONFIG_RUN_TM_DNLD).toUInt() == 0)
         {
-            Slot_taskDownloadTable();
+            slotTaskDownloadTable();
         }
         if (nTimeCount % qCfgManager->_Config.value(CONFIG_RUN_TM_UPLD, DEFAULT_CONFIG_RUN_TM_UPLD).toUInt() == 0)
         {
-            Slot_taskUploadTable();
+            slotTaskUploadTable();
         }
         if (nTimeCount % qCfgManager->_Config.value(CONFIG_RUN_TM_DNLD, DEFAULT_CONFIG_RUN_TM_DNLD).toUInt() == 0)
         {
-            Slot_taskDownloadWorkOrder();
+            slotTaskDownloadWorkOrder();
         }
 
         qDebug() << nTimeCount++;
@@ -106,7 +109,7 @@ QBool WTaskSynDatabase::taskDownloadTable(const QString &name)
 {
     TRACE_FUNCTION();
 
-    qDebug().noquote() << QString("[数据下载] 任务[%1] 开始……").arg(name);
+    qInfo().noquote() << QString("[数据下载] 任务[%1] 开始……").arg(name);
 
     LPTSqlSync p = qSqlManager->_SqlSync[name];
     if (!p)
@@ -134,7 +137,7 @@ QBool WTaskSynDatabase::taskDownloadTable(const QString &name)
     bool bSuccess = true;
     QString LastTime;
     // 获取上次更新时间
-    qDebug().noquote() << QString("[数据下载] 任务[%1] 获取上一次更新时间……").arg(name);
+    qInfo().noquote() << QString("[数据下载] 任务[%1] 获取上一次更新时间……").arg(name);
     do
     {
         QString dbStr = "SELECT RecodeLastTime FROM PCS_Upload_Info WHERE UploadTable = :UploadTable";
@@ -261,11 +264,11 @@ QBool WTaskSynDatabase::taskDownloadTable(const QString &name)
 
         if (bSuccess)
         {
-            qDebug() << "[SQL] 执行成功，提交事务：" << dbSQLLocal.commit();
+            qInfo() << "[SQL] 执行成功，提交事务：" << dbSQLLocal.commit();
         }
         else
         {
-            qDebug() << "[SQL] 执行失败，回滚事务：" << dbSQLLocal.rollback();
+            qInfo() << "[SQL] 执行失败，回滚事务：" << dbSQLLocal.rollback();
         }
 
         return bSuccess;
@@ -412,11 +415,11 @@ QBool WTaskSynDatabase::taskDownloadTable(const QString &name)
 
         if (bSuccess)
         {
-            qDebug() << "[SQL] 执行成功，提交事务：" << dbSQLLocal.commit();
+            qInfo() << "[SQL] 执行成功，提交事务：" << dbSQLLocal.commit();
         }
         else
         {
-            qDebug() << "[SQL] 执行失败，回滚事务：" << dbSQLLocal.rollback();
+            qInfo() << "[SQL] 执行失败，回滚事务：" << dbSQLLocal.rollback();
         }
 
         return bSuccess;
@@ -427,7 +430,7 @@ QBool WTaskSynDatabase::taskUploadTable(const QString &name)
 {
     TRACE_FUNCTION();
 
-    qDebug().noquote() << QString("[数据上传] 任务[%1] 开始……").arg(name);
+    qInfo().noquote() << QString("[数据上传] 任务[%1] 开始……").arg(name);
 
     LPTSqlSync p = qSqlManager->_SqlSync[name];
     if (!p)
@@ -582,7 +585,7 @@ QBool WTaskSynDatabase::taskUploadTable(const QString &name)
 
 QBool WTaskSynDatabase::taskDownloadWorkOrder()
 {
-    qDebug().noquote() << QString("[工单下载] 任务开始……");
+    qInfo().noquote() << QString("[工单下载] 任务开始……");
 
     LPTSqlSync p = qSqlManager->_SqlSync["MES_WorkOrder"];
     if (!p)
@@ -649,12 +652,12 @@ QBool WTaskSynDatabase::taskDownloadWorkOrder()
             qDebug().noquote() << QString("[工单下载] 表[%1] 已经插入 %2 条记录。").arg(p->table_local).arg(cnt);
         }
     }
-    qDebug().noquote() << QString("[工单下载] 表[%1] 完成更新数据。总计 %2 条记录。").arg(p->table_local).arg(cnt);
+    qInfo().noquote() << QString("[工单下载] 表[%1] 完成更新数据。总计 %2 条记录。").arg(p->table_local).arg(cnt);
 
     return true;
 }
 
-void WTaskSynDatabase::Slot_taskDownloadTable()
+void WTaskSynDatabase::slotTaskDownloadTable()
 {
     QMutexLocker lock(&m_mutexWork);
 
@@ -672,7 +675,7 @@ void WTaskSynDatabase::Slot_taskDownloadTable()
     }
 }
 
-void WTaskSynDatabase::Slot_taskUploadTable()
+void WTaskSynDatabase::slotTaskUploadTable()
 {
     QMutexLocker lock(&m_mutexWork);
 
@@ -690,7 +693,7 @@ void WTaskSynDatabase::Slot_taskUploadTable()
     }
 }
 
-void WTaskSynDatabase::Slot_taskDownloadWorkOrder()
+void WTaskSynDatabase::slotTaskDownloadWorkOrder()
 {
     QMutexLocker lock(&m_mutexWork);
 
