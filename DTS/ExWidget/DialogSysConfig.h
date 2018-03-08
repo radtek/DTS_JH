@@ -1,15 +1,17 @@
-/// -*- C++ -*-
-
-//!============================================================================
 /*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      DialogSysConfig.h
- *  \brief
- *      Interface-SysConfig
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    DialogSysConfig.h
+ * @brief   配置系统参数
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
 
 #ifndef DTS_EXWIDGET_DIALOGSYSCONFIG_H
 #define DTS_EXWIDGET_DIALOGSYSCONFIG_H

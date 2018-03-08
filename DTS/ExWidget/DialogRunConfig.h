@@ -1,15 +1,18 @@
-/// -*- C++ -*-
-
-//!============================================================================
 /*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      DialogRunConfig.h
- *  \brief
- *      Interface-DialogRunConfig
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    DialogRunConfig.h
+ * @brief   配置运行参数
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
+
 
 #ifndef DTS_EXWIDGET_DIALOGRUNCONFIG_H
 #define DTS_EXWIDGET_DIALOGRUNCONFIG_H

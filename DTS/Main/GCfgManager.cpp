@@ -1,17 +1,18 @@
-﻿/// -*- C++ -*-
-
-//!============================================================================
-/*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      GCfgManager.cpp
- *  \brief
- *      Manager-Config
- *  \since
- *  001     2017/11/01      weiheng     create this file
+﻿/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    GCfgManager.cpp
+ * @brief   配置文件
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
+
 
 #include "GDtsData.h"
 
@@ -96,12 +97,6 @@ bool GCfgManager::SetAppID(const QString &strAppID)
         _Config[CONFIG_SYS_RDBUSER] = _Settings.value(CONFIG_SYS_RDBUSER, DEFAULT_CONFIG_SYS_RDBUSER);
         _Config[CONFIG_SYS_RDBPASS] = _Settings.value(CONFIG_SYS_RDBPASS, DEFAULT_CONFIG_SYS_RDBPASS);
         _Config[CONFIG_SYS_RDBNAME] = _Settings.value(CONFIG_SYS_RDBNAME, DEFAULT_CONFIG_SYS_RDBNAME);
-        _Config[CONFIG_RUN_LG_ENAB] = _Settings.value(CONFIG_RUN_LG_ENAB, DEFAULT_CONFIG_LG_ENAB);
-        _Config[CONFIG_RUN_LG_PATH] = _Settings.value(CONFIG_RUN_LG_PATH, DEFAULT_CONFIG_LG_PATH);
-        _Config[CONFIG_RUN_LG_NAME] = _Settings.value(CONFIG_RUN_LG_NAME, DEFAULT_CONFIG_LG_NAME);
-        _Config[CONFIG_RUN_LG_MCNT] = _Settings.value(CONFIG_RUN_LG_MCNT, DEFAULT_CONFIG_LG_MCNT);
-        _Config[CONFIG_RUN_LG_MSIZ] = _Settings.value(CONFIG_RUN_LG_MSIZ, DEFAULT_CONFIG_LG_MSIZ);
-        _Config[CONFIG_RUN_LG_DLVL] = _Settings.value(CONFIG_RUN_LG_DLVL, DEFAULT_CONFIG_LG_DLVL);
         _Config[CONFIG_RUN_TM_UPLD] = _Settings.value(CONFIG_RUN_TM_UPLD, DEFAULT_CONFIG_RUN_TM_UPLD);
         _Config[CONFIG_RUN_TM_FUPD] = _Settings.value(CONFIG_RUN_TM_FUPD, DEFAULT_CONFIG_RUN_TM_FUPD);
         _Config[CONFIG_RUN_TM_DNLD] = _Settings.value(CONFIG_RUN_TM_DNLD, DEFAULT_CONFIG_RUN_TM_DNLD);

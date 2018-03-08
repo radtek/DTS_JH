@@ -1,21 +1,23 @@
-/// -*- C++ -*-
-
-//!============================================================================
 /*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      GDtsError.h
- *  \brief
- *      Global Error Code
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    GDtsError.h
+ * @brief   公共错误码
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
-#ifndef GDTSERROR_H
-#define GDTSERROR_H
 
-/*!
- * Error Code Definition
- */
+
+#ifndef DTS_MAIN_GDTSERROR_H
+#define DTS_MAIN_GDTSERROR_H
+
+
 enum GERROR
 {
     GERROR_OK                           = 0x00000000,   ///! 正确

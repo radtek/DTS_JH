@@ -1,13 +1,9 @@
 INCLUDEPATH += $$PWD
 
 HEADERS += \
-    $$PWD/WTaskDownload.h \
-    $$PWD/WTaskUpload.h \
     $$PWD/WTaskWebService.h \
-    $$PWD/WTaskWorkOrder.h
+    $$PWD/WTaskSynDatabase.h
 
 SOURCES += \
-    $$PWD/WTaskDownload.cpp \
-    $$PWD/WTaskUpload.cpp \
     $$PWD/WTaskWebService.cpp \
-    $$PWD/WTaskWorkOrder.cpp
+    $$PWD/WTaskSynDatabase.cpp

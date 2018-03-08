@@ -1,3 +1,18 @@
+/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    DialogStartup.cpp
+ * @brief   启动页
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
+ */
+
 #include "DialogStartup.h"
 #include "DialogSysConfig.h"
 
@@ -43,7 +58,7 @@ void DialogStartup::resetModel()
 
 void DialogStartup::Slot_PushButton_clicked_Start()
 {
-    qDebug() << "Slot_PushButton_clicked_Start";
+    qInfo() << "Slot_PushButton_clicked_Start";
 
     if (_UI.comboSelect->currentIndex() == -1)
     {
@@ -58,7 +73,7 @@ void DialogStartup::Slot_PushButton_clicked_Start()
 
 void DialogStartup::Slot_PushButton_clicked_Create()
 {
-    qDebug() << "Slot_PushButton_clicked_Create";
+    qInfo() << "Slot_PushButton_clicked_Create";
 
     QVariantMap config;
     DialogSysConfig dialog(config);
@@ -70,7 +85,7 @@ void DialogStartup::Slot_PushButton_clicked_Create()
 
 void DialogStartup::Slot_PushButton_clicked_Delete()
 {
-    qDebug() << "Slot_PushButton_clicked_Delete";
+    qInfo() << "Slot_PushButton_clicked_Delete";
 
     QString strAppID = _UI.comboSelect->currentData().toString();
     if (strAppID.isEmpty())

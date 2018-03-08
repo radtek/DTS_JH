@@ -1,22 +1,20 @@
-﻿/// -*- C++ -*-
-
-//!============================================================================
-/*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      DialogSysConfig.cpp
- *  \brief
- *      Interface-SysConfig
- *  \since
- *  001     2017/11/01      weiheng     create this file
+﻿/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    DialogSysConfig.cpp
+ * @brief   配置系统参数
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
+
 
 #include "DialogSysConfig.h"
-#include "WTaskDownload.h"
-#include "WTaskUpload.h"
-
 
 DialogSysConfig::DialogSysConfig(QVariantMap &config, QWidget *parent)
     : QDialog(parent)
@@ -74,13 +72,11 @@ void DialogSysConfig::initUI()
     QObject::connect(_UI.buttonTestRDB, &QPushButton::clicked, this, &DialogSysConfig::Slot_PushButton_clicked_TestRDB);
     QObject::connect(_UI.editAppID, &QLineEdit::editingFinished, this, &DialogSysConfig::Slot_LineEdit_editingFinished_App);
     QObject::connect(_UI.editAppName, &QLineEdit::editingFinished, this, &DialogSysConfig::Slot_LineEdit_editingFinished_App);
-    QObject::connect(this, &DialogSysConfig::Signal_Modify, &WTaskDownload::Instance(), &WTaskDownload::Slot_resetTimer);
-    QObject::connect(this, &DialogSysConfig::Signal_Modify, &WTaskUpload::Instance(), &WTaskUpload::Slot_resetTimer);
 }
 
 void DialogSysConfig::Slot_PushButton_clicked_Accept()
 {
-    qDebug() << "Slot_PushButton_clicked_Accept";
+    qInfo() << "Slot_PushButton_clicked_Accept";
 
     if (_UI.editAppID->text().isEmpty()
         || _UI.editAppName->text().isEmpty()
@@ -137,14 +133,14 @@ void DialogSysConfig::Slot_PushButton_clicked_Accept()
 
 void DialogSysConfig::Slot_PushButton_clicked_Reject()
 {
-    qDebug() << "Slot_PushButton_clicked_Reject";
+    qInfo() << "Slot_PushButton_clicked_Reject";
 
     reject();
 }
 
 void DialogSysConfig::Slot_PushButton_clicked_TestLWS()
 {
-    qDebug() << "Slot_PushButton_clicked_TestLWS";
+    qInfo() << "Slot_PushButton_clicked_TestLWS";
 
     _UI.labelCheckLWS->setPixmap(QPixmap());
     QString strPic = PICTURE_RES_ERROR;
@@ -165,7 +161,7 @@ void DialogSysConfig::Slot_PushButton_clicked_TestLWS()
 
 void DialogSysConfig::Slot_PushButton_clicked_TestLDB()
 {
-    qDebug() << "Slot_PushButton_clicked_TestLDB";
+    qInfo() << "Slot_PushButton_clicked_TestLDB";
 
     _UI.labelCheckLDB->setPixmap(QPixmap());
 
@@ -195,7 +191,7 @@ void DialogSysConfig::Slot_PushButton_clicked_TestLDB()
 
 void DialogSysConfig::Slot_PushButton_clicked_TestRWS()
 {
-    qDebug() << "Slot_PushButton_clicked_TestRWS";
+    qInfo() << "Slot_PushButton_clicked_TestRWS";
 
     _UI.labelCheckRWS->setPixmap(QPixmap());
     QString strPic = PICTURE_RES_ERROR;
@@ -216,7 +212,7 @@ void DialogSysConfig::Slot_PushButton_clicked_TestRWS()
 
 void DialogSysConfig::Slot_PushButton_clicked_TestRDB()
 {
-    qDebug() << "Slot_PushButton_clicked_TestRDB";
+    qInfo() << "Slot_PushButton_clicked_TestRDB";
 
     _UI.labelCheckRDB->setPixmap(QPixmap());
     QString strPic = PICTURE_RES_ERROR;
@@ -246,7 +242,7 @@ void DialogSysConfig::Slot_PushButton_clicked_TestRDB()
 
 void DialogSysConfig::Slot_LineEdit_editingFinished_App()
 {
-    qDebug() << "Slot_LineEdit_editingFinished_App";
+    qInfo() << "Slot_LineEdit_editingFinished_App";
 
     _UI.labelCheckApp->setPixmap(QPixmap());
 

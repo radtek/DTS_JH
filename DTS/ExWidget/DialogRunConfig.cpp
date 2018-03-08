@@ -1,20 +1,20 @@
-﻿/// -*- C++ -*-
-
-//!============================================================================
-/*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      DTSPageRunConfig.cpp
- *  \brief
- *      Interface-PageRunConfig
- *  \since
- *  001     2017/11/01      weiheng     create this file
+﻿/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    DialogRunConfig.cpp
+ * @brief   配置运行参数
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
+
 
 #include "DialogRunConfig.h"
-#include "WTaskDownload.h"
 
 
 DialogRunConfig::DialogRunConfig(QWidget *parent)
@@ -48,8 +48,7 @@ void DialogRunConfig::initUI()
 
     QObject::connect(_UI.buttonAccept, &QPushButton::clicked, this, &DialogRunConfig::Slot_PushButton_clicked_Accept);
     QObject::connect(_UI.buttonReject, &QPushButton::clicked, this, &DialogRunConfig::Slot_PushButton_clicked_Reject);
-    QObject::connect(_UI.toolLgPath, &QToolButton::click, this, &DialogRunConfig::Slot_PushButton_clicked_Select);
-    QObject::connect(this, &DialogRunConfig::Signal_Modify, &WTaskDownload::Instance(), &WTaskDownload::Slot_resetTimer);
+    QObject::connect(_UI.toolLgPath, &QToolButton::clicked, this, &DialogRunConfig::Slot_PushButton_clicked_Select);
 }
 
 void DialogRunConfig::resetModel()
@@ -69,7 +68,7 @@ void DialogRunConfig::resetModel()
 
 void DialogRunConfig::Slot_PushButton_clicked_Accept()
 {
-    qDebug() << "Slot_PushButton_clicked_Accept";
+    qInfo() << "Slot_PushButton_clicked_Accept";
 
     if (_UI.editLGPATH->text().isEmpty()
         || _UI.editLGNAME->text().isEmpty()
@@ -101,14 +100,14 @@ void DialogRunConfig::Slot_PushButton_clicked_Accept()
 
 void DialogRunConfig::Slot_PushButton_clicked_Reject()
 {
-    qDebug() << "Slot_PushButton_clicked_Reject";
+    qInfo() << "Slot_PushButton_clicked_Reject";
 
     reject();
 }
 
 void DialogRunConfig::Slot_PushButton_clicked_Select()
 {
-    qDebug() << "Slot_PushButton_clicked_Select";
+    qInfo() << "Slot_PushButton_clicked_Select";
 
     QFileDialog fileDialog;
     fileDialog.setFileMode(QFileDialog::DirectoryOnly);

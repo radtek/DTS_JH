@@ -1,15 +1,18 @@
-/// -*- C++ -*-
-
-//!============================================================================
 /*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      GAppInstance.h
- *  \brief
- *      Application Single Instance
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    GAppInstance.h
+ * @brief   程序入口
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
+
 
 #ifndef DTS_MAIN_GAPPINSTANCE_H
 #define DTS_MAIN_GAPPINSTANCE_H

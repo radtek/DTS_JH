@@ -1,3 +1,19 @@
+/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    MainWindow.h
+ * @brief   主界面
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
+ */
+
+
 #ifndef DTS_EXWIDGET_MAINWINDOW_H
 #define DTS_EXWIDGET_MAINWINDOW_H
 

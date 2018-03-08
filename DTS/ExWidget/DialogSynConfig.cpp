@@ -1,15 +1,17 @@
-﻿/// -*- C++ -*-
-
-//!============================================================================
-/*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      DialogSynConfig.h
- *  \brief
- *      Interface-DialogSynConfig
+﻿/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    DialogSynConfig.cpp
+ * @brief   配置同步参数
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
 
 #include "DialogSynConfig.h"
 
@@ -78,7 +80,7 @@ void DialogSynConfig::initUI()
 
 void DialogSynConfig::Slot_PushButton_clicked_Accept()
 {
-    qDebug() << "Slot_PushButton_clicked_Accept";
+    qInfo() << "Slot_PushButton_clicked_Accept";
 
     QString DOWNSQL;
     do
@@ -111,14 +113,14 @@ void DialogSynConfig::Slot_PushButton_clicked_Accept()
 
 void DialogSynConfig::Slot_PushButton_clicked_Reject()
 {
-    qDebug() << "Slot_PushButton_clicked_Reject";
+    qInfo() << "Slot_PushButton_clicked_Reject";
 
     reject();
 }
 
 void DialogSynConfig::Slot_QListWidget_itemDoubleClicked_listWidget01(QListWidgetItem *item)
 {
-    qDebug() << "Slot_QListWidget_itemDoubleClicked_listWidget01" << item;
+    qInfo() << "Slot_QListWidget_itemDoubleClicked_listWidget01" << item;
 
     int row = _UI.listWidget01->row(item);
 
@@ -142,7 +144,7 @@ void DialogSynConfig::Slot_QListWidget_itemDoubleClicked_listWidget01(QListWidge
 
 void DialogSynConfig::Slot_QListWidget_itemDoubleClicked_listWidget02(QListWidgetItem *item)
 {
-    qDebug() << "Slot_QListWidget_itemDoubleClicked_listWidget02" << item;
+    qInfo() << "Slot_QListWidget_itemDoubleClicked_listWidget02" << item;
 
     int row = _UI.listWidget02->row(item);
 
@@ -153,7 +155,7 @@ void DialogSynConfig::Slot_QListWidget_itemDoubleClicked_listWidget02(QListWidge
 
 void DialogSynConfig::Slot_QListWidget_itemDoubleClicked_listWidget03(QListWidgetItem *item)
 {
-    qDebug() << "Slot_QListWidget_itemDoubleClicked_listWidget03" << item;
+    qInfo() << "Slot_QListWidget_itemDoubleClicked_listWidget03" << item;
 
     int row = _UI.listWidget03->row(item);
 

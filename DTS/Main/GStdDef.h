@@ -1,17 +1,17 @@
-/// -*- C++ -*-
-
-//!============================================================================
 /*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      GStdDef.h
- *  \brief
- *      Global Definition
- *  \author
- *      weiheng <weiheng@njid.cn>
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    GStdDef.h
+ * @brief   标准库包含
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
 
 #ifndef DTS_MAIN_GSTDDEF_H
 #define DTS_MAIN_GSTDDEF_H

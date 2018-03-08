@@ -1,15 +1,17 @@
-/// -*- C++ -*-
-
-//!============================================================================
 /*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      GStdData.h
- *  \brief
- *      Global Data Definition
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    GDtsData.h
+ * @brief   公共数据
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
 
 #ifndef DTS_MAIN_GDTSDATA_H
 #define DTS_MAIN_GDTSDATA_H

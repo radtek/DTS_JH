@@ -1,15 +1,17 @@
-﻿/// -*- C++ -*-
-
-//!============================================================================
-/*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      DialogSynConfig.h
- *  \brief
- *      Interface-DialogSynConfig
+﻿/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    DialogSynConfig.h
+ * @brief   配置同步参数
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
 
 #ifndef DTS_EXWIDGET_DIALOGSYNCONFIG_H
 #define DTS_EXWIDGET_DIALOGSYNCONFIG_H

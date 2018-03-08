@@ -1,17 +1,17 @@
-﻿/// -*- C++ -*-
-
-//!============================================================================
-/*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      WTaskWebService.cpp
- *  \brief
- *      Task-Web Service
- *  \since
- *  001     2017/11/01      weiheng     create this file
+﻿/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    WTaskWebService.cpp
+ * @brief   任务-webservice
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
 
 #include "WTaskWebService.h"
 #include <soapMESServiceSoapService.h>
@@ -24,7 +24,7 @@ WTaskWebService &WTaskWebService::Instance()
 
 WTaskWebService::WTaskWebService()
     : QObject()
-    , _WebService(new MESServiceSoapService())
+    , _WebService(new MESServiceSoapService(SOAP_C_UTFSTRING))
     , _RunThread()
 {
 
@@ -61,6 +61,7 @@ GERROR WTaskWebService::UnInitialize()
     {
         _RunThread.terminate();
     }
+    _RunThread.quit();
 
     return GERROR_OK;
 }

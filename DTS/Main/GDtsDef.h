@@ -1,17 +1,18 @@
-﻿/// -*- C++ -*-
-
-//!============================================================================
-/*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      GDtsDef.h
- *  \brief
- *      Global Type Definition
- *  \author
- *      weiheng <weiheng@njid.cn>
+﻿/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    GDtsDef.h
+ * @brief   公共定义
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
+
 
 #ifndef DTS_MAIN_GDTSDEF_H
 #define DTS_MAIN_GDTSDEF_H

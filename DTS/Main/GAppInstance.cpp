@@ -1,10 +1,24 @@
+/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    GAppInstance.cpp
+ * @brief   程序入口
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
+ */
+
+
 #include "GDtsData.h"
 #include "MainWindow.h"
 #include "DialogStartup.h"
-#include "WTaskDownload.h"
-#include "WTaskUpload.h"
 #include "WTaskWebService.h"
-#include "WTaskWorkOrder.h"
+#include "WTaskSynDatabase.h"
 
 #include <Windows.h>
 
@@ -23,7 +37,7 @@ QInt32 GAppInstance::Main(QInt32 argc, char *argv[])
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     QApplication::setFont(QFont("Microsoft Yahei", 10));
 
-    qLogManager->Initialize();
+    qLogManager;
     qSqlManager->Initialize();
 
     QString thisAppID;
@@ -146,10 +160,9 @@ GERROR GAppInstance::StartProcess(const QString &MyAppID)
         return GERROR_FAIL;
     }
 
-    //WTaskDownload::Instance().Initialize();
-    // WTaskUpload::Instance().Initialize();
+
     WTaskWebService::Instance().Initialize();
-    WTaskWorkOrder::Instance().Instance();
+    WTaskSynDatabase::Instance().Initialize();
 
     return GERROR_OK;
 }

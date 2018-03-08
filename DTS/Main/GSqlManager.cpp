@@ -1,17 +1,17 @@
-﻿/// -*- C++ -*-
-
-//!============================================================================
-/*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      GSqlManager.cpp
- *  \brief
- *      Manager-SQL
- *  \since
- *  001     2017/11/01      weiheng     create this file
+﻿/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    GSqlManager.cpp
+ * @brief   数据库公用
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
 
 #include "GDtsData.h"
 
@@ -223,9 +223,9 @@ bool GSqlManager::SqlExec(QSqlQuery &dbQuery, const QString &dbSQL, const QVaria
         return false;
     }
 
-    for (auto it = dbParam.begin(); it != dbParam.end(); ++it)
+    for (auto const &it : dbParam)
     {
-        dbQuery.addBindValue(*it);
+        dbQuery.addBindValue(it);
     }
 
     if (!dbQuery.exec())

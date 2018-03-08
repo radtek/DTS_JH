@@ -1,78 +1,108 @@
-﻿/// -*- C++ -*-
-
-//!============================================================================
 /*!
- *  \copyright
- *      Nanjing Xuanyong Co.,Ltd.
- *  \file
- *      WTaskDownload.cpp
- *  \brief
- *      Task-Download Basis Data
- *  \since
- *  001     2017/11/01      weiheng     create this file
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    WTaskSynDatabase.cpp
+ * @brief   任务-数据库同步
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/03/01 | WeiHeng        | Create this file
+ * *****************************************************************************
  */
-//!============================================================================
-
-#include "WTaskDownload.h"
 
 
-WTaskDownload &WTaskDownload::Instance()
+#include "WTaskSynDatabase.h"
+
+WTaskSynDatabase &WTaskSynDatabase::Instance()
 {
-    static WTaskDownload inst;
+    static WTaskSynDatabase inst;
     return inst;
 }
 
-WTaskDownload::WTaskDownload()
-    : QObject()
-    , _SQL()
-    , _RunThread()
-    , _RunTimer()
+WTaskSynDatabase::WTaskSynDatabase()
+    : QThread()
+    , m_bStop(false)
 {
 
 }
-WTaskDownload::~WTaskDownload()
+
+WTaskSynDatabase::~WTaskSynDatabase()
 {
     UnInitialize();
 }
 
-GERROR WTaskDownload::Initialize()
+GERROR WTaskSynDatabase::Initialize()
 {
-    qDebug().noquote() << "数据下载：任务初始化开始……";
+    qDebug().noquote() << "数据库同步 初始化开始……";
 
-    _SQL = QSqlDatabase::database(QSQL_DB_STRING_DNLD);
-
-    if (!_SQL.isOpen())
+    if (!this->isRunning())
     {
-        if (!_SQL.open())
+        this->start();
+    }
+
+    qDebug().noquote() << "数据库同步 初始化成功。";
+    return GERROR_OK;
+}
+
+GERROR WTaskSynDatabase::UnInitialize()
+{
+    setStop(true);
+
+    this->quit();
+
+    return GERROR_OK;
+}
+
+void WTaskSynDatabase::setStop(QBool bStop)
+{
+    QMutexLocker lock(&m_mutexRun);
+    m_bStop = bStop;
+}
+
+QBool WTaskSynDatabase::getStop()
+{
+    QMutexLocker lock(&m_mutexRun);
+    return m_bStop;
+}
+
+void WTaskSynDatabase::run()
+{
+    qInfo().noquote() << "数据库同步 任务线程开启";
+
+    setStop(false);
+    QThread::sleep(qCfgManager->_Config.value(CONFIG_RUN_TM_FDND, DEFAULT_CONFIG_RUN_TM_FDND).toUInt());
+
+    QUInt32 nTimeCount = 0;  // set large interval could not be effective immediately
+    while (true)
+    {
+        if (getStop())
         {
-            qWarning().noquote() << QString("数据下载：数据库连接失败，STR=%1").arg(QSQL_DB_STRING_DNLD);
-            return GERROR_SQL_OPENFAILED;
+            break;
         }
+        if (nTimeCount % qCfgManager->_Config.value(CONFIG_RUN_TM_DNLD, DEFAULT_CONFIG_RUN_TM_DNLD).toUInt() == 0)
+        {
+            Slot_taskDownloadTable();
+        }
+        if (nTimeCount % qCfgManager->_Config.value(CONFIG_RUN_TM_UPLD, DEFAULT_CONFIG_RUN_TM_UPLD).toUInt() == 0)
+        {
+            Slot_taskUploadTable();
+        }
+        if (nTimeCount % qCfgManager->_Config.value(CONFIG_RUN_TM_DNLD, DEFAULT_CONFIG_RUN_TM_DNLD).toUInt() == 0)
+        {
+            Slot_taskDownloadWorkOrder();
+        }
+
+        qDebug() << nTimeCount++;
+        QThread::sleep(1);
     }
 
-    (*this).moveToThread(&_RunThread);
-    _RunTimer.moveToThread(&_RunThread);
-    QObject::connect(&_RunTimer, &QTimer::timeout, this, &WTaskDownload::Slot_taskWork);
-    _RunThread.start();
-
-    QTimer::singleShot(qCfgManager->_Config.value(CONFIG_RUN_TM_FDND, DEFAULT_CONFIG_RUN_TM_FDND).toInt() * 1000, this, &WTaskDownload::Slot_resetTimer);
-
-    qDebug().noquote() << "数据下载：任务初始化成功。";
-    return GERROR_OK;
+    qWarning().noquote() << "数据库同步 任务线程结束";
 }
 
-GERROR WTaskDownload::UnInitialize()
-{
-    if (_RunThread.isRunning())
-    {
-        _RunThread.quit();
-    }
-
-    return GERROR_OK;
-}
-
-
-QBool WTaskDownload::taskDownloadTable(const QString &name)
+QBool WTaskSynDatabase::taskDownloadTable(const QString &name)
 {
     TRACE_FUNCTION();
 
@@ -393,24 +423,240 @@ QBool WTaskDownload::taskDownloadTable(const QString &name)
     }
 }
 
-void WTaskDownload::Slot_stopTimer()
+QBool WTaskSynDatabase::taskUploadTable(const QString &name)
 {
-    _RunTimer.stop();
+    TRACE_FUNCTION();
+
+    qDebug().noquote() << QString("[数据上传] 任务[%1] 开始……").arg(name);
+
+    LPTSqlSync p = qSqlManager->_SqlSync[name];
+    if (!p)
+    {
+        qWarning().noquote() << QString("[数据上传] 任务[%1] 未找到！").arg(name);
+        return false;
+    }
+
+    QSqlDatabase dbSQLRemote = QSqlDatabase::database(p->db_remote, false);
+    if (!dbSQLRemote.isOpen())
+    {
+        qWarning().noquote() << QString("[数据上传] 任务[%1] 远程数据库未打开！").arg(name);
+        return false;
+    }
+
+    QSqlDatabase dbSQLLocal = QSqlDatabase::database(p->db_local, false);
+    if (!dbSQLLocal.isOpen())
+    {
+        qWarning().noquote() << QString("[数据上传] 任务[%1] 本地数据库未打开！").arg(name);
+        return false;
+    }
+
+    QSqlQuery dbQuery(dbSQLLocal);
+    QSqlQuery dbQueryRemote(dbSQLRemote);
+
+    bool bSuccess = true;
+    QString LastTime;
+    // 获取上次更新时间
+    qDebug().noquote() << QString("[数据上传] 任务[%1] 获取上一次更新时间……").arg(name);
+    do
+    {
+        QString dbStr = "SELECT RecodeLastTime FROM PCS_Upload_Info WHERE UploadTable = :UploadTable";
+        QVariantMap dbParam;
+        dbParam.insert(":UploadTable", p->table_local);
+        if (!qSqlManager->SqlExec(dbQuery, dbStr, dbParam))
+        {
+            bSuccess = false;
+            break;
+        }
+
+        if (!dbQuery.next())
+        {
+            qDebug().noquote() << QString("[数据上传] 任务[%1] 未找到上一次更新时间。设置上一次更新时间为NULL。").arg(name);
+
+            QString dbStr = "INSERT INTO [PCS_Upload_Info](UploadTable) VALUES(:UploadTable)";
+            QVariantMap dbParam;
+            dbParam.insert(":UploadTable", p->table_local);
+            if (!qSqlManager->SqlExec(dbQuery, dbStr, dbParam))
+            {
+                bSuccess = false;
+                break;
+            }
+        }
+        else
+        {
+            LastTime = dbQuery.value("RecodeLastTime").toString();
+        }
+    }
+    while (0);
+
+    if (!bSuccess)
+    {
+        qWarning().noquote() << QString("[数据上传] 任务[%1] 本地数据库存在异常，终止任务！").arg(name);
+        return false;
+    }
+
+    qDebug().noquote() << QString("[数据上传] 任务[%1] 上一次更新时间为：%2").arg(name).arg(LastTime);
+
+    QDateTime CurrTime = QDateTime::currentDateTime();
+
+    do
+    {
+        QString dbStr;
+        QVariantMap dbParam;
+        if (LastTime.isEmpty())
+        {
+            // 上次更新时间为NULL
+            dbStr = p->SelectTable(true);
+        }
+        else
+        {
+            dbStr = p->SelectTable(true) + " WHERE FinishTime >= :last AND FinishTime < :curr ";
+            dbParam.insert(":last", LastTime);
+            dbParam.insert(":curr", CurrTime);
+        }
+        if (!qSqlManager->SqlExec(dbQuery, dbStr, dbParam))
+        {
+            bSuccess = false;
+            break;
+        }
+        qDebug().noquote() << QString("[数据上传] 表[%1] 包含 %2 条新增记录。").arg(p->table_remote).arg(dbQuery.numRowsAffected());
+    }
+    while (0);
+
+    if (!bSuccess)
+    {
+        qWarning().noquote() << QString("[数据上传] 任务[%1] 本地数据库存在异常，终止任务！").arg(name);
+        return false;
+    }
+
+    do
+    {
+        int cnt = 0;
+        QString dbStr = p->InsertTableNoUID(false);
+        QVariantMap dbParam;
+        while (dbQuery.next())
+        {
+            dbParam.clear();
+            for (int i = 0; i < p->column_local.size(); ++i)
+            {
+                dbParam.insert(":" + p->column_local[i], dbQuery.value(i));
+            }
+
+            if (!qSqlManager->SqlExec(dbQueryRemote, dbStr, dbParam))
+            {
+                bSuccess = false;
+                break;
+            }
+            if (++cnt % 1000 == 0)
+            {
+                qDebug().noquote() << QString("[数据上传] 表[%1] 已经插入 %2 条记录。").arg(p->table_local).arg(cnt);
+            }
+        }
+
+        if (bSuccess)
+        {
+            qDebug().noquote() << QString("[数据上传] 表[%1] 完成插入数据。总计 %2 条记录。").arg(p->table_local).arg(cnt);
+        }
+    }
+    while (0);
+
+    if (bSuccess)
+    {
+        qDebug().noquote() << QString("[数据上传] 任务[%1] 更新完成，修改上一次完成时间。").arg(name) ;
+        do
+        {
+            QString dbStr = "UPDATE PCS_Upload_Info SET RecodeLastTime = :curr WHERE UploadTable = :UploadTable ";
+            QVariantMap dbParam;
+            dbParam.insert(":curr", CurrTime);
+            dbParam.insert(":UploadTable", p->table_local);
+            if (!qSqlManager->SqlExec(dbQuery, dbStr, dbParam))
+            {
+                bSuccess = false;
+                break;
+            }
+        }
+        while (0);
+    }
+
+    return bSuccess;
 }
 
-void WTaskDownload::Slot_resetTimer()
+QBool WTaskSynDatabase::taskDownloadWorkOrder()
 {
-    _RunTimer.stop();
+    qDebug().noquote() << QString("[工单下载] 任务开始……");
 
-    Slot_taskWork();
+    LPTSqlSync p = qSqlManager->_SqlSync["MES_WorkOrder"];
+    if (!p)
+    {
+        qWarning().noquote() << QString("[工单下载] 任务未找到！");
+        return false;
+    }
 
-    _RunTimer.setInterval(qCfgManager->_Config.value(CONFIG_RUN_TM_DNLD, DEFAULT_CONFIG_RUN_TM_DNLD).toInt() * 1000);
-    _RunTimer.start();
+    QSqlDatabase dbSQLRemote = QSqlDatabase::database(p->db_remote, false);
+    if (!dbSQLRemote.isOpen())
+    {
+        qWarning().noquote() << QString("[工单下载] 远程数据库未打开！");
+        return false;
+    }
+    QSqlDatabase dbSQLLocal = QSqlDatabase::database(p->db_local, false);
+    if (!dbSQLLocal.isOpen())
+    {
+        qWarning().noquote() << QString("[工单下载] 本地数据库未打开！");
+        return false;
+    }
+
+    bool bSuccess = true;
+
+    QSqlQuery dbQuery(dbSQLLocal);
+    QSqlQuery dbQueryRemote(dbSQLRemote);
+
+    do
+    {
+        QString dbStr = p->SelectTable(false) + " WHERE State = :State";
+        QVariantMap dbParam;
+        dbParam.insert(":State", 1);
+        if (!qSqlManager->SqlExec(dbQueryRemote, dbStr, dbParam))
+        {
+            bSuccess = false;
+            break;
+        }
+        qDebug().noquote() << QString("[工单下载] 包含 %2 条新增记录。").arg(dbQueryRemote.numRowsAffected());
+    }
+    while (0);
+
+    if (!bSuccess)
+    {
+        qWarning().noquote() << QString("[工单下载] 远程数据库存在异常，终止任务！");
+        return false;
+    }
+
+    qDebug().noquote() << QString("[工单下载] 开始插入数据。");
+    int cnt = 0;
+    QString dbStr = p->InsertTable(true);
+    QVariantMap dbParam;
+    while (dbQueryRemote.next())
+    {
+        dbParam.clear();
+        for (int i = 0; i < p->column_local.size(); ++i)
+        {
+            dbParam.insert(QString(":%1").arg(p->column_local[i]), dbQueryRemote.value(i));
+        }
+        if (!qSqlManager->SqlExec(dbQuery, dbStr, dbParam))
+        {
+            qWarning().noquote() << QString("[工单下载] 插入数据存在错误。%1").arg(dbQuery.lastError().text());
+        }
+        if (++cnt % 1000 == 0)
+        {
+            qDebug().noquote() << QString("[工单下载] 表[%1] 已经插入 %2 条记录。").arg(p->table_local).arg(cnt);
+        }
+    }
+    qDebug().noquote() << QString("[工单下载] 表[%1] 完成更新数据。总计 %2 条记录。").arg(p->table_local).arg(cnt);
+
+    return true;
 }
 
-void WTaskDownload::Slot_taskWork()
+void WTaskSynDatabase::Slot_taskDownloadTable()
 {
-    qDebug().noquote() << QString("数据下载：任务执行开始……");
+    QMutexLocker lock(&m_mutexWork);
 
     const QString &downloadConfig = qCfgManager->_Config.value(CONFIG_SYN_DOWNSQL).toString();
 
@@ -418,11 +664,35 @@ void WTaskDownload::Slot_taskWork()
 
     for (auto str : download)
     {
-        //taskDownloadTable(str);
+        if (getStop())
+        {
+            break;
+        }
+        taskDownloadTable(str);
     }
-    taskDownloadTable("MES_db_BOM");
-
-    qDebug().noquote() << QString("数据下载：任务执行结束。");
 }
 
+void WTaskSynDatabase::Slot_taskUploadTable()
+{
+    QMutexLocker lock(&m_mutexWork);
 
+    const QString &uploadConfig = qCfgManager->_Config.value(CONFIG_SYN_UPLDSQL).toString();
+
+    QStringList upload = uploadConfig.split(",", QString::SkipEmptyParts, Qt::CaseSensitive);
+
+    for (auto str : upload)
+    {
+        if (getStop())
+        {
+            break;
+        }
+        taskUploadTable(str);
+    }
+}
+
+void WTaskSynDatabase::Slot_taskDownloadWorkOrder()
+{
+    QMutexLocker lock(&m_mutexWork);
+
+    taskDownloadWorkOrder();
+}

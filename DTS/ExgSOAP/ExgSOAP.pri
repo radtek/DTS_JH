@@ -18,3 +18,4 @@ SOURCES += \
 
 
 LIBS += $$PWD/lib/libws2_32.a
+
