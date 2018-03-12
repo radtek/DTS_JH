@@ -40,16 +40,16 @@ enum class ELogLevel
 #define DEFAULT_CONFIG_LOGMANAGER   "configlog.ini"
 
 #define TAG_CONFIG_LG_TARG          "Target"
-#define DEFAULT_CONFIG_LG_TARG      0
+#define DEFAULT_CONFIG_LG_TARG      1
 
 #define TAG_CONFIG_LG_PATT          "Pattern"
-#define DEFAULT_CONFIG_LG_PATT      "%{time yyyy-MM-dd HH:mm:ss.zzz} %{if-debug}DBG%{endif}%{if-info}INF%{endif}%{if-warning}WAR%{endif}%{if-critical}ERR%{endif} TID:%{threadid} %{if-debug}%{file}:%{line}%{endif} %{message}"
+#define DEFAULT_CONFIG_LG_PATT      "%{time yyyy-MM-dd HH:mm:ss.zzz} %{message}"
 
 #define TAG_CONFIG_LG_PATH          "Path"
-#define DEFAULT_CONFIG_LG_PATH      "./run/"
+#define DEFAULT_CONFIG_LG_PATH      "."
 
 #define TAG_CONFIG_LG_FILE          "File"
-#define DEFAULT_CONFIG_LG_FILE      "mes.log"
+#define DEFAULT_CONFIG_LG_FILE      "run.log"
 
 #define TAG_CONFIG_LG_MCNT          "MaxCount"
 #define DEFAULT_CONFIG_LG_MCNT      100

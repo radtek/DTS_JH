@@ -52,7 +52,7 @@ void DialogStartup::resetModel()
     _UI.comboSelect->clear();
     for (auto it = appList.begin(); it != appList.end(); ++it)
     {
-        _UI.comboSelect->addItem(QIcon(PICTURE_WORKSHOP), it.value(), it.key());
+        _UI.comboSelect->addItem(it.value(), it.key());
     }
 }
 

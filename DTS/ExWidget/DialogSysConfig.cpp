@@ -43,8 +43,8 @@ void DialogSysConfig::initUI()
     _UI.spinRDBPort->setFocusPolicy(Qt::NoFocus);
 
     _UI.editAppID->setDisabled(m_bUpdate);
-    _UI.labelTipsLWS->setHidden(m_bUpdate);
-    _UI.labelTipsRWS->setHidden(m_bUpdate);
+    _UI.labelTipsLWS->setHidden(!m_bUpdate);
+    _UI.labelTipsRWS->setHidden(!m_bUpdate);
 
     _UI.editAppID->setText(_Config.value(CONFIG_SYS_MYAPPID, DEFAULT_CONFIG_SYS_MYAPPID).toString());
     _UI.editAppName->setText(_Config.value(CONFIG_SYS_APPNAME, DEFAULT_CONFIG_SYS_APPNAME).toString());
