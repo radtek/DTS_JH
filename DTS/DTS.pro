@@ -22,10 +22,11 @@ DEFINES += QT_MESSAGELOGCONTEXT
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-include(ExgSOAP/ExgSOAP.pri)
+include(DTS.Web/DTS.Web.pri)
 include(ExWidget/ExWidget.pri)
 include(ExCore/ExCore.pri)
 include(Main/Main.pri)
+include(XYGlobal/XYGlobal.pri)
 
 DESTDIR = ../bin
 

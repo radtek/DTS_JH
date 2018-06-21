@@ -16,50 +16,48 @@
 #ifndef XYTEC_GLOGMANAGER_H
 #define XYTEC_GLOGMANAGER_H
 
-#include <QThread>
-#include <QList>
-#include <QMutex>
+#include <QDateTime>
 #include <QDebug>
 #include <QDir>
-#include <QDateTime>
 #include <QElapsedTimer>
+#include <QList>
+#include <QMutex>
 #include <QSettings>
+#include <QThread>
 #include <QTimer>
 #include <fstream>
 
-
 enum class ELogLevel
 {
-    LG_DBG  = 0,
-    LG_INF  = 1,
-    LG_WAR  = 2,
-    LG_ERR  = 3,
+    LG_DBG = 0,
+    LG_INF = 1,
+    LG_WAR = 2,
+    LG_ERR = 3,
 };
 
+#define DEFAULT_CONFIG_LOGMANAGER "configlog.ini"
 
-#define DEFAULT_CONFIG_LOGMANAGER   "configlog.ini"
+#define TAG_CONFIG_LG_TARG "Target"
+#define DEFAULT_CONFIG_LG_TARG 1
 
-#define TAG_CONFIG_LG_TARG          "Target"
-#define DEFAULT_CONFIG_LG_TARG      1
+#define TAG_CONFIG_LG_PATT "Pattern"
+#define DEFAULT_CONFIG_LG_PATT "%{time yyyy-MM-dd HH:mm:ss.zzz} %{message}"
 
-#define TAG_CONFIG_LG_PATT          "Pattern"
-#define DEFAULT_CONFIG_LG_PATT      "%{time yyyy-MM-dd HH:mm:ss.zzz} %{message}"
+#define TAG_CONFIG_LG_PATH "Path"
+#define DEFAULT_CONFIG_LG_PATH "."
 
-#define TAG_CONFIG_LG_PATH          "Path"
-#define DEFAULT_CONFIG_LG_PATH      "."
+#define TAG_CONFIG_LG_FILE "File"
+#define DEFAULT_CONFIG_LG_FILE "run.log"
 
-#define TAG_CONFIG_LG_FILE          "File"
-#define DEFAULT_CONFIG_LG_FILE      "run.log"
+#define TAG_CONFIG_LG_MCNT "MaxCount" *
 
-#define TAG_CONFIG_LG_MCNT          "MaxCount"
-#define DEFAULT_CONFIG_LG_MCNT      100
+#define DEFAULT_CONFIG_LG_MCNT 100
 
-#define TAG_CONFIG_LG_MSIZ          "MaxSize"
-#define DEFAULT_CONFIG_LG_MSIZ      10
+#define TAG_CONFIG_LG_MSIZ "MaxSize"
+#define DEFAULT_CONFIG_LG_MSIZ 10
 
-#define TAG_CONFIG_LG_DLVL          "DefaultLevel"
-#define DEFAULT_CONFIG_LG_DLVL      static_cast<int>(ELogLevel::LG_DBG)
-
+#define TAG_CONFIG_LG_DLVL "DefaultLevel"
+#define DEFAULT_CONFIG_LG_DLVL static_cast<int>(ELogLevel::LG_DBG)
 
 class GLogManager : public QObject
 {
@@ -88,20 +86,20 @@ public Q_SLOTS:
     void resetConfig();
 
 private:
-    QThread             _RunThread;
+    QThread _RunThread;
 
-    QMutex              _FileLock;
-    std::fstream        _FileWriter;
+    QMutex _FileLock;
+    std::fstream _FileWriter;
 
-    QMutex              _CfgLock;
-    QTimer              _CfgReload;
-    int                 _Target;
-    QString             _Pattern;
-    QString             _PathName;
-    QString             _FileName;
-    unsigned int        _MaxCount;
-    unsigned int        _MaxSize;
-    int                 _DefaultLevel;
+    QMutex _CfgLock;
+    QTimer _CfgReload;
+    int _Target;
+    QString _Pattern;
+    QString _PathName;
+    QString _FileName;
+    unsigned int _MaxCount;
+    unsigned int _MaxSize;
+    int _DefaultLevel;
 };
 
 #define qLogManager (&GLogManager::Instance())
@@ -110,7 +108,10 @@ class FunctionTrace
 {
 public:
     FunctionTrace(const char *fileName, int lineNumber, const char *functionName)
-        : _File(fileName), _Line(lineNumber), _Func(functionName), _Tick()
+        : _File(fileName)
+        , _Line(lineNumber)
+        , _Func(functionName)
+        , _Tick()
     {
         _Tick.start();
         QMessageLogger(_File, _Line, _Func).debug().noquote() << QString("->> %1").arg(_Func);
@@ -129,6 +130,5 @@ private:
 
 #define TRACE_FUNCTION() \
     FunctionTrace functionTrace(QT_MESSAGELOG_FILE, QT_MESSAGELOG_LINE, QT_MESSAGELOG_FUNC);
-
 
 #endif

@@ -13,12 +13,12 @@
  * *****************************************************************************
  */
 
-
+#include "DialogStartup.h"
 #include "GDtsData.h"
 #include "MainWindow.h"
-#include "DialogStartup.h"
-#include "WTaskWebService.h"
 #include "WTaskSynDatabase.h"
+#include "WTaskWebService.h"
+#include "XYLogManager.h"
 
 #include <Windows.h>
 
@@ -37,7 +37,7 @@ QInt32 GAppInstance::Main(QInt32 argc, char *argv[])
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     QApplication::setFont(QFont("Microsoft Yahei", 10));
 
-    qLogManager;
+    qInstallMessageHandler(XYLogManager::OutputMessage);
     qSqlManager->Initialize();
 
     QString thisAppID;
@@ -56,7 +56,9 @@ QInt32 GAppInstance::Main(QInt32 argc, char *argv[])
         DialogStartup dialog;
         if (QDialog::Accepted != dialog.exec())
         {
-            return -1;
+            QCoreApplication::quit();
+            app.processEvents();
+            return 0;
         }
 
         thisAppID = dialog.GetAppID();
@@ -121,13 +123,15 @@ GERROR GAppInstance::UnInitialize()
 GERROR GAppInstance::ParseCommandLine(QCommandLineParser &parser)
 {
     static const QStringList gAppCmdlineN =
-    {
-        "n", "name",
-    };
+        {
+            "n",
+            "name",
+        };
     static const QStringList gAppCmdlineW =
-    {
-        "w", "window",
-    };
+        {
+            "w",
+            "window",
+        };
 
     QCommandLineOption opName(gAppCmdlineN, "AppName", "Application Name.", "");
     QCommandLineOption opWindow(gAppCmdlineW, "ShowWindow", "Run with Windows.", "");
@@ -159,7 +163,6 @@ GERROR GAppInstance::StartProcess(const QString &MyAppID)
     {
         return GERROR_FAIL;
     }
-
 
     WTaskWebService::Instance().Initialize();
     WTaskSynDatabase::Instance().Initialize();

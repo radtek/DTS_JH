@@ -13,14 +13,12 @@
  * *****************************************************************************
  */
 
-
 #include "MainWindow.h"
-#include "WTaskWebService.h"
-#include "WTaskSynDatabase.h"
-#include "DialogSynConfig.h"
 #include "DialogRunConfig.h"
+#include "DialogSynConfig.h"
 #include "DialogSysConfig.h"
-
+#include "WTaskSynDatabase.h"
+#include "WTaskWebService.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -54,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(_UI.buttonSysConfig, &QPushButton::clicked, this, &MainWindow::Slot_Action_triggered_SysConfig);
     QObject::connect(_UI.buttonRunConfig, &QPushButton::clicked, this, &MainWindow::Slot_Action_triggered_RunConfig);
     QObject::connect(_UI.buttonSynConfig, &QPushButton::clicked, this, &MainWindow::Slot_Action_triggered_SynConfig);
-    QObject::connect(qLogManager, &GLogManager::sendMsg, this, &MainWindow::Slot_Custom_sendMsg, Qt::QueuedConnection);
+    //    QObject::connect(qLogManager, &GLogManager::sendMsg, this, &MainWindow::Slot_Custom_sendMsg, Qt::QueuedConnection);
 }
 
 MainWindow::~MainWindow()
@@ -131,7 +129,6 @@ void MainWindow::Slot_Custom_sendMsg(const QString &strMsg)
     _UI.plainTextEdit->appendPlainText(strMsg);
 }
 
-
 bool MainWindow::event(QEvent *event)
 {
     switch (event->type())
@@ -144,5 +141,4 @@ bool MainWindow::event(QEvent *event)
     default:
         return QWidget::event(event);
     }
-
 }
