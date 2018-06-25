@@ -2,8 +2,8 @@
  * *****************************************************************************
  * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
  *
- * @file    DialogStartup.h
- * @brief   startup page
+ * @file    DialogSynchronize.h
+ * @brief
  * @version 1.0
  *
  * -----------------------------------------------------------------------------
@@ -13,37 +13,36 @@
  * *****************************************************************************
  */
 
-#ifndef DTS_WIDGET_DIALOGSTARTUP_H
-#define DTS_WIDGET_DIALOGSTARTUP_H
+#ifndef DTS_EXWIDGET_DIALOGSYNCHRONIZE_H
+#define DTS_EXWIDGET_DIALOGSYNCHRONIZE_H
 
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
 
-#include "ui_DialogStartup.h"
+#include "ui_DialogSynchronize.h"
 
-class DialogStartup : public QDialog
+class DialogSynchronize : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DialogStartup(QWidget *parent = Q_NULLPTR);
-    virtual ~DialogStartup();
+    DialogSynchronize(QWidget *parent = Q_NULLPTR);
+    virtual ~DialogSynchronize();
 
 public:
-    QString getSelection();
+    QMap<QString, QString> getConfig();
 
 private:
     void init();
-    void refresh();
 
 public Q_SLOTS:
-    void slotPushButtonClickedStart();
-    void slotPushButtonClickedCreate();
-    void slotPushButtonClickedDelete();
+    void slotListWidgetItemDoubleClicked01(QListWidgetItem *item);
+    void slotListWidgetItemDoubleClicked02(QListWidgetItem *item);
+    void slotListWidgetItemDoubleClicked03(QListWidgetItem *item);
 
 private:
-    QScopedPointer<Ui::DialogStartup> ui;
+    QScopedPointer<Ui::DialogSynchronize> ui;
 };
 
 #endif

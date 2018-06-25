@@ -3,20 +3,23 @@
  * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
  *
  * @file    MainWindow.cpp
- * @brief   主界面
+ * @brief
  * @version 1.0
  *
  * -----------------------------------------------------------------------------
  * @history
  *  <Date>    | <Author>       | <Description>
- * 2018/03/01 | WeiHeng        | Create this file
+ * 2018/06/01 | WeiHeng        | Create this file
  * *****************************************************************************
  */
 
 #include "MainWindow.h"
+#include "DialogAbout.h"
 #include "DialogConfiguration.h"
 #include "DialogConfirm.h"
-#include "WTaskSynDatabase.h"
+#include "DialogSynchronize.h"
+#include "GCfgManager.h"
+#include "WTaskSqlSynchronize.h"
 #include "WTaskWebService.h"
 #include "XYLogManager.h"
 
@@ -56,6 +59,7 @@ void MainWindow::init()
 
     QObject::connect(ui->buttonConfig, &QPushButton::clicked, this, &MainWindow::slotPushButtonClickedConfig);
     QObject::connect(ui->buttonDebug, &QPushButton::clicked, this, &MainWindow::slotPushButtonClickedDebug);
+    QObject::connect(ui->buttonExport, &QPushButton::clicked, this, &MainWindow::slotPushButtonClickedExport);
     QObject::connect(ui->buttonExit, &QPushButton::clicked, this, &MainWindow::slotActionQuit);
     QObject::connect(ui->buttonAbout, &QPushButton::clicked, this, &MainWindow::slotActionAbout);
     QObject::connect(iconTray.data(), &QSystemTrayIcon::activated, this, &MainWindow::slotSystemTrayIconActivated);
@@ -80,6 +84,32 @@ void MainWindow::slotPushButtonClickedDebug()
     else
     {
         qLogManager->allocConsole();
+    }
+}
+
+void MainWindow::slotPushButtonClickedExport()
+{
+    qInfo() << "slotPushButtonClickedExport";
+
+    if (qCfgManager->exportSynchData(DEFAULT_SQLSYNC_PATH))
+    {
+        QMessageBox::information(Q_NULLPTR, "Information", "Success");
+    }
+    else
+    {
+        QMessageBox::warning(Q_NULLPTR, "Warning", "Failed");
+    }
+}
+
+void MainWindow::slotPushButtonClickedSynch()
+{
+    qInfo() << "slotPushButtonClickedSynch";
+
+    DialogSynchronize dialog;
+    if (QDialog::Accepted == dialog.exec())
+    {
+        QMap<QString, QString> map = dialog.getConfig();
+        qCfgManager->setConfig(map);
     }
 }
 
@@ -108,8 +138,11 @@ void MainWindow::slotActionQuit()
     DialogConfirm dialog;
     if (QDialog::Accepted == dialog.exec())
     {
-        QApplication::quit();
-        return;
+        if (dialog.getSelection() == "123456")
+        {
+            QApplication::quit();
+            return;
+        }
     }
     show();
 }
@@ -125,4 +158,7 @@ void MainWindow::slotActionShow()
 void MainWindow::slotActionAbout()
 {
     qInfo() << "slotActionAbout";
+
+    DialogAbout dialog;
+    dialog.exec();
 }

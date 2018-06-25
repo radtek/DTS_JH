@@ -2,8 +2,8 @@
  * *****************************************************************************
  * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
  *
- * @file    DialogStartup.h
- * @brief   startup page
+ * @file    DialogAbout.h
+ * @brief
  * @version 1.0
  *
  * -----------------------------------------------------------------------------
@@ -13,37 +13,28 @@
  * *****************************************************************************
  */
 
-#ifndef DTS_WIDGET_DIALOGSTARTUP_H
-#define DTS_WIDGET_DIALOGSTARTUP_H
+#ifndef DTS_WIDGET_DIALOGABOUT_H
+#define DTS_WIDGET_DIALOGABOUT_H
 
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
 
-#include "ui_DialogStartup.h"
+#include "ui_DialogAbout.h"
 
-class DialogStartup : public QDialog
+class DialogAbout : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DialogStartup(QWidget *parent = Q_NULLPTR);
-    virtual ~DialogStartup();
-
-public:
-    QString getSelection();
+    explicit DialogAbout(QWidget *parent = Q_NULLPTR);
+    virtual ~DialogAbout();
 
 private:
     void init();
-    void refresh();
-
-public Q_SLOTS:
-    void slotPushButtonClickedStart();
-    void slotPushButtonClickedCreate();
-    void slotPushButtonClickedDelete();
 
 private:
-    QScopedPointer<Ui::DialogStartup> ui;
+    QScopedPointer<Ui::DialogAbout> ui;
 };
 
 #endif

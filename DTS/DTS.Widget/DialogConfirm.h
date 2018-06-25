@@ -1,22 +1,43 @@
+/*!
+ * *****************************************************************************
+ * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
+ *
+ * @file    DialogConfirm.h
+ * @brief
+ * @version 1.0
+ *
+ * -----------------------------------------------------------------------------
+ * @history
+ *  <Date>    | <Author>       | <Description>
+ * 2018/06/01 | WeiHeng        | Create this file
+ * *****************************************************************************
+ */
+
 #ifndef DIALOGCONFIRM_H
 #define DIALOGCONFIRM_H
 
-#include <QDialog>
+#include <QtCore>
+#include <QtGui>
+#include <QtWidgets>
 
-namespace Ui {
-class DialogConfirm;
-}
+#include "ui_DialogConfirm.h"
 
 class DialogConfirm : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DialogConfirm(QWidget *parent = 0);
-    ~DialogConfirm();
+    explicit DialogConfirm(QWidget *parent = Q_NULLPTR);
+    virtual ~DialogConfirm();
+
+public:
+    QString getSelection();
 
 private:
-    Ui::DialogConfirm *ui;
+    void init();
+
+private:
+    QScopedPointer<Ui::DialogConfirm> ui;
 };
 
-#endif // DIALOGCONFIRM_H
+#endif

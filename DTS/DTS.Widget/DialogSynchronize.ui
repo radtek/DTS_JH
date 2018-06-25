@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogSynchronize</class>
+ <widget class="QDialog" name="DialogSynchronize">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>802</width>
+    <height>550</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>11</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>同步设置设置</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout01">
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox01">
+     <property name="title">
+      <string>同步表（双击选择）</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout01">
+      <item>
+       <widget class="QListWidget" name="listWidget01"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QGroupBox" name="groupBox02">
+     <property name="title">
+      <string>下载列表（双击取消）</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout02">
+      <item>
+       <widget class="QListWidget" name="listWidget02"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QGroupBox" name="groupBox03">
+     <property name="title">
+      <string>上传列表（双击取消）</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout03">
+      <item>
+       <widget class="QListWidget" name="listWidget03"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
+    <layout class="QHBoxLayout" name="horizontalLayout02">
+     <item>
+      <widget class="QRadioButton" name="radioDownload">
+       <property name="text">
+        <string>下载</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinDownload">
+       <property name="suffix">
+        <string> 分钟</string>
+       </property>
+       <property name="prefix">
+        <string>间隔     </string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioUpload">
+       <property name="text">
+        <string>上传</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinUpload">
+       <property name="suffix">
+        <string> 分钟</string>
+       </property>
+       <property name="prefix">
+        <string>间隔     </string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkOrder">
+       <property name="text">
+        <string>下载工单</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkGas">
+       <property name="text">
+        <string>下载发生器数据</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinGasWeight">
+       <property name="suffix">
+        <string> 天</string>
+       </property>
+       <property name="prefix">
+        <string>保留     </string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>3650</number>
+       </property>
+       <property name="value">
+        <number>180</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <layout class="QHBoxLayout" name="horizontalLayout01">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonReject">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>返回</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonAccept">
+       <property name="text">
+        <string>保存</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

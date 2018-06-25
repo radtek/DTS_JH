@@ -3,13 +3,13 @@
  * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
  *
  * @file    WTaskWebService.cpp
- * @brief   任务-webservice
+ * @brief
  * @version 1.0
  *
  * -----------------------------------------------------------------------------
  * @history
  *  <Date>    | <Author>       | <Description>
- * 2018/03/01 | WeiHeng        | Create this file
+ * 2018/06/01 | WeiHeng        | Create this file
  * *****************************************************************************
  */
 
@@ -33,6 +33,7 @@ WTaskWebService::WTaskWebService()
 
 WTaskWebService::~WTaskWebService()
 {
+    qDebug() << 100;
     unInitialize();
 }
 
@@ -40,7 +41,7 @@ bool WTaskWebService::initialize()
 {
     qDebug().noquote() << "WebService init start...";
 
-    if (SOAP_INVALID_SOCKET == webService->bind(qCfgManager->getWSLocalAddr().toUtf8().data(), qCfgManager->getWSLocalPort(), 0))
+    if (!soap_valid_socket(webService->bind(qCfgManager->getWSLocalAddr().toUtf8().data(), qCfgManager->getWSLocalPort(), 0)))
     {
         qWarning().noquote() << "WebService bind error";
         return false;
@@ -57,9 +58,9 @@ bool WTaskWebService::initialize()
 
 void WTaskWebService::unInitialize()
 {
+    qDebug() << 101;
     if (runThread->isRunning())
     {
-        webService->destroy();
         runThread->terminate();
         runThread->wait();
     }
@@ -71,13 +72,13 @@ void WTaskWebService::slotTaskWork()
 
     while (true)
     {
-        if (SOAP_INVALID_SOCKET != webService->accept())
+        if (soap_valid_socket(webService->accept()))
         {
             qInfo().noquote() << "WebService receive a request";
             int ret = webService->serve();
             if (ret != SOAP_OK)
             {
-                qWarning().noquote() << QString("WebService 产生了一个错误，ERROR=%1").arg(ret);
+                qWarning().noquote() << QString("WebService serve failed，ERROR=%1").arg(ret);
             }
             qInfo().noquote() << "WebService handle out";
         }

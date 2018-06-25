@@ -3,13 +3,13 @@
  * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
  *
  * @file    GCfgManager.h
- * @brief   配置文件
+ * @brief
  * @version 1.0
  *
  * -----------------------------------------------------------------------------
  * @history
  *  <Date>    | <Author>       | <Description>
- * 2018/03/01 | WeiHeng        | Create this file
+ * 2018/06/01 | WeiHeng        | Create this file
  * *****************************************************************************
  */
 
@@ -20,43 +20,39 @@
 #include <QtGui>
 #include <QtSql>
 #include <QtWidgets>
+#include <QtXml>
 
-typedef QMap<QString, QString> QStringMap;
-
-#define CONFIG_SYS_MYAPPID "MYAPPID"
-#define CONFIG_SYS_APPNAME "APPNAME"
-#define CONFIG_SYS_LWSADDR "LWSADDR"
-#define CONFIG_SYS_LWSPORT "LWSPORT"
-#define CONFIG_SYS_LDBADDR "LDBADDR"
-#define CONFIG_SYS_LDBPORT "LDBPORT"
-#define CONFIG_SYS_LDBUSER "LDBUSER"
-#define CONFIG_SYS_LDBPASS "LDBPASS"
-#define CONFIG_SYS_LDBNAME "LDBNAME"
-#define CONFIG_SYS_RWSADDR "RWSADDR"
-#define CONFIG_SYS_RWSPORT "RWSPORT"
-#define CONFIG_SYS_RDBADDR "RDBADDR"
-#define CONFIG_SYS_RDBPORT "RDBPORT"
-#define CONFIG_SYS_RDBUSER "RDBUSER"
-#define CONFIG_SYS_RDBPASS "RDBPASS"
-#define CONFIG_SYS_RDBNAME "RDBNAME"
-#define CONFIG_RUN_LG_ENAB "LG_ENAB"
-#define CONFIG_RUN_LG_PATH "LG_PATH"
-#define CONFIG_RUN_LG_NAME "LG_NAME"
-#define CONFIG_RUN_LG_MCNT "LG_MCNT"
-#define CONFIG_RUN_LG_MSIZ "LG_MSIZ"
-#define CONFIG_RUN_LG_DLVL "LG_DLVL"
-#define CONFIG_RUN_LG_PATT "LG_PATT"
-#define CONFIG_RUN_TM_UPLD "TM_UPLD"
-#define CONFIG_RUN_TM_FUPD "TM_FUPD"
-#define CONFIG_RUN_TM_DNLD "TM_DNLD"
-#define CONFIG_RUN_TM_FDND "TM_FDND"
-#define CONFIG_SYN_DOWNSQL "DOWNSQL"
-#define CONFIG_SYN_UPLDSQL "UPLDSQL"
+#define CONFIG_SYS_APPID "app_id"
+#define CONFIG_SYS_APPNAME "app_name"
+#define CONFIG_WS_LOCAL_ADDR "ws_local_addr"
+#define CONFIG_WS_LOCAL_PORT "ws_local_port"
+#define CONFIG_WS_REMOTE_URL "ws_remote_url"
+#define CONFIG_DB_LOCAL_ADDR "db_local_addr"
+#define CONFIG_DB_LOCAL_PORT "db_local_port"
+#define CONFIG_DB_LOCAL_USER "db_local_user"
+#define CONFIG_DB_LOCAL_PASS "db_local_pass"
+#define CONFIG_DB_LOCAL_NAME "db_local_name"
+#define CONFIG_DB_REMOTE_ADDR "db_remote_addr"
+#define CONFIG_DB_REMOTE_PORT "db_remote_port"
+#define CONFIG_DB_REMOTE_USER "db_remote_user"
+#define CONFIG_DB_REMOTE_PASS "db_remote_pass"
+#define CONFIG_DB_REMOTE_NAME "db_remote_name"
+#define CONFIG_RUN_DOWNLOAD "db_download"
+#define CONFIG_RUN_UPLOAD "db_upload"
+#define CONFIG_RUN_UPLOAD_TIMESPAN "tm_upload"
+#define CONFIG_RUN_DOWNLOAD_TIMESPAN "tm_download"
+#define CONFIG_RUN_GASWEIGHT_STORE "tm_gasweight_store"
 
 #define QSQL_DB_STRING_LOCAL "LOCAL_HOST"
 #define QSQL_DB_STRING_REMOTE "REMOTE_HOST"
 
-#include <QtCore>
+#define DEFAULT_SQLSYNC_PATH "SqlSync.xml"
+
+#define TABLE_WORKORDER "MES_WorkOrder"
+#define TABLE_GASDATA "MES_Process_RefData"
+
+class CSynchData;
+typedef QSharedPointer<CSynchData> CSynchDataPtr;
 
 class GCfgManager
 {
@@ -74,19 +70,31 @@ public:
     bool deleteApplication(const QString &appID);
     bool loadApplication(const QString &appID);
     bool initConnection();
-    bool initSynchData();
+    bool importSynchData(const QString &filename);
+    bool exportSynchData(const QString &filename);
     QMap<QString, QString> getApplicationList();
 
 public:
+    void setConfig(const QMap<QString, QString> &currConfig);
+    QStringList getSynchDataKeys();
+    CSynchDataPtr getSynchData(const QString &id);
+
     QString getVersion();
     QString getWorkDir();
     QString getWSLocalAddr();
     int getWSLocalPort();
+    QString getWSRemoteUrl();
+    QStringList getDownload();
+    QStringList getUpload();
+    int getDownloadTimeSpan();
+    int getUploadTimeSpan();
+    int getGasWeightInitTime();
 
 private:
     QSettings settings;
     QString currAppID;
     QMap<QString, QString> config;
+    QMap<QString, CSynchDataPtr> synch;
 };
 
 #define qCfgManager (GCfgManager::instance())

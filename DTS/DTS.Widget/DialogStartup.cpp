@@ -9,7 +9,7 @@
  * -----------------------------------------------------------------------------
  * @history
  *  <Date>    | <Author>       | <Description>
- * 2018/03/01 | WeiHeng        | Create this file
+ * 2018/06/01 | WeiHeng        | Create this file
  * *****************************************************************************
  */
 
@@ -63,7 +63,7 @@ void DialogStartup::slotPushButtonClickedStart()
 
     if (ui->comboSelect->currentIndex() == -1)
     {
-        QMessageBox::warning(Q_NULLPTR, "WARN", "Please select an application!");
+        QMessageBox::warning(Q_NULLPTR, "Warning", "Please select an application!");
         return;
     }
 
@@ -91,7 +91,7 @@ void DialogStartup::slotPushButtonClickedDelete()
         return;
     }
 
-    if (QMessageBox::question(Q_NULLPTR, "question", "Are you sure?") == QMessageBox::Yes)
+    if (QMessageBox::question(Q_NULLPTR, "Question", "Are you sure?") == QMessageBox::Yes)
     {
         qCfgManager->deleteApplication(strAppID);
         refresh();

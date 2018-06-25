@@ -2,14 +2,14 @@
  * *****************************************************************************
  * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
  *
- * @file    DialogSysConfig.h
- * @brief   配置系统参数
+ * @file    DialogConfiguration.h
+ * @brief
  * @version 1.0
  *
  * -----------------------------------------------------------------------------
  * @history
  *  <Date>    | <Author>       | <Description>
- * 2018/03/01 | WeiHeng        | Create this file
+ * 2018/06/01 | WeiHeng        | Create this file
  * *****************************************************************************
  */
 

@@ -6,7 +6,6 @@
 # Version: 1.0
 # Brief:
 #   XYLogManager 用于日志管理
-#   XYSqlManager 用于数据库连接管理，NamingSQL管理
 # ------------------------------------------------------------------------------
 # 2018/03/01  WeiHeng       Create this file
 #
@@ -18,9 +17,7 @@ INCLUDEPATH += $$PWD
 # 头文件
 HEADERS += \
     $$PWD/XYLogManager.h                    \
-    $$PWD/XYSqlManager.h
 
 # 源文件
 SOURCES += \
     $$PWD/XYLogManager.cpp                  \
-    $$PWD/XYSqlManager.cpp

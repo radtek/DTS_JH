@@ -9,7 +9,7 @@
  * -----------------------------------------------------------------------------
  * @history
  *  <Date>    | <Author>       | <Description>
- * 2018/03/01 | WeiHeng        | Create this file
+ * 2018/06/01 | WeiHeng        | Create this file
  * *****************************************************************************
  */
 
@@ -33,10 +33,11 @@ public:
     virtual ~DTSApplication();
 
 public:
-    bool initialize();
-    QString parseApplication();
-    bool checkApplication(const QString &app);
-    bool startApplication(const QString &app);
+    static QString ParseApplication();
+    static bool CheckApplication(const QString &app);
+
+public:
+    bool startApplication();
 
 private:
     QScopedPointer<MainWindow> mainwindow;

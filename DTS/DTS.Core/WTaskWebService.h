@@ -3,15 +3,16 @@
  * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
  *
  * @file    WTaskWebService.h
- * @brief   任务-webservice
+ * @brief
  * @version 1.0
  *
  * -----------------------------------------------------------------------------
  * @history
  *  <Date>    | <Author>       | <Description>
- * 2018/03/01 | WeiHeng        | Create this file
+ * 2018/06/01 | WeiHeng        | Create this file
  * *****************************************************************************
  */
+
 #ifndef DTS_CORE_WTASKWEBSERVICE_H
 #define DTS_CORE_WTASKWEBSERVICE_H
 

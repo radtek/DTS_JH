@@ -3,13 +3,13 @@
  * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
  *
  * @file    MainWindow.h
- * @brief   主界面
+ * @brief
  * @version 1.0
  *
  * -----------------------------------------------------------------------------
  * @history
  *  <Date>    | <Author>       | <Description>
- * 2018/03/01 | WeiHeng        | Create this file
+ * 2018/06/01 | WeiHeng        | Create this file
  * *****************************************************************************
  */
 
@@ -39,6 +39,8 @@ private:
 public Q_SLOTS:
     void slotPushButtonClickedConfig();
     void slotPushButtonClickedDebug();
+    void slotPushButtonClickedExport();
+    void slotPushButtonClickedSynch();
     void slotSystemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
 
     void slotActionQuit();

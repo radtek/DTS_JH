@@ -9,7 +9,7 @@
  * -----------------------------------------------------------------------------
  * @history
  *  <Date>    | <Author>       | <Description>
- * 2018/03/01 | WeiHeng        | Create this file
+ * 2018/06/01 | WeiHeng        | Create this file
  * *****************************************************************************
  */
 
@@ -17,7 +17,7 @@
 #include "DialogStartup.h"
 #include "GCfgManager.h"
 #include "MainWindow.h"
-#include "WTaskSynDatabase.h"
+#include "WTaskSqlSynchronize.h"
 #include "WTaskWebService.h"
 #include "XYLogManager.h"
 
@@ -36,7 +36,12 @@ int main(int argc, char *argv[])
 
     qInstallMessageHandler(XYLogManager::OutputMessage);
 
-    if (!app.initialize())
+    if (!qCfgManager->initialize())
+    {
+        return -1;
+    }
+
+    if (app.startApplication())
     {
         return -1;
     }
@@ -64,14 +69,7 @@ DTSApplication::~DTSApplication()
     }
 }
 
-bool DTSApplication::initialize()
-{
-    qCfgManager->initialize();
-
-    return startApplication(parseApplication());
-}
-
-QString DTSApplication::parseApplication()
+QString DTSApplication::ParseApplication()
 {
     QString appID;
 
@@ -79,7 +77,7 @@ QString DTSApplication::parseApplication()
     if (args.size() > 1)
     {
         QCommandLineParser parser;
-        QCommandLineOption opName("n");
+        QCommandLineOption opName(QStringList({"n", "name"}), "AppName", "Application Name.", "");
 
         parser.addOption(opName);
 
@@ -99,7 +97,7 @@ QString DTSApplication::parseApplication()
     return appID;
 }
 
-bool DTSApplication::checkApplication(const QString &app)
+bool DTSApplication::CheckApplication(const QString &app)
 {
     hSingleInstMutex = CreateMutex(Q_NULLPTR, TRUE, app.toStdWString().c_str());
     if (hSingleInstMutex == Q_NULLPTR)
@@ -115,14 +113,15 @@ bool DTSApplication::checkApplication(const QString &app)
     return true;
 }
 
-bool DTSApplication::startApplication(const QString &app)
+bool DTSApplication::startApplication()
 {
+    QString app = DTSApplication::ParseApplication();
     if (app.isEmpty())
     {
         return false;
     }
 
-    if (!checkApplication(app))
+    if (!DTSApplication::CheckApplication(app))
     {
         return false;
     }
@@ -135,6 +134,7 @@ bool DTSApplication::startApplication(const QString &app)
     mainwindow->show();
 
     qTaskWebService->initialize();
+    qTaskSqlSynchronize->initialize();
 
     return true;
 }

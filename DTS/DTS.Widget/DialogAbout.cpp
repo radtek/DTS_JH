@@ -2,7 +2,7 @@
  * *****************************************************************************
  * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
  *
- * @file    DialogConfirm.cpp
+ * @file    DialogAbout.cpp
  * @brief
  * @version 1.0
  *
@@ -13,28 +13,21 @@
  * *****************************************************************************
  */
 
-#include "DialogConfirm.h"
+#include "DialogAbout.h"
+#include "GCfgManager.h"
 
-DialogConfirm::DialogConfirm(QWidget *parent)
+DialogAbout::DialogAbout(QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::DialogConfirm)
+    , ui(new Ui::DialogAbout)
 {
     ui->setupUi(this);
-
-    init();
 }
 
-DialogConfirm::~DialogConfirm()
+DialogAbout::~DialogAbout()
 {
 }
 
-QString DialogConfirm::getSelection()
+void DialogAbout::init()
 {
-    return ui->editPassword->text();
-}
-
-void DialogConfirm::init()
-{
-    QObject::connect(ui->buttonAccept, &QPushButton::clicked, this, &DialogConfirm::accept);
-    QObject::connect(ui->buttonReject, &QPushButton::clicked, this, &DialogConfirm::reject);
+    ui->label->setText(qCfgManager->getVersion());
 }

@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>535</width>
+    <height>80</height>
+   </rect>
+  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
@@ -27,7 +35,7 @@
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="buttonSynch">
       <property name="text">
        <string>同步参数</string>
       </property>
@@ -41,6 +49,27 @@
      </widget>
     </item>
     <item row="0" column="3">
+     <widget class="QPushButton" name="buttonExport">
+      <property name="text">
+       <string>导出文件</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="buttonManual">
+      <property name="text">
+       <string>手动同步</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="buttonCheck">
+      <property name="text">
+       <string>数据对比</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
      <widget class="QPushButton" name="buttonAbout">
       <property name="text">
        <string>关于</string>

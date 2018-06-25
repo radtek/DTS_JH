@@ -21,13 +21,15 @@
 #include <QtSql>
 #include <QtXml>
 
+#include "GCfgManager.h"
+
 int MESServiceSoapService::GetDate(_tempuri__GetDate *request, _tempuri__GetDateResponse &response)
 {
     static int count = 0;
     qDebug() << "MESServiceSoapService::GetDate " << ++count;
 
     MESServiceSoapProxy proxy(SOAP_C_UTFSTRING);
-    return proxy.GetDate(request, response);
+    return proxy.GetDate(qCfgManager->getWSRemoteUrl().toUtf8().data(), Q_NULLPTR, request, response);
 }
 
 int MESServiceSoapService::GetDocCode(_tempuri__GetDocCode *request, _tempuri__GetDocCodeResponse &response)
