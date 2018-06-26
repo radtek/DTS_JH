@@ -60,6 +60,7 @@ void MainWindow::init()
     QObject::connect(ui->buttonConfig, &QPushButton::clicked, this, &MainWindow::slotPushButtonClickedConfig);
     QObject::connect(ui->buttonDebug, &QPushButton::clicked, this, &MainWindow::slotPushButtonClickedDebug);
     QObject::connect(ui->buttonExport, &QPushButton::clicked, this, &MainWindow::slotPushButtonClickedExport);
+    QObject::connect(ui->buttonSynch, &QPushButton::clicked, this, &MainWindow::slotPushButtonClickedSynch);
     QObject::connect(ui->buttonExit, &QPushButton::clicked, this, &MainWindow::slotActionQuit);
     QObject::connect(ui->buttonAbout, &QPushButton::clicked, this, &MainWindow::slotActionAbout);
     QObject::connect(iconTray.data(), &QSystemTrayIcon::activated, this, &MainWindow::slotSystemTrayIconActivated);
@@ -70,6 +71,8 @@ void MainWindow::slotPushButtonClickedConfig()
     qInfo() << "slotPushButtonClickedConfig";
 
     DialogConfiguration dialog;
+    dialog.initData(qCfgManager->getConfig());
+
     dialog.exec();
 }
 
@@ -140,8 +143,15 @@ void MainWindow::slotActionQuit()
     {
         if (dialog.getSelection() == "123456")
         {
+            qTaskWebService->unInitialize();
+            qTaskSqlSynchronize->unInitialize();
+
             QApplication::quit();
             return;
+        }
+        else
+        {
+            QMessageBox::warning(Q_NULLPTR, "Warning", "Password error!");
         }
     }
     show();

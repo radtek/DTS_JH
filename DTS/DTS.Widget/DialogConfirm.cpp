@@ -35,6 +35,8 @@ QString DialogConfirm::getSelection()
 
 void DialogConfirm::init()
 {
+    setWindowFlags(Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+
     QObject::connect(ui->buttonAccept, &QPushButton::clicked, this, &DialogConfirm::accept);
     QObject::connect(ui->buttonReject, &QPushButton::clicked, this, &DialogConfirm::reject);
 }

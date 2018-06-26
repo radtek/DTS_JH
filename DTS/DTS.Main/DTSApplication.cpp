@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    if (app.startApplication())
+    if (!app.startApplication())
     {
         return -1;
     }
@@ -116,6 +116,8 @@ bool DTSApplication::CheckApplication(const QString &app)
 bool DTSApplication::startApplication()
 {
     QString app = DTSApplication::ParseApplication();
+    qDebug().noquote() << "select app" << app;
+
     if (app.isEmpty())
     {
         return false;
@@ -123,6 +125,7 @@ bool DTSApplication::startApplication()
 
     if (!DTSApplication::CheckApplication(app))
     {
+        qCritical() << "System is already starting. " << app;
         return false;
     }
 
@@ -131,7 +134,8 @@ bool DTSApplication::startApplication()
         return false;
     }
 
-    mainwindow->show();
+    mainwindow->hide();
+    mainwindow->setWindowTitle(qCfgManager->getAppName());
 
     qTaskWebService->initialize();
     qTaskSqlSynchronize->initialize();

@@ -33,7 +33,6 @@ WTaskWebService::WTaskWebService()
 
 WTaskWebService::~WTaskWebService()
 {
-    qDebug() << 100;
     unInitialize();
 }
 
@@ -58,12 +57,12 @@ bool WTaskWebService::initialize()
 
 void WTaskWebService::unInitialize()
 {
-    qDebug() << 101;
     if (runThread->isRunning())
     {
         runThread->terminate();
         runThread->wait();
     }
+    qWarning().noquote() << "WebService task end.";
 }
 
 void WTaskWebService::slotTaskWork()

@@ -24,19 +24,23 @@
 
 #define CONFIG_SYS_APPID "app_id"
 #define CONFIG_SYS_APPNAME "app_name"
+
 #define CONFIG_WS_LOCAL_ADDR "ws_local_addr"
 #define CONFIG_WS_LOCAL_PORT "ws_local_port"
 #define CONFIG_WS_REMOTE_URL "ws_remote_url"
+
 #define CONFIG_DB_LOCAL_ADDR "db_local_addr"
 #define CONFIG_DB_LOCAL_PORT "db_local_port"
 #define CONFIG_DB_LOCAL_USER "db_local_user"
 #define CONFIG_DB_LOCAL_PASS "db_local_pass"
 #define CONFIG_DB_LOCAL_NAME "db_local_name"
+
 #define CONFIG_DB_REMOTE_ADDR "db_remote_addr"
 #define CONFIG_DB_REMOTE_PORT "db_remote_port"
 #define CONFIG_DB_REMOTE_USER "db_remote_user"
 #define CONFIG_DB_REMOTE_PASS "db_remote_pass"
 #define CONFIG_DB_REMOTE_NAME "db_remote_name"
+
 #define CONFIG_RUN_DOWNLOAD "db_download"
 #define CONFIG_RUN_UPLOAD "db_upload"
 #define CONFIG_RUN_UPLOAD_TIMESPAN "tm_upload"
@@ -76,11 +80,13 @@ public:
 
 public:
     void setConfig(const QMap<QString, QString> &currConfig);
+    const QMap<QString, QString> &getConfig() const;
     QStringList getSynchDataKeys();
     CSynchDataPtr getSynchData(const QString &id);
 
     QString getVersion();
     QString getWorkDir();
+    QString getAppName();
     QString getWSLocalAddr();
     int getWSLocalPort();
     QString getWSRemoteUrl();

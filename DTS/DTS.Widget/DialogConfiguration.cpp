@@ -42,14 +42,17 @@ void DialogConfiguration::initData(const QMap<QString, QString> &map)
 
     ui->editAppID->setText(map.value(CONFIG_SYS_APPID));
     ui->editAppName->setText(map.value(CONFIG_SYS_APPNAME));
+
     ui->editLWSAddr->setText(map.value(CONFIG_WS_LOCAL_ADDR));
     ui->spinLWSPort->setValue(map.value(CONFIG_WS_LOCAL_PORT).toInt());
+    ui->editRWSUrl->setText(map.value(CONFIG_WS_REMOTE_URL));
+
     ui->editLDBAddr->setText(map.value(CONFIG_DB_LOCAL_ADDR));
     ui->spinLDBPort->setValue(map.value(CONFIG_DB_LOCAL_PORT).toInt());
     ui->editLDBUser->setText(map.value(CONFIG_DB_LOCAL_USER));
     ui->editLDBPass->setText(map.value(CONFIG_DB_LOCAL_PASS));
     ui->editLDBName->setText(map.value(CONFIG_DB_LOCAL_NAME));
-    ui->editRWSUrl->setText(map.value(CONFIG_WS_REMOTE_URL));
+
     ui->editRDBAddr->setText(map.value(CONFIG_DB_REMOTE_ADDR));
     ui->spinRDBPort->setValue(map.value(CONFIG_DB_REMOTE_PORT).toInt());
     ui->editRDBUser->setText(map.value(CONFIG_DB_REMOTE_USER));
@@ -89,14 +92,17 @@ void DialogConfiguration::slotPushButtonClickedAccept()
     QMap<QString, QString> map;
     map[CONFIG_SYS_APPID] = ui->editAppID->text();
     map[CONFIG_SYS_APPNAME] = ui->editAppName->text();
+
     map[CONFIG_WS_LOCAL_ADDR] = ui->editLWSAddr->text();
     map[CONFIG_WS_LOCAL_PORT] = ui->spinLWSPort->text();
-    map[CONFIG_WS_LOCAL_PORT] = ui->editLDBAddr->text();
+    map[CONFIG_WS_REMOTE_URL] = ui->editRWSUrl->text();
+
+    map[CONFIG_DB_LOCAL_ADDR] = ui->editLDBAddr->text();
     map[CONFIG_DB_LOCAL_PORT] = ui->spinLDBPort->text();
     map[CONFIG_DB_LOCAL_USER] = ui->editLDBUser->text();
     map[CONFIG_DB_LOCAL_PASS] = ui->editLDBPass->text();
     map[CONFIG_DB_LOCAL_NAME] = ui->editLDBName->text();
-    map[CONFIG_WS_REMOTE_URL] = ui->editRWSUrl->text();
+
     map[CONFIG_DB_REMOTE_ADDR] = ui->editRDBAddr->text();
     map[CONFIG_DB_REMOTE_PORT] = ui->spinRDBPort->text();
     map[CONFIG_DB_REMOTE_USER] = ui->editRDBUser->text();

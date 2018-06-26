@@ -2,7 +2,7 @@
  * *****************************************************************************
  * Copyright (c) 2018 Nanjing Xuanyong Techology Co.,Ltd
  *
- * @file    WTaskSynDatabase.cpp
+ * @file    WTaskSqlSynchronize.cpp
  * @brief
  * @version 1.0
  *
@@ -40,14 +40,14 @@ WTaskSqlSynchronize::~WTaskSqlSynchronize()
 
 bool WTaskSqlSynchronize::initialize()
 {
-    qDebug().noquote() << "WTaskSynDatabase initialize ...";
+    qDebug().noquote() << "WTaskSqlSynchronize initialize ...";
 
     if (!this->isRunning())
     {
         this->start();
     }
 
-    qDebug().noquote() << "WTaskSynDatabase initialize success...";
+    qDebug().noquote() << "WTaskSqlSynchronize initialize success.";
     return true;
 }
 
@@ -82,7 +82,7 @@ bool WTaskSqlSynchronize::getStop()
 
 void WTaskSqlSynchronize::run()
 {
-    qInfo().noquote() << "WTaskSynDatabase begin.";
+    qInfo().noquote() << "WTaskSqlSynchronize begin.";
 
     setStop(false);
     QThread::sleep(10);
@@ -94,6 +94,9 @@ void WTaskSqlSynchronize::run()
         {
             break;
         }
+
+        qDebug() << nTimeCount;
+
         if (nTimeCount % qCfgManager->getDownloadTimeSpan() == 0)
         {
             slotTaskDownloadTable();
@@ -102,20 +105,20 @@ void WTaskSqlSynchronize::run()
         {
             slotTaskUploadTable();
         }
-        if (nTimeCount % qCfgManager->getDownloadTimeSpan() == 0)
-        {
-            slotTaskDownloadWorkOrder();
-        }
-        if (nTimeCount % qCfgManager->getDownloadTimeSpan() == 0)
-        {
-            slotTaskDownloadGasWeight();
-        }
 
         nTimeCount++;
-        QThread::sleep(60);
+
+        for (int i = 0; i < 60; ++i)
+        {
+            if (getStop())
+            {
+                break;
+            }
+            QThread::sleep(1);
+        }
     }
 
-    qWarning().noquote() << "WTaskSynDatabase end.";
+    qWarning().noquote() << "WTaskSqlSynchronize end.";
 }
 
 bool WTaskSqlSynchronize::taskDownloadTable(const QString &name)
@@ -504,13 +507,13 @@ bool WTaskSqlSynchronize::taskUploadTable(const QString &name)
     {
         if (LastTime.isEmpty())
         {
-            const QString dbStr = ptr->Select();
+            const QString dbStr = ptr->Select() + " WHERE UploadTime < :curr ";
 
             dbQuery.prepare(dbStr);
         }
         else
         {
-            const QString dbStr = ptr->Select() + " WHERE FinishTime >= :last AND FinishTime < :curr ";
+            const QString dbStr = ptr->Select() + " WHERE UploadTime >= :last AND UploadTime < :curr ";
 
             dbQuery.prepare(dbStr);
             dbQuery.bindValue(":last", LastTime);
@@ -662,6 +665,7 @@ bool WTaskSqlSynchronize::taskDownloadWorkOrder()
             if (!dbQuery.exec())
             {
                 qWarning().noquote() << QString("[MES-ORDER] Task insert error: %1").arg(dbQuery.lastError().text());
+                qInfo().noquote() << QString("[MES-ORDER] Task duplicate workorder[%1]").arg(dbQueryRemote.value("UID").toString());
             }
             if (++cnt % 1000 == 0)
             {
@@ -851,13 +855,20 @@ void WTaskSqlSynchronize::slotTaskDownloadTable()
 
     QStringList download = qCfgManager->getDownload();
 
-    for (auto str : download)
+    Q_FOREACH (auto &str, download)
     {
-        if (getStop())
+        if (str == TABLE_WORKORDER)
         {
-            break;
+            taskDownloadWorkOrder();
         }
-        taskDownloadTable(str);
+        else if (str == TABLE_GASDATA)
+        {
+            taskDownloadGasWeight();
+        }
+        else
+        {
+            taskDownloadTable(str);
+        }
     }
 }
 
@@ -869,10 +880,6 @@ void WTaskSqlSynchronize::slotTaskUploadTable()
 
     for (auto str : upload)
     {
-        if (getStop())
-        {
-            break;
-        }
         taskUploadTable(str);
     }
 }

@@ -18,9 +18,7 @@
 
 PCS_Upload_InfoPtr IDatabaseTableDao::selectUploadInfo(const QString &code)
 {
-    const QString dbStr = R"(SELECT RecodeLastTime AS LastTime,
-                    RecodeUploadCount AS FailedFlag,
-                    UploadTime AS FailedTime
+    const QString dbStr = R"(SELECT *
                     FROM PCS_Upload_Info WHERE UploadTable = :UploadTable   )";
 
     PCS_Upload_InfoPtr ptr;
@@ -41,7 +39,7 @@ PCS_Upload_InfoPtr IDatabaseTableDao::selectUploadInfo(const QString &code)
             {
                 ptr->setData(it, dbQuery.value(it));
             }
-            qDebug() << ptr;
+            qDebug() << *ptr;
         }
     } while (false);
 

@@ -131,10 +131,8 @@ bool GCfgManager::loadApplication(const QString &appID)
         return false;
     }
 
-    if (!importSynchData(DEFAULT_SQLSYNC_PATH))
-    {
-        return false;
-    }
+    importSynchData(DEFAULT_SQLSYNC_PATH);
+
     return true;
 }
 
@@ -310,7 +308,7 @@ bool GCfgManager::exportSynchData(const QString &filename)
                 xmlElemItemSQL.appendChild(xmlElemTable);
                 QDomText xmlTextTable = document.createTextNode(iter.key());
                 xmlElemTable.appendChild(xmlTextTable);
-            } while (0);
+            } while (false);
 
             do
             {
@@ -330,7 +328,7 @@ bool GCfgManager::exportSynchData(const QString &filename)
         QFile file(filename);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
         {
-            qDebug() << "file error";
+            qDebug() << "file error" << filename;
             return false;
         }
         QTextStream out(&file);
@@ -358,6 +356,11 @@ void GCfgManager::setConfig(const QMap<QString, QString> &currConfig)
     settings.sync();
 }
 
+const QMap<QString, QString> &GCfgManager::getConfig() const
+{
+    return config;
+}
+
 QStringList GCfgManager::getSynchDataKeys()
 {
     return synch.keys();
@@ -377,42 +380,57 @@ QString GCfgManager::getVersion()
 
 QString GCfgManager::getWorkDir()
 {
-    return config[CONFIG_SYS_APPID];
+    return config.value(CONFIG_SYS_APPID);
+}
+
+QString GCfgManager::getAppName()
+{
+    return config.value(CONFIG_SYS_APPNAME);
 }
 
 QString GCfgManager::getWSLocalAddr()
 {
-    return config[CONFIG_WS_LOCAL_ADDR];
-}
-
-QString GCfgManager::getWSRemoteUrl()
-{
-    return config[CONFIG_WS_REMOTE_URL];
+    return config.value(CONFIG_WS_LOCAL_ADDR, "127.0.0.1");
 }
 
 int GCfgManager::getWSLocalPort()
 {
-    return config[CONFIG_WS_LOCAL_PORT].toInt();
+    return config.value(CONFIG_WS_LOCAL_PORT, "8002").toInt();
+}
+
+QString GCfgManager::getWSRemoteUrl()
+{
+    return config.value(CONFIG_WS_REMOTE_URL);
 }
 
 QStringList GCfgManager::getDownload()
 {
-    return config[CONFIG_RUN_DOWNLOAD].split(",", QString::SkipEmptyParts, Qt::CaseSensitive);
+    return config.value(CONFIG_RUN_DOWNLOAD).split(",", QString::SkipEmptyParts, Qt::CaseSensitive);
 }
 
 QStringList GCfgManager::getUpload()
 {
-    return config[CONFIG_RUN_UPLOAD].split(",", QString::SkipEmptyParts, Qt::CaseSensitive);
+    return config.value(CONFIG_RUN_UPLOAD).split(",", QString::SkipEmptyParts, Qt::CaseSensitive);
 }
 
 int GCfgManager::getDownloadTimeSpan()
 {
-    return config[CONFIG_RUN_DOWNLOAD_TIMESPAN].toInt();
+    int timespan = config.value(CONFIG_RUN_DOWNLOAD_TIMESPAN).toInt();
+    if (timespan == 0)
+    {
+        timespan = 1;
+    }
+    return timespan;
 }
 
 int GCfgManager::getUploadTimeSpan()
 {
-    return config[CONFIG_RUN_UPLOAD_TIMESPAN].toInt();
+    int timespan = config.value(CONFIG_RUN_UPLOAD_TIMESPAN).toInt();
+    if (timespan == 0)
+    {
+        timespan = 1;
+    }
+    return timespan;
 }
 
 CSynchDataPtr GCfgManager::getSynchData(const QString &id)
@@ -422,5 +440,5 @@ CSynchDataPtr GCfgManager::getSynchData(const QString &id)
 
 int GCfgManager::getGasWeightInitTime()
 {
-    return config[CONFIG_RUN_UPLOAD_TIMESPAN].toInt();
+    return config.value(CONFIG_RUN_GASWEIGHT_STORE, "180").toInt();
 }

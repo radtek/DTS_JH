@@ -63,9 +63,9 @@ QMap<QString, QString> DialogSynchronize::getConfig()
 
     map[CONFIG_RUN_DOWNLOAD] = listDown;
     map[CONFIG_RUN_UPLOAD] = listUp;
-    map[CONFIG_RUN_DOWNLOAD_TIMESPAN] = ui->spinDownload->text();
-    map[CONFIG_RUN_UPLOAD_TIMESPAN] = ui->spinUpload->text();
-    map[CONFIG_RUN_GASWEIGHT_STORE] = ui->spinGasWeight->text();
+    map[CONFIG_RUN_DOWNLOAD_TIMESPAN] = QString::number(ui->spinDownload->value());
+    map[CONFIG_RUN_UPLOAD_TIMESPAN] = QString::number(ui->spinUpload->value());
+    map[CONFIG_RUN_GASWEIGHT_STORE] = QString::number(ui->spinGasWeight->value());
 
     return map;
 }

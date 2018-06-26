@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>802</width>
-    <height>550</height>
+    <width>858</width>
+    <height>588</height>
    </rect>
   </property>
   <property name="font">
@@ -70,8 +70,11 @@
      </item>
      <item>
       <widget class="QSpinBox" name="spinDownload">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
        <property name="suffix">
-        <string> 分钟</string>
+        <string>     分钟</string>
        </property>
        <property name="prefix">
         <string>间隔     </string>
@@ -93,8 +96,11 @@
      </item>
      <item>
       <widget class="QSpinBox" name="spinUpload">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
        <property name="suffix">
-        <string> 分钟</string>
+        <string>     分钟</string>
        </property>
        <property name="prefix">
         <string>间隔     </string>
@@ -129,8 +135,11 @@
      </item>
      <item>
       <widget class="QSpinBox" name="spinGasWeight">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
        <property name="suffix">
-        <string> 天</string>
+        <string>     天</string>
        </property>
        <property name="prefix">
         <string>保留     </string>
@@ -141,6 +150,9 @@
        <property name="maximum">
         <number>3650</number>
        </property>
+       <property name="singleStep">
+        <number>10</number>
+       </property>
        <property name="value">
         <number>180</number>
        </property>
@@ -148,7 +160,7 @@
      </item>
     </layout>
    </item>
-   <item row="0" column="0" colspan="3">
+   <item row="3" column="0" colspan="3">
     <layout class="QHBoxLayout" name="horizontalLayout01">
      <item>
       <spacer name="horizontalSpacer">
@@ -189,6 +201,9 @@
       <widget class="QPushButton" name="buttonAccept">
        <property name="text">
         <string>保存</string>
+       </property>
+       <property name="default">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

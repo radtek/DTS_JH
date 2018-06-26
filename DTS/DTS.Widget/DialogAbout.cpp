@@ -21,6 +21,8 @@ DialogAbout::DialogAbout(QWidget *parent)
     , ui(new Ui::DialogAbout)
 {
     ui->setupUi(this);
+
+    init();
 }
 
 DialogAbout::~DialogAbout()
@@ -29,5 +31,7 @@ DialogAbout::~DialogAbout()
 
 void DialogAbout::init()
 {
+    setWindowFlags(Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+
     ui->label->setText(qCfgManager->getVersion());
 }
