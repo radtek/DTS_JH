@@ -11,6 +11,7 @@ A commercial use license is available from Genivia Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
+#include <vector>
 #define SOAP_NAMESPACE_OF_tempuri	"http://tempuri.org/"
 
 #ifndef soapStub_H
@@ -34,82 +35,82 @@ A commercial use license is available from Genivia Inc., contact@genivia.com
  *                                                                            *
 \******************************************************************************/
 
-class _tempuri__GetDate;	/* MESService.h:139 */
-class _tempuri__GetDateResponse;	/* MESService.h:142 */
-class _tempuri__GetDocCode;	/* MESService.h:145 */
-class _tempuri__GetDocCodeResponse;	/* MESService.h:148 */
-class _tempuri__ToolingTimes;	/* MESService.h:151 */
-class _tempuri__ToolingTimesResponse;	/* MESService.h:154 */
-class _tempuri__WorkOrder;	/* MESService.h:157 */
-class _tempuri__WorkOrderResponse;	/* MESService.h:160 */
-class _tempuri__LineInventory;	/* MESService.h:163 */
-class _tempuri__LineInventoryResponse;	/* MESService.h:166 */
-class _tempuri__LineInventoryUpdate;	/* MESService.h:169 */
-class _tempuri__LineInventoryUpdateResponse;	/* MESService.h:172 */
-class _tempuri__LineInventoryReturn;	/* MESService.h:175 */
-class _tempuri__LineInventoryReturnResponse;	/* MESService.h:178 */
-class _tempuri__ItemsAdd;	/* MESService.h:181 */
-class _tempuri__ItemsAddResponse;	/* MESService.h:184 */
-class _tempuri__DocAdd;	/* MESService.h:187 */
-class _tempuri__DocAddResponse;	/* MESService.h:190 */
-class _tempuri__GetDept;	/* MESService.h:193 */
-class _tempuri__GetDeptResponse;	/* MESService.h:196 */
-class _tempuri__GetPower;	/* MESService.h:199 */
-class _tempuri__GetPowerResponse;	/* MESService.h:202 */
-class _tempuri__Login;	/* MESService.h:205 */
-class _tempuri__LoginResponse;	/* MESService.h:208 */
-class _tempuri__AnDan1Send;	/* MESService.h:211 */
-class _tempuri__AnDan1SendResponse;	/* MESService.h:214 */
-class _tempuri__AnDan4UpdPeoplePresent;	/* MESService.h:217 */
-class _tempuri__AnDan4UpdPeoplePresentResponse;	/* MESService.h:220 */
-class _tempuri__AnDan3AddUsers;	/* MESService.h:223 */
-class _tempuri__AnDan3AddUsersResponse;	/* MESService.h:226 */
-class _tempuri__AnDan2PeoplePresent;	/* MESService.h:229 */
-class _tempuri__AnDan2PeoplePresentResponse;	/* MESService.h:232 */
-class _tempuri__AnDanSLTypeGet;	/* MESService.h:235 */
-class _tempuri__AnDanSLTypeGetResponse;	/* MESService.h:238 */
-class _tempuri__AnDanSLTypeAdd;	/* MESService.h:241 */
-class _tempuri__AnDanSLTypeAddResponse;	/* MESService.h:244 */
-struct __tempuri__GetDate;	/* MESService.h:1217 */
-struct __tempuri__GetDocCode;	/* MESService.h:1287 */
-struct __tempuri__ToolingTimes;	/* MESService.h:1357 */
-struct __tempuri__WorkOrder;	/* MESService.h:1427 */
-struct __tempuri__LineInventory;	/* MESService.h:1497 */
-struct __tempuri__LineInventoryUpdate;	/* MESService.h:1567 */
-struct __tempuri__LineInventoryReturn;	/* MESService.h:1637 */
-struct __tempuri__ItemsAdd;	/* MESService.h:1707 */
-struct __tempuri__DocAdd;	/* MESService.h:1777 */
-struct __tempuri__GetDept;	/* MESService.h:1847 */
-struct __tempuri__GetPower;	/* MESService.h:1917 */
-struct __tempuri__Login;	/* MESService.h:1987 */
-struct __tempuri__AnDan1Send;	/* MESService.h:2057 */
-struct __tempuri__AnDan4UpdPeoplePresent;	/* MESService.h:2127 */
-struct __tempuri__AnDan3AddUsers;	/* MESService.h:2197 */
-struct __tempuri__AnDan2PeoplePresent;	/* MESService.h:2267 */
-struct __tempuri__AnDanSLTypeGet;	/* MESService.h:2337 */
-struct __tempuri__AnDanSLTypeAdd;	/* MESService.h:2407 */
-struct __tempuri__GetDate_;	/* MESService.h:2477 */
-struct __tempuri__GetDocCode_;	/* MESService.h:2547 */
-struct __tempuri__ToolingTimes_;	/* MESService.h:2617 */
-struct __tempuri__WorkOrder_;	/* MESService.h:2687 */
-struct __tempuri__LineInventory_;	/* MESService.h:2757 */
-struct __tempuri__LineInventoryUpdate_;	/* MESService.h:2827 */
-struct __tempuri__LineInventoryReturn_;	/* MESService.h:2897 */
-struct __tempuri__ItemsAdd_;	/* MESService.h:2967 */
-struct __tempuri__DocAdd_;	/* MESService.h:3037 */
-struct __tempuri__GetDept_;	/* MESService.h:3107 */
-struct __tempuri__GetPower_;	/* MESService.h:3177 */
-struct __tempuri__Login_;	/* MESService.h:3247 */
-struct __tempuri__AnDan1Send_;	/* MESService.h:3317 */
-struct __tempuri__AnDan4UpdPeoplePresent_;	/* MESService.h:3387 */
-struct __tempuri__AnDan3AddUsers_;	/* MESService.h:3457 */
-struct __tempuri__AnDan2PeoplePresent_;	/* MESService.h:3527 */
-struct __tempuri__AnDanSLTypeGet_;	/* MESService.h:3597 */
-struct __tempuri__AnDanSLTypeAdd_;	/* MESService.h:3667 */
+class _tempuri__GetDate;	/* MESService.h:149 */
+class _tempuri__GetDateResponse;	/* MESService.h:152 */
+class _tempuri__GetDocCode;	/* MESService.h:155 */
+class _tempuri__GetDocCodeResponse;	/* MESService.h:158 */
+class _tempuri__ToolingTimes;	/* MESService.h:161 */
+class _tempuri__ToolingTimesResponse;	/* MESService.h:164 */
+class _tempuri__WorkOrder;	/* MESService.h:167 */
+class _tempuri__WorkOrderResponse;	/* MESService.h:170 */
+class _tempuri__LineInventory;	/* MESService.h:173 */
+class _tempuri__LineInventoryResponse;	/* MESService.h:176 */
+class _tempuri__LineInventoryUpdate;	/* MESService.h:179 */
+class _tempuri__LineInventoryUpdateResponse;	/* MESService.h:182 */
+class _tempuri__LineInventoryReturn;	/* MESService.h:185 */
+class _tempuri__LineInventoryReturnResponse;	/* MESService.h:188 */
+class _tempuri__ItemsAdd;	/* MESService.h:191 */
+class _tempuri__ItemsAddResponse;	/* MESService.h:194 */
+class _tempuri__DocAdd;	/* MESService.h:197 */
+class _tempuri__DocAddResponse;	/* MESService.h:200 */
+class _tempuri__GetDept;	/* MESService.h:203 */
+class _tempuri__GetDeptResponse;	/* MESService.h:206 */
+class _tempuri__GetPower;	/* MESService.h:209 */
+class _tempuri__GetPowerResponse;	/* MESService.h:212 */
+class _tempuri__Login;	/* MESService.h:215 */
+class _tempuri__LoginResponse;	/* MESService.h:218 */
+class _tempuri__AnDan1Send;	/* MESService.h:221 */
+class _tempuri__AnDan1SendResponse;	/* MESService.h:224 */
+class _tempuri__AnDan4UpdPeoplePresent;	/* MESService.h:227 */
+class _tempuri__AnDan4UpdPeoplePresentResponse;	/* MESService.h:230 */
+class _tempuri__AnDan3AddUsers;	/* MESService.h:233 */
+class _tempuri__AnDan3AddUsersResponse;	/* MESService.h:236 */
+class _tempuri__AnDan2PeoplePresent;	/* MESService.h:239 */
+class _tempuri__AnDan2PeoplePresentResponse;	/* MESService.h:242 */
+class _tempuri__AnDanSLTypeGet;	/* MESService.h:245 */
+class _tempuri__AnDanSLTypeGetResponse;	/* MESService.h:248 */
+class _tempuri__AnDanSLTypeAdd;	/* MESService.h:251 */
+class _tempuri__AnDanSLTypeAddResponse;	/* MESService.h:254 */
+struct __tempuri__GetDate;	/* MESService.h:1227 */
+struct __tempuri__GetDocCode;	/* MESService.h:1297 */
+struct __tempuri__ToolingTimes;	/* MESService.h:1367 */
+struct __tempuri__WorkOrder;	/* MESService.h:1437 */
+struct __tempuri__LineInventory;	/* MESService.h:1507 */
+struct __tempuri__LineInventoryUpdate;	/* MESService.h:1577 */
+struct __tempuri__LineInventoryReturn;	/* MESService.h:1647 */
+struct __tempuri__ItemsAdd;	/* MESService.h:1717 */
+struct __tempuri__DocAdd;	/* MESService.h:1787 */
+struct __tempuri__GetDept;	/* MESService.h:1857 */
+struct __tempuri__GetPower;	/* MESService.h:1927 */
+struct __tempuri__Login;	/* MESService.h:1997 */
+struct __tempuri__AnDan1Send;	/* MESService.h:2067 */
+struct __tempuri__AnDan4UpdPeoplePresent;	/* MESService.h:2137 */
+struct __tempuri__AnDan3AddUsers;	/* MESService.h:2207 */
+struct __tempuri__AnDan2PeoplePresent;	/* MESService.h:2277 */
+struct __tempuri__AnDanSLTypeGet;	/* MESService.h:2347 */
+struct __tempuri__AnDanSLTypeAdd;	/* MESService.h:2417 */
+struct __tempuri__GetDate_;	/* MESService.h:2487 */
+struct __tempuri__GetDocCode_;	/* MESService.h:2557 */
+struct __tempuri__ToolingTimes_;	/* MESService.h:2627 */
+struct __tempuri__WorkOrder_;	/* MESService.h:2697 */
+struct __tempuri__LineInventory_;	/* MESService.h:2767 */
+struct __tempuri__LineInventoryUpdate_;	/* MESService.h:2837 */
+struct __tempuri__LineInventoryReturn_;	/* MESService.h:2907 */
+struct __tempuri__ItemsAdd_;	/* MESService.h:2977 */
+struct __tempuri__DocAdd_;	/* MESService.h:3047 */
+struct __tempuri__GetDept_;	/* MESService.h:3117 */
+struct __tempuri__GetPower_;	/* MESService.h:3187 */
+struct __tempuri__Login_;	/* MESService.h:3257 */
+struct __tempuri__AnDan1Send_;	/* MESService.h:3327 */
+struct __tempuri__AnDan4UpdPeoplePresent_;	/* MESService.h:3397 */
+struct __tempuri__AnDan3AddUsers_;	/* MESService.h:3467 */
+struct __tempuri__AnDan2PeoplePresent_;	/* MESService.h:3537 */
+struct __tempuri__AnDanSLTypeGet_;	/* MESService.h:3607 */
+struct __tempuri__AnDanSLTypeAdd_;	/* MESService.h:3677 */
 
-/* MESService.h:139 */
+/* MESService.h:149 */
 #ifndef SOAP_TYPE__tempuri__GetDate
-#define SOAP_TYPE__tempuri__GetDate (7)
+#define SOAP_TYPE__tempuri__GetDate (8)
 /* complex XSD type 'tempuri:GetDate': */
 class SOAP_CMAC _tempuri__GetDate {
       public:
@@ -132,23 +133,29 @@ class SOAP_CMAC _tempuri__GetDate {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__GetDate, default initialized and not managed by a soap context
         virtual _tempuri__GetDate *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__GetDate); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__GetDate *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__GetDate(soap, (_tempuri__GetDate*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__GetDate() : soap() { }
         virtual ~_tempuri__GetDate() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__GetDate * SOAP_FMAC2 soap_dup__tempuri__GetDate(struct soap*, _tempuri__GetDate*, _tempuri__GetDate const*);
         /// Friend allocator used by soap_new__tempuri__GetDate(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__GetDate * SOAP_FMAC2 soap_instantiate__tempuri__GetDate(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:142 */
+/* MESService.h:152 */
 #ifndef SOAP_TYPE__tempuri__GetDateResponse
-#define SOAP_TYPE__tempuri__GetDateResponse (8)
+#define SOAP_TYPE__tempuri__GetDateResponse (9)
 /* complex XSD type 'tempuri:GetDateResponse': */
 class SOAP_CMAC _tempuri__GetDateResponse {
       public:
         /// Optional element 'tempuri:GetDateResult' of XSD type 'xsd:string'
-        char *GetDateResult;
+        std::string *GetDateResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -168,18 +175,24 @@ class SOAP_CMAC _tempuri__GetDateResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__GetDateResponse, default initialized and not managed by a soap context
         virtual _tempuri__GetDateResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__GetDateResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__GetDateResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__GetDateResponse(soap, (_tempuri__GetDateResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__GetDateResponse() : GetDateResult(), soap() { }
         virtual ~_tempuri__GetDateResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__GetDateResponse * SOAP_FMAC2 soap_dup__tempuri__GetDateResponse(struct soap*, _tempuri__GetDateResponse*, _tempuri__GetDateResponse const*);
         /// Friend allocator used by soap_new__tempuri__GetDateResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__GetDateResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetDateResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:145 */
+/* MESService.h:155 */
 #ifndef SOAP_TYPE__tempuri__GetDocCode
-#define SOAP_TYPE__tempuri__GetDocCode (9)
+#define SOAP_TYPE__tempuri__GetDocCode (10)
 /* complex XSD type 'tempuri:GetDocCode': */
 class SOAP_CMAC _tempuri__GetDocCode {
       public:
@@ -204,23 +217,29 @@ class SOAP_CMAC _tempuri__GetDocCode {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__GetDocCode, default initialized and not managed by a soap context
         virtual _tempuri__GetDocCode *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__GetDocCode); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__GetDocCode *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__GetDocCode(soap, (_tempuri__GetDocCode*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__GetDocCode() : DocValue(), soap() { }
         virtual ~_tempuri__GetDocCode() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__GetDocCode * SOAP_FMAC2 soap_dup__tempuri__GetDocCode(struct soap*, _tempuri__GetDocCode*, _tempuri__GetDocCode const*);
         /// Friend allocator used by soap_new__tempuri__GetDocCode(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__GetDocCode * SOAP_FMAC2 soap_instantiate__tempuri__GetDocCode(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:148 */
+/* MESService.h:158 */
 #ifndef SOAP_TYPE__tempuri__GetDocCodeResponse
-#define SOAP_TYPE__tempuri__GetDocCodeResponse (10)
+#define SOAP_TYPE__tempuri__GetDocCodeResponse (11)
 /* complex XSD type 'tempuri:GetDocCodeResponse': */
 class SOAP_CMAC _tempuri__GetDocCodeResponse {
       public:
         /// Optional element 'tempuri:GetDocCodeResult' of XSD type 'xsd:string'
-        char *GetDocCodeResult;
+        std::string *GetDocCodeResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -240,25 +259,31 @@ class SOAP_CMAC _tempuri__GetDocCodeResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__GetDocCodeResponse, default initialized and not managed by a soap context
         virtual _tempuri__GetDocCodeResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__GetDocCodeResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__GetDocCodeResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__GetDocCodeResponse(soap, (_tempuri__GetDocCodeResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__GetDocCodeResponse() : GetDocCodeResult(), soap() { }
         virtual ~_tempuri__GetDocCodeResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__GetDocCodeResponse * SOAP_FMAC2 soap_dup__tempuri__GetDocCodeResponse(struct soap*, _tempuri__GetDocCodeResponse*, _tempuri__GetDocCodeResponse const*);
         /// Friend allocator used by soap_new__tempuri__GetDocCodeResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__GetDocCodeResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetDocCodeResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:151 */
+/* MESService.h:161 */
 #ifndef SOAP_TYPE__tempuri__ToolingTimes
-#define SOAP_TYPE__tempuri__ToolingTimes (11)
+#define SOAP_TYPE__tempuri__ToolingTimes (12)
 /* complex XSD type 'tempuri:ToolingTimes': */
 class SOAP_CMAC _tempuri__ToolingTimes {
       public:
         /// Optional element 'tempuri:BillCode' of XSD type 'xsd:string'
-        char *BillCode;
+        std::string *BillCode;
         /// Optional element 'tempuri:DeviceCode' of XSD type 'xsd:string'
-        char *DeviceCode;
+        std::string *DeviceCode;
         /// Required element 'tempuri:Times' of XSD type 'xsd:int'
         int Times;
         /// Context that manages this object
@@ -280,23 +305,29 @@ class SOAP_CMAC _tempuri__ToolingTimes {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__ToolingTimes, default initialized and not managed by a soap context
         virtual _tempuri__ToolingTimes *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__ToolingTimes); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__ToolingTimes *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__ToolingTimes(soap, (_tempuri__ToolingTimes*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__ToolingTimes() : BillCode(), DeviceCode(), Times(), soap() { }
         virtual ~_tempuri__ToolingTimes() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__ToolingTimes * SOAP_FMAC2 soap_dup__tempuri__ToolingTimes(struct soap*, _tempuri__ToolingTimes*, _tempuri__ToolingTimes const*);
         /// Friend allocator used by soap_new__tempuri__ToolingTimes(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__ToolingTimes * SOAP_FMAC2 soap_instantiate__tempuri__ToolingTimes(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:154 */
+/* MESService.h:164 */
 #ifndef SOAP_TYPE__tempuri__ToolingTimesResponse
-#define SOAP_TYPE__tempuri__ToolingTimesResponse (12)
+#define SOAP_TYPE__tempuri__ToolingTimesResponse (13)
 /* complex XSD type 'tempuri:ToolingTimesResponse': */
 class SOAP_CMAC _tempuri__ToolingTimesResponse {
       public:
         /// Optional element 'tempuri:ToolingTimesResult' of XSD type 'xsd:string'
-        char *ToolingTimesResult;
+        std::string *ToolingTimesResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -316,23 +347,29 @@ class SOAP_CMAC _tempuri__ToolingTimesResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__ToolingTimesResponse, default initialized and not managed by a soap context
         virtual _tempuri__ToolingTimesResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__ToolingTimesResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__ToolingTimesResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__ToolingTimesResponse(soap, (_tempuri__ToolingTimesResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__ToolingTimesResponse() : ToolingTimesResult(), soap() { }
         virtual ~_tempuri__ToolingTimesResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__ToolingTimesResponse * SOAP_FMAC2 soap_dup__tempuri__ToolingTimesResponse(struct soap*, _tempuri__ToolingTimesResponse*, _tempuri__ToolingTimesResponse const*);
         /// Friend allocator used by soap_new__tempuri__ToolingTimesResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__ToolingTimesResponse * SOAP_FMAC2 soap_instantiate__tempuri__ToolingTimesResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:157 */
+/* MESService.h:167 */
 #ifndef SOAP_TYPE__tempuri__WorkOrder
-#define SOAP_TYPE__tempuri__WorkOrder (13)
+#define SOAP_TYPE__tempuri__WorkOrder (14)
 /* complex XSD type 'tempuri:WorkOrder': */
 class SOAP_CMAC _tempuri__WorkOrder {
       public:
         /// Optional element 'tempuri:WorkOrderXml' of XSD type 'xsd:string'
-        char *WorkOrderXml;
+        std::string *WorkOrderXml;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -352,23 +389,29 @@ class SOAP_CMAC _tempuri__WorkOrder {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__WorkOrder, default initialized and not managed by a soap context
         virtual _tempuri__WorkOrder *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__WorkOrder); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__WorkOrder *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__WorkOrder(soap, (_tempuri__WorkOrder*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__WorkOrder() : WorkOrderXml(), soap() { }
         virtual ~_tempuri__WorkOrder() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__WorkOrder * SOAP_FMAC2 soap_dup__tempuri__WorkOrder(struct soap*, _tempuri__WorkOrder*, _tempuri__WorkOrder const*);
         /// Friend allocator used by soap_new__tempuri__WorkOrder(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__WorkOrder * SOAP_FMAC2 soap_instantiate__tempuri__WorkOrder(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:160 */
+/* MESService.h:170 */
 #ifndef SOAP_TYPE__tempuri__WorkOrderResponse
-#define SOAP_TYPE__tempuri__WorkOrderResponse (14)
+#define SOAP_TYPE__tempuri__WorkOrderResponse (15)
 /* complex XSD type 'tempuri:WorkOrderResponse': */
 class SOAP_CMAC _tempuri__WorkOrderResponse {
       public:
         /// Optional element 'tempuri:WorkOrderResult' of XSD type 'xsd:string'
-        char *WorkOrderResult;
+        std::string *WorkOrderResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -388,29 +431,35 @@ class SOAP_CMAC _tempuri__WorkOrderResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__WorkOrderResponse, default initialized and not managed by a soap context
         virtual _tempuri__WorkOrderResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__WorkOrderResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__WorkOrderResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__WorkOrderResponse(soap, (_tempuri__WorkOrderResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__WorkOrderResponse() : WorkOrderResult(), soap() { }
         virtual ~_tempuri__WorkOrderResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__WorkOrderResponse * SOAP_FMAC2 soap_dup__tempuri__WorkOrderResponse(struct soap*, _tempuri__WorkOrderResponse*, _tempuri__WorkOrderResponse const*);
         /// Friend allocator used by soap_new__tempuri__WorkOrderResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__WorkOrderResponse * SOAP_FMAC2 soap_instantiate__tempuri__WorkOrderResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:163 */
+/* MESService.h:173 */
 #ifndef SOAP_TYPE__tempuri__LineInventory
-#define SOAP_TYPE__tempuri__LineInventory (15)
+#define SOAP_TYPE__tempuri__LineInventory (16)
 /* complex XSD type 'tempuri:LineInventory': */
 class SOAP_CMAC _tempuri__LineInventory {
       public:
         /// Optional element 'tempuri:WorkLineCode' of XSD type 'xsd:string'
-        char *WorkLineCode;
+        std::string *WorkLineCode;
         /// Optional element 'tempuri:MCode' of XSD type 'xsd:string'
-        char *MCode;
+        std::string *MCode;
         /// Optional element 'tempuri:BatchNo' of XSD type 'xsd:string'
-        char *BatchNo;
+        std::string *BatchNo;
         /// Optional element 'tempuri:BarCode' of XSD type 'xsd:string'
-        char *BarCode;
+        std::string *BarCode;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -430,23 +479,29 @@ class SOAP_CMAC _tempuri__LineInventory {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__LineInventory, default initialized and not managed by a soap context
         virtual _tempuri__LineInventory *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__LineInventory); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__LineInventory *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__LineInventory(soap, (_tempuri__LineInventory*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__LineInventory() : WorkLineCode(), MCode(), BatchNo(), BarCode(), soap() { }
         virtual ~_tempuri__LineInventory() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__LineInventory * SOAP_FMAC2 soap_dup__tempuri__LineInventory(struct soap*, _tempuri__LineInventory*, _tempuri__LineInventory const*);
         /// Friend allocator used by soap_new__tempuri__LineInventory(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__LineInventory * SOAP_FMAC2 soap_instantiate__tempuri__LineInventory(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:166 */
+/* MESService.h:176 */
 #ifndef SOAP_TYPE__tempuri__LineInventoryResponse
-#define SOAP_TYPE__tempuri__LineInventoryResponse (16)
+#define SOAP_TYPE__tempuri__LineInventoryResponse (17)
 /* complex XSD type 'tempuri:LineInventoryResponse': */
 class SOAP_CMAC _tempuri__LineInventoryResponse {
       public:
         /// Optional element 'tempuri:LineInventoryResult' of XSD type 'xsd:string'
-        char *LineInventoryResult;
+        std::string *LineInventoryResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -466,23 +521,29 @@ class SOAP_CMAC _tempuri__LineInventoryResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__LineInventoryResponse, default initialized and not managed by a soap context
         virtual _tempuri__LineInventoryResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__LineInventoryResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__LineInventoryResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__LineInventoryResponse(soap, (_tempuri__LineInventoryResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__LineInventoryResponse() : LineInventoryResult(), soap() { }
         virtual ~_tempuri__LineInventoryResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__LineInventoryResponse * SOAP_FMAC2 soap_dup__tempuri__LineInventoryResponse(struct soap*, _tempuri__LineInventoryResponse*, _tempuri__LineInventoryResponse const*);
         /// Friend allocator used by soap_new__tempuri__LineInventoryResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__LineInventoryResponse * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:169 */
+/* MESService.h:179 */
 #ifndef SOAP_TYPE__tempuri__LineInventoryUpdate
-#define SOAP_TYPE__tempuri__LineInventoryUpdate (17)
+#define SOAP_TYPE__tempuri__LineInventoryUpdate (18)
 /* complex XSD type 'tempuri:LineInventoryUpdate': */
 class SOAP_CMAC _tempuri__LineInventoryUpdate {
       public:
         /// Optional element 'tempuri:LIXml' of XSD type 'xsd:string'
-        char *LIXml;
+        std::string *LIXml;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -502,23 +563,29 @@ class SOAP_CMAC _tempuri__LineInventoryUpdate {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__LineInventoryUpdate, default initialized and not managed by a soap context
         virtual _tempuri__LineInventoryUpdate *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__LineInventoryUpdate); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__LineInventoryUpdate *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__LineInventoryUpdate(soap, (_tempuri__LineInventoryUpdate*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__LineInventoryUpdate() : LIXml(), soap() { }
         virtual ~_tempuri__LineInventoryUpdate() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_dup__tempuri__LineInventoryUpdate(struct soap*, _tempuri__LineInventoryUpdate*, _tempuri__LineInventoryUpdate const*);
         /// Friend allocator used by soap_new__tempuri__LineInventoryUpdate(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryUpdate(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:172 */
+/* MESService.h:182 */
 #ifndef SOAP_TYPE__tempuri__LineInventoryUpdateResponse
-#define SOAP_TYPE__tempuri__LineInventoryUpdateResponse (18)
+#define SOAP_TYPE__tempuri__LineInventoryUpdateResponse (19)
 /* complex XSD type 'tempuri:LineInventoryUpdateResponse': */
 class SOAP_CMAC _tempuri__LineInventoryUpdateResponse {
       public:
         /// Optional element 'tempuri:LineInventoryUpdateResult' of XSD type 'xsd:string'
-        char *LineInventoryUpdateResult;
+        std::string *LineInventoryUpdateResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -538,23 +605,29 @@ class SOAP_CMAC _tempuri__LineInventoryUpdateResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__LineInventoryUpdateResponse, default initialized and not managed by a soap context
         virtual _tempuri__LineInventoryUpdateResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__LineInventoryUpdateResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__LineInventoryUpdateResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__LineInventoryUpdateResponse(soap, (_tempuri__LineInventoryUpdateResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__LineInventoryUpdateResponse() : LineInventoryUpdateResult(), soap() { }
         virtual ~_tempuri__LineInventoryUpdateResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__LineInventoryUpdateResponse * SOAP_FMAC2 soap_dup__tempuri__LineInventoryUpdateResponse(struct soap*, _tempuri__LineInventoryUpdateResponse*, _tempuri__LineInventoryUpdateResponse const*);
         /// Friend allocator used by soap_new__tempuri__LineInventoryUpdateResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__LineInventoryUpdateResponse * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryUpdateResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:175 */
+/* MESService.h:185 */
 #ifndef SOAP_TYPE__tempuri__LineInventoryReturn
-#define SOAP_TYPE__tempuri__LineInventoryReturn (19)
+#define SOAP_TYPE__tempuri__LineInventoryReturn (20)
 /* complex XSD type 'tempuri:LineInventoryReturn': */
 class SOAP_CMAC _tempuri__LineInventoryReturn {
       public:
         /// Optional element 'tempuri:LRXml' of XSD type 'xsd:string'
-        char *LRXml;
+        std::string *LRXml;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -574,23 +647,29 @@ class SOAP_CMAC _tempuri__LineInventoryReturn {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__LineInventoryReturn, default initialized and not managed by a soap context
         virtual _tempuri__LineInventoryReturn *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__LineInventoryReturn); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__LineInventoryReturn *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__LineInventoryReturn(soap, (_tempuri__LineInventoryReturn*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__LineInventoryReturn() : LRXml(), soap() { }
         virtual ~_tempuri__LineInventoryReturn() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__LineInventoryReturn * SOAP_FMAC2 soap_dup__tempuri__LineInventoryReturn(struct soap*, _tempuri__LineInventoryReturn*, _tempuri__LineInventoryReturn const*);
         /// Friend allocator used by soap_new__tempuri__LineInventoryReturn(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__LineInventoryReturn * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryReturn(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:178 */
+/* MESService.h:188 */
 #ifndef SOAP_TYPE__tempuri__LineInventoryReturnResponse
-#define SOAP_TYPE__tempuri__LineInventoryReturnResponse (20)
+#define SOAP_TYPE__tempuri__LineInventoryReturnResponse (21)
 /* complex XSD type 'tempuri:LineInventoryReturnResponse': */
 class SOAP_CMAC _tempuri__LineInventoryReturnResponse {
       public:
         /// Optional element 'tempuri:LineInventoryReturnResult' of XSD type 'xsd:string'
-        char *LineInventoryReturnResult;
+        std::string *LineInventoryReturnResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -610,23 +689,29 @@ class SOAP_CMAC _tempuri__LineInventoryReturnResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__LineInventoryReturnResponse, default initialized and not managed by a soap context
         virtual _tempuri__LineInventoryReturnResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__LineInventoryReturnResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__LineInventoryReturnResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__LineInventoryReturnResponse(soap, (_tempuri__LineInventoryReturnResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__LineInventoryReturnResponse() : LineInventoryReturnResult(), soap() { }
         virtual ~_tempuri__LineInventoryReturnResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__LineInventoryReturnResponse * SOAP_FMAC2 soap_dup__tempuri__LineInventoryReturnResponse(struct soap*, _tempuri__LineInventoryReturnResponse*, _tempuri__LineInventoryReturnResponse const*);
         /// Friend allocator used by soap_new__tempuri__LineInventoryReturnResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__LineInventoryReturnResponse * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryReturnResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:181 */
+/* MESService.h:191 */
 #ifndef SOAP_TYPE__tempuri__ItemsAdd
-#define SOAP_TYPE__tempuri__ItemsAdd (21)
+#define SOAP_TYPE__tempuri__ItemsAdd (22)
 /* complex XSD type 'tempuri:ItemsAdd': */
 class SOAP_CMAC _tempuri__ItemsAdd {
       public:
         /// Optional element 'tempuri:itemDocXml' of XSD type 'xsd:string'
-        char *itemDocXml;
+        std::string *itemDocXml;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -646,23 +731,29 @@ class SOAP_CMAC _tempuri__ItemsAdd {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__ItemsAdd, default initialized and not managed by a soap context
         virtual _tempuri__ItemsAdd *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__ItemsAdd); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__ItemsAdd *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__ItemsAdd(soap, (_tempuri__ItemsAdd*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__ItemsAdd() : itemDocXml(), soap() { }
         virtual ~_tempuri__ItemsAdd() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__ItemsAdd * SOAP_FMAC2 soap_dup__tempuri__ItemsAdd(struct soap*, _tempuri__ItemsAdd*, _tempuri__ItemsAdd const*);
         /// Friend allocator used by soap_new__tempuri__ItemsAdd(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__ItemsAdd * SOAP_FMAC2 soap_instantiate__tempuri__ItemsAdd(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:184 */
+/* MESService.h:194 */
 #ifndef SOAP_TYPE__tempuri__ItemsAddResponse
-#define SOAP_TYPE__tempuri__ItemsAddResponse (22)
+#define SOAP_TYPE__tempuri__ItemsAddResponse (23)
 /* complex XSD type 'tempuri:ItemsAddResponse': */
 class SOAP_CMAC _tempuri__ItemsAddResponse {
       public:
         /// Optional element 'tempuri:ItemsAddResult' of XSD type 'xsd:string'
-        char *ItemsAddResult;
+        std::string *ItemsAddResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -682,27 +773,33 @@ class SOAP_CMAC _tempuri__ItemsAddResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__ItemsAddResponse, default initialized and not managed by a soap context
         virtual _tempuri__ItemsAddResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__ItemsAddResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__ItemsAddResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__ItemsAddResponse(soap, (_tempuri__ItemsAddResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__ItemsAddResponse() : ItemsAddResult(), soap() { }
         virtual ~_tempuri__ItemsAddResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__ItemsAddResponse * SOAP_FMAC2 soap_dup__tempuri__ItemsAddResponse(struct soap*, _tempuri__ItemsAddResponse*, _tempuri__ItemsAddResponse const*);
         /// Friend allocator used by soap_new__tempuri__ItemsAddResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__ItemsAddResponse * SOAP_FMAC2 soap_instantiate__tempuri__ItemsAddResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:187 */
+/* MESService.h:197 */
 #ifndef SOAP_TYPE__tempuri__DocAdd
-#define SOAP_TYPE__tempuri__DocAdd (23)
+#define SOAP_TYPE__tempuri__DocAdd (24)
 /* complex XSD type 'tempuri:DocAdd': */
 class SOAP_CMAC _tempuri__DocAdd {
       public:
         /// Optional element 'tempuri:DocTypeCode' of XSD type 'xsd:string'
-        char *DocTypeCode;
+        std::string *DocTypeCode;
         /// Optional element 'tempuri:DocXmlMaster' of XSD type 'xsd:string'
-        char *DocXmlMaster;
+        std::string *DocXmlMaster;
         /// Optional element 'tempuri:DocXmlItems' of XSD type 'xsd:string'
-        char *DocXmlItems;
+        std::string *DocXmlItems;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -722,23 +819,29 @@ class SOAP_CMAC _tempuri__DocAdd {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__DocAdd, default initialized and not managed by a soap context
         virtual _tempuri__DocAdd *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__DocAdd); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__DocAdd *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__DocAdd(soap, (_tempuri__DocAdd*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__DocAdd() : DocTypeCode(), DocXmlMaster(), DocXmlItems(), soap() { }
         virtual ~_tempuri__DocAdd() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__DocAdd * SOAP_FMAC2 soap_dup__tempuri__DocAdd(struct soap*, _tempuri__DocAdd*, _tempuri__DocAdd const*);
         /// Friend allocator used by soap_new__tempuri__DocAdd(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__DocAdd * SOAP_FMAC2 soap_instantiate__tempuri__DocAdd(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:190 */
+/* MESService.h:200 */
 #ifndef SOAP_TYPE__tempuri__DocAddResponse
-#define SOAP_TYPE__tempuri__DocAddResponse (24)
+#define SOAP_TYPE__tempuri__DocAddResponse (25)
 /* complex XSD type 'tempuri:DocAddResponse': */
 class SOAP_CMAC _tempuri__DocAddResponse {
       public:
         /// Optional element 'tempuri:DocAddResult' of XSD type 'xsd:string'
-        char *DocAddResult;
+        std::string *DocAddResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -758,18 +861,24 @@ class SOAP_CMAC _tempuri__DocAddResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__DocAddResponse, default initialized and not managed by a soap context
         virtual _tempuri__DocAddResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__DocAddResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__DocAddResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__DocAddResponse(soap, (_tempuri__DocAddResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__DocAddResponse() : DocAddResult(), soap() { }
         virtual ~_tempuri__DocAddResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__DocAddResponse * SOAP_FMAC2 soap_dup__tempuri__DocAddResponse(struct soap*, _tempuri__DocAddResponse*, _tempuri__DocAddResponse const*);
         /// Friend allocator used by soap_new__tempuri__DocAddResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__DocAddResponse * SOAP_FMAC2 soap_instantiate__tempuri__DocAddResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:193 */
+/* MESService.h:203 */
 #ifndef SOAP_TYPE__tempuri__GetDept
-#define SOAP_TYPE__tempuri__GetDept (25)
+#define SOAP_TYPE__tempuri__GetDept (26)
 /* complex XSD type 'tempuri:GetDept': */
 class SOAP_CMAC _tempuri__GetDept {
       public:
@@ -792,23 +901,29 @@ class SOAP_CMAC _tempuri__GetDept {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__GetDept, default initialized and not managed by a soap context
         virtual _tempuri__GetDept *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__GetDept); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__GetDept *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__GetDept(soap, (_tempuri__GetDept*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__GetDept() : soap() { }
         virtual ~_tempuri__GetDept() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__GetDept * SOAP_FMAC2 soap_dup__tempuri__GetDept(struct soap*, _tempuri__GetDept*, _tempuri__GetDept const*);
         /// Friend allocator used by soap_new__tempuri__GetDept(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__GetDept * SOAP_FMAC2 soap_instantiate__tempuri__GetDept(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:196 */
+/* MESService.h:206 */
 #ifndef SOAP_TYPE__tempuri__GetDeptResponse
-#define SOAP_TYPE__tempuri__GetDeptResponse (26)
+#define SOAP_TYPE__tempuri__GetDeptResponse (27)
 /* complex XSD type 'tempuri:GetDeptResponse': */
 class SOAP_CMAC _tempuri__GetDeptResponse {
       public:
         /// Optional element 'tempuri:GetDeptResult' of XSD type 'xsd:string'
-        char *GetDeptResult;
+        std::string *GetDeptResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -828,23 +943,29 @@ class SOAP_CMAC _tempuri__GetDeptResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__GetDeptResponse, default initialized and not managed by a soap context
         virtual _tempuri__GetDeptResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__GetDeptResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__GetDeptResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__GetDeptResponse(soap, (_tempuri__GetDeptResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__GetDeptResponse() : GetDeptResult(), soap() { }
         virtual ~_tempuri__GetDeptResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__GetDeptResponse * SOAP_FMAC2 soap_dup__tempuri__GetDeptResponse(struct soap*, _tempuri__GetDeptResponse*, _tempuri__GetDeptResponse const*);
         /// Friend allocator used by soap_new__tempuri__GetDeptResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__GetDeptResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetDeptResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:199 */
+/* MESService.h:209 */
 #ifndef SOAP_TYPE__tempuri__GetPower
-#define SOAP_TYPE__tempuri__GetPower (27)
+#define SOAP_TYPE__tempuri__GetPower (28)
 /* complex XSD type 'tempuri:GetPower': */
 class SOAP_CMAC _tempuri__GetPower {
       public:
         /// Optional element 'tempuri:DeptID' of XSD type 'xsd:string'
-        char *DeptID;
+        std::string *DeptID;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -864,23 +985,29 @@ class SOAP_CMAC _tempuri__GetPower {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__GetPower, default initialized and not managed by a soap context
         virtual _tempuri__GetPower *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__GetPower); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__GetPower *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__GetPower(soap, (_tempuri__GetPower*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__GetPower() : DeptID(), soap() { }
         virtual ~_tempuri__GetPower() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__GetPower * SOAP_FMAC2 soap_dup__tempuri__GetPower(struct soap*, _tempuri__GetPower*, _tempuri__GetPower const*);
         /// Friend allocator used by soap_new__tempuri__GetPower(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__GetPower * SOAP_FMAC2 soap_instantiate__tempuri__GetPower(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:202 */
+/* MESService.h:212 */
 #ifndef SOAP_TYPE__tempuri__GetPowerResponse
-#define SOAP_TYPE__tempuri__GetPowerResponse (28)
+#define SOAP_TYPE__tempuri__GetPowerResponse (29)
 /* complex XSD type 'tempuri:GetPowerResponse': */
 class SOAP_CMAC _tempuri__GetPowerResponse {
       public:
         /// Optional element 'tempuri:GetPowerResult' of XSD type 'xsd:string'
-        char *GetPowerResult;
+        std::string *GetPowerResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -900,27 +1027,33 @@ class SOAP_CMAC _tempuri__GetPowerResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__GetPowerResponse, default initialized and not managed by a soap context
         virtual _tempuri__GetPowerResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__GetPowerResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__GetPowerResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__GetPowerResponse(soap, (_tempuri__GetPowerResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__GetPowerResponse() : GetPowerResult(), soap() { }
         virtual ~_tempuri__GetPowerResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__GetPowerResponse * SOAP_FMAC2 soap_dup__tempuri__GetPowerResponse(struct soap*, _tempuri__GetPowerResponse*, _tempuri__GetPowerResponse const*);
         /// Friend allocator used by soap_new__tempuri__GetPowerResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__GetPowerResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetPowerResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:205 */
+/* MESService.h:215 */
 #ifndef SOAP_TYPE__tempuri__Login
-#define SOAP_TYPE__tempuri__Login (29)
+#define SOAP_TYPE__tempuri__Login (30)
 /* complex XSD type 'tempuri:Login': */
 class SOAP_CMAC _tempuri__Login {
       public:
         /// Optional element 'tempuri:Role' of XSD type 'xsd:string'
-        char *Role;
+        std::string *Role;
         /// Optional element 'tempuri:UserName' of XSD type 'xsd:string'
-        char *UserName;
+        std::string *UserName;
         /// Optional element 'tempuri:UserPwd' of XSD type 'xsd:string'
-        char *UserPwd;
+        std::string *UserPwd;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -940,23 +1073,29 @@ class SOAP_CMAC _tempuri__Login {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__Login, default initialized and not managed by a soap context
         virtual _tempuri__Login *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__Login); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__Login *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__Login(soap, (_tempuri__Login*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__Login() : Role(), UserName(), UserPwd(), soap() { }
         virtual ~_tempuri__Login() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__Login * SOAP_FMAC2 soap_dup__tempuri__Login(struct soap*, _tempuri__Login*, _tempuri__Login const*);
         /// Friend allocator used by soap_new__tempuri__Login(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__Login * SOAP_FMAC2 soap_instantiate__tempuri__Login(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:208 */
+/* MESService.h:218 */
 #ifndef SOAP_TYPE__tempuri__LoginResponse
-#define SOAP_TYPE__tempuri__LoginResponse (30)
+#define SOAP_TYPE__tempuri__LoginResponse (31)
 /* complex XSD type 'tempuri:LoginResponse': */
 class SOAP_CMAC _tempuri__LoginResponse {
       public:
         /// Optional element 'tempuri:LoginResult' of XSD type 'xsd:string'
-        char *LoginResult;
+        std::string *LoginResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -976,25 +1115,31 @@ class SOAP_CMAC _tempuri__LoginResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__LoginResponse, default initialized and not managed by a soap context
         virtual _tempuri__LoginResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__LoginResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__LoginResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__LoginResponse(soap, (_tempuri__LoginResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__LoginResponse() : LoginResult(), soap() { }
         virtual ~_tempuri__LoginResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__LoginResponse * SOAP_FMAC2 soap_dup__tempuri__LoginResponse(struct soap*, _tempuri__LoginResponse*, _tempuri__LoginResponse const*);
         /// Friend allocator used by soap_new__tempuri__LoginResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__LoginResponse * SOAP_FMAC2 soap_instantiate__tempuri__LoginResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:211 */
+/* MESService.h:221 */
 #ifndef SOAP_TYPE__tempuri__AnDan1Send
-#define SOAP_TYPE__tempuri__AnDan1Send (31)
+#define SOAP_TYPE__tempuri__AnDan1Send (32)
 /* complex XSD type 'tempuri:AnDan1Send': */
 class SOAP_CMAC _tempuri__AnDan1Send {
       public:
         /// Required element 'tempuri:flag' of XSD type 'xsd:boolean'
         bool flag;
         /// Optional element 'tempuri:XML' of XSD type 'xsd:string'
-        char *XML_;
+        std::string *XML_;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1014,23 +1159,29 @@ class SOAP_CMAC _tempuri__AnDan1Send {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDan1Send, default initialized and not managed by a soap context
         virtual _tempuri__AnDan1Send *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDan1Send); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDan1Send *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDan1Send(soap, (_tempuri__AnDan1Send*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDan1Send() : flag(), XML_(), soap() { }
         virtual ~_tempuri__AnDan1Send() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDan1Send * SOAP_FMAC2 soap_dup__tempuri__AnDan1Send(struct soap*, _tempuri__AnDan1Send*, _tempuri__AnDan1Send const*);
         /// Friend allocator used by soap_new__tempuri__AnDan1Send(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDan1Send * SOAP_FMAC2 soap_instantiate__tempuri__AnDan1Send(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:214 */
+/* MESService.h:224 */
 #ifndef SOAP_TYPE__tempuri__AnDan1SendResponse
-#define SOAP_TYPE__tempuri__AnDan1SendResponse (32)
+#define SOAP_TYPE__tempuri__AnDan1SendResponse (33)
 /* complex XSD type 'tempuri:AnDan1SendResponse': */
 class SOAP_CMAC _tempuri__AnDan1SendResponse {
       public:
         /// Optional element 'tempuri:AnDan1SendResult' of XSD type 'xsd:string'
-        char *AnDan1SendResult;
+        std::string *AnDan1SendResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1050,23 +1201,29 @@ class SOAP_CMAC _tempuri__AnDan1SendResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDan1SendResponse, default initialized and not managed by a soap context
         virtual _tempuri__AnDan1SendResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDan1SendResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDan1SendResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDan1SendResponse(soap, (_tempuri__AnDan1SendResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDan1SendResponse() : AnDan1SendResult(), soap() { }
         virtual ~_tempuri__AnDan1SendResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDan1SendResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan1SendResponse(struct soap*, _tempuri__AnDan1SendResponse*, _tempuri__AnDan1SendResponse const*);
         /// Friend allocator used by soap_new__tempuri__AnDan1SendResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDan1SendResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan1SendResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:217 */
+/* MESService.h:227 */
 #ifndef SOAP_TYPE__tempuri__AnDan4UpdPeoplePresent
-#define SOAP_TYPE__tempuri__AnDan4UpdPeoplePresent (33)
+#define SOAP_TYPE__tempuri__AnDan4UpdPeoplePresent (34)
 /* complex XSD type 'tempuri:AnDan4UpdPeoplePresent': */
 class SOAP_CMAC _tempuri__AnDan4UpdPeoplePresent {
       public:
         /// Optional element 'tempuri:Presens' of XSD type 'xsd:string'
-        char *Presens;
+        std::string *Presens;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1086,23 +1243,29 @@ class SOAP_CMAC _tempuri__AnDan4UpdPeoplePresent {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDan4UpdPeoplePresent, default initialized and not managed by a soap context
         virtual _tempuri__AnDan4UpdPeoplePresent *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDan4UpdPeoplePresent); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDan4UpdPeoplePresent *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDan4UpdPeoplePresent(soap, (_tempuri__AnDan4UpdPeoplePresent*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDan4UpdPeoplePresent() : Presens(), soap() { }
         virtual ~_tempuri__AnDan4UpdPeoplePresent() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_dup__tempuri__AnDan4UpdPeoplePresent(struct soap*, _tempuri__AnDan4UpdPeoplePresent*, _tempuri__AnDan4UpdPeoplePresent const*);
         /// Friend allocator used by soap_new__tempuri__AnDan4UpdPeoplePresent(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_instantiate__tempuri__AnDan4UpdPeoplePresent(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:220 */
+/* MESService.h:230 */
 #ifndef SOAP_TYPE__tempuri__AnDan4UpdPeoplePresentResponse
-#define SOAP_TYPE__tempuri__AnDan4UpdPeoplePresentResponse (34)
+#define SOAP_TYPE__tempuri__AnDan4UpdPeoplePresentResponse (35)
 /* complex XSD type 'tempuri:AnDan4UpdPeoplePresentResponse': */
 class SOAP_CMAC _tempuri__AnDan4UpdPeoplePresentResponse {
       public:
         /// Optional element 'tempuri:AnDan4UpdPeoplePresentResult' of XSD type 'xsd:string'
-        char *AnDan4UpdPeoplePresentResult;
+        std::string *AnDan4UpdPeoplePresentResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1122,25 +1285,31 @@ class SOAP_CMAC _tempuri__AnDan4UpdPeoplePresentResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDan4UpdPeoplePresentResponse, default initialized and not managed by a soap context
         virtual _tempuri__AnDan4UpdPeoplePresentResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDan4UpdPeoplePresentResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDan4UpdPeoplePresentResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDan4UpdPeoplePresentResponse(soap, (_tempuri__AnDan4UpdPeoplePresentResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDan4UpdPeoplePresentResponse() : AnDan4UpdPeoplePresentResult(), soap() { }
         virtual ~_tempuri__AnDan4UpdPeoplePresentResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresentResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan4UpdPeoplePresentResponse(struct soap*, _tempuri__AnDan4UpdPeoplePresentResponse*, _tempuri__AnDan4UpdPeoplePresentResponse const*);
         /// Friend allocator used by soap_new__tempuri__AnDan4UpdPeoplePresentResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresentResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan4UpdPeoplePresentResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:223 */
+/* MESService.h:233 */
 #ifndef SOAP_TYPE__tempuri__AnDan3AddUsers
-#define SOAP_TYPE__tempuri__AnDan3AddUsers (35)
+#define SOAP_TYPE__tempuri__AnDan3AddUsers (36)
 /* complex XSD type 'tempuri:AnDan3AddUsers': */
 class SOAP_CMAC _tempuri__AnDan3AddUsers {
       public:
         /// Optional element 'tempuri:XML' of XSD type 'xsd:string'
-        char *XML_;
+        std::string *XML_;
         /// Optional element 'tempuri:TS_OPERATORS' of XSD type 'xsd:string'
-        char *TS_USCOREOPERATORS;
+        std::string *TS_USCOREOPERATORS;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1160,23 +1329,29 @@ class SOAP_CMAC _tempuri__AnDan3AddUsers {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDan3AddUsers, default initialized and not managed by a soap context
         virtual _tempuri__AnDan3AddUsers *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDan3AddUsers); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDan3AddUsers *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDan3AddUsers(soap, (_tempuri__AnDan3AddUsers*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDan3AddUsers() : XML_(), TS_USCOREOPERATORS(), soap() { }
         virtual ~_tempuri__AnDan3AddUsers() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_dup__tempuri__AnDan3AddUsers(struct soap*, _tempuri__AnDan3AddUsers*, _tempuri__AnDan3AddUsers const*);
         /// Friend allocator used by soap_new__tempuri__AnDan3AddUsers(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_instantiate__tempuri__AnDan3AddUsers(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:226 */
+/* MESService.h:236 */
 #ifndef SOAP_TYPE__tempuri__AnDan3AddUsersResponse
-#define SOAP_TYPE__tempuri__AnDan3AddUsersResponse (36)
+#define SOAP_TYPE__tempuri__AnDan3AddUsersResponse (37)
 /* complex XSD type 'tempuri:AnDan3AddUsersResponse': */
 class SOAP_CMAC _tempuri__AnDan3AddUsersResponse {
       public:
         /// Optional element 'tempuri:AnDan3AddUsersResult' of XSD type 'xsd:string'
-        char *AnDan3AddUsersResult;
+        std::string *AnDan3AddUsersResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1196,23 +1371,29 @@ class SOAP_CMAC _tempuri__AnDan3AddUsersResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDan3AddUsersResponse, default initialized and not managed by a soap context
         virtual _tempuri__AnDan3AddUsersResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDan3AddUsersResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDan3AddUsersResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDan3AddUsersResponse(soap, (_tempuri__AnDan3AddUsersResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDan3AddUsersResponse() : AnDan3AddUsersResult(), soap() { }
         virtual ~_tempuri__AnDan3AddUsersResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDan3AddUsersResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan3AddUsersResponse(struct soap*, _tempuri__AnDan3AddUsersResponse*, _tempuri__AnDan3AddUsersResponse const*);
         /// Friend allocator used by soap_new__tempuri__AnDan3AddUsersResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDan3AddUsersResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan3AddUsersResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:229 */
+/* MESService.h:239 */
 #ifndef SOAP_TYPE__tempuri__AnDan2PeoplePresent
-#define SOAP_TYPE__tempuri__AnDan2PeoplePresent (37)
+#define SOAP_TYPE__tempuri__AnDan2PeoplePresent (38)
 /* complex XSD type 'tempuri:AnDan2PeoplePresent': */
 class SOAP_CMAC _tempuri__AnDan2PeoplePresent {
       public:
         /// Optional element 'tempuri:ADMCode' of XSD type 'xsd:string'
-        char *ADMCode;
+        std::string *ADMCode;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1232,23 +1413,29 @@ class SOAP_CMAC _tempuri__AnDan2PeoplePresent {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDan2PeoplePresent, default initialized and not managed by a soap context
         virtual _tempuri__AnDan2PeoplePresent *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDan2PeoplePresent); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDan2PeoplePresent *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDan2PeoplePresent(soap, (_tempuri__AnDan2PeoplePresent*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDan2PeoplePresent() : ADMCode(), soap() { }
         virtual ~_tempuri__AnDan2PeoplePresent() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_dup__tempuri__AnDan2PeoplePresent(struct soap*, _tempuri__AnDan2PeoplePresent*, _tempuri__AnDan2PeoplePresent const*);
         /// Friend allocator used by soap_new__tempuri__AnDan2PeoplePresent(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_instantiate__tempuri__AnDan2PeoplePresent(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:232 */
+/* MESService.h:242 */
 #ifndef SOAP_TYPE__tempuri__AnDan2PeoplePresentResponse
-#define SOAP_TYPE__tempuri__AnDan2PeoplePresentResponse (38)
+#define SOAP_TYPE__tempuri__AnDan2PeoplePresentResponse (39)
 /* complex XSD type 'tempuri:AnDan2PeoplePresentResponse': */
 class SOAP_CMAC _tempuri__AnDan2PeoplePresentResponse {
       public:
         /// Optional element 'tempuri:AnDan2PeoplePresentResult' of XSD type 'xsd:string'
-        char *AnDan2PeoplePresentResult;
+        std::string *AnDan2PeoplePresentResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1268,23 +1455,29 @@ class SOAP_CMAC _tempuri__AnDan2PeoplePresentResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDan2PeoplePresentResponse, default initialized and not managed by a soap context
         virtual _tempuri__AnDan2PeoplePresentResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDan2PeoplePresentResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDan2PeoplePresentResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDan2PeoplePresentResponse(soap, (_tempuri__AnDan2PeoplePresentResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDan2PeoplePresentResponse() : AnDan2PeoplePresentResult(), soap() { }
         virtual ~_tempuri__AnDan2PeoplePresentResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDan2PeoplePresentResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan2PeoplePresentResponse(struct soap*, _tempuri__AnDan2PeoplePresentResponse*, _tempuri__AnDan2PeoplePresentResponse const*);
         /// Friend allocator used by soap_new__tempuri__AnDan2PeoplePresentResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDan2PeoplePresentResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan2PeoplePresentResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:235 */
+/* MESService.h:245 */
 #ifndef SOAP_TYPE__tempuri__AnDanSLTypeGet
-#define SOAP_TYPE__tempuri__AnDanSLTypeGet (39)
+#define SOAP_TYPE__tempuri__AnDanSLTypeGet (40)
 /* complex XSD type 'tempuri:AnDanSLTypeGet': */
 class SOAP_CMAC _tempuri__AnDanSLTypeGet {
       public:
         /// Optional element 'tempuri:ADMCode' of XSD type 'xsd:string'
-        char *ADMCode;
+        std::string *ADMCode;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1304,23 +1497,29 @@ class SOAP_CMAC _tempuri__AnDanSLTypeGet {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDanSLTypeGet, default initialized and not managed by a soap context
         virtual _tempuri__AnDanSLTypeGet *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDanSLTypeGet); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDanSLTypeGet *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDanSLTypeGet(soap, (_tempuri__AnDanSLTypeGet*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDanSLTypeGet() : ADMCode(), soap() { }
         virtual ~_tempuri__AnDanSLTypeGet() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeGet(struct soap*, _tempuri__AnDanSLTypeGet*, _tempuri__AnDanSLTypeGet const*);
         /// Friend allocator used by soap_new__tempuri__AnDanSLTypeGet(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeGet(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:238 */
+/* MESService.h:248 */
 #ifndef SOAP_TYPE__tempuri__AnDanSLTypeGetResponse
-#define SOAP_TYPE__tempuri__AnDanSLTypeGetResponse (40)
+#define SOAP_TYPE__tempuri__AnDanSLTypeGetResponse (41)
 /* complex XSD type 'tempuri:AnDanSLTypeGetResponse': */
 class SOAP_CMAC _tempuri__AnDanSLTypeGetResponse {
       public:
         /// Optional element 'tempuri:AnDanSLTypeGetResult' of XSD type 'xsd:string'
-        char *AnDanSLTypeGetResult;
+        std::string *AnDanSLTypeGetResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1340,23 +1539,29 @@ class SOAP_CMAC _tempuri__AnDanSLTypeGetResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDanSLTypeGetResponse, default initialized and not managed by a soap context
         virtual _tempuri__AnDanSLTypeGetResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDanSLTypeGetResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDanSLTypeGetResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDanSLTypeGetResponse(soap, (_tempuri__AnDanSLTypeGetResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDanSLTypeGetResponse() : AnDanSLTypeGetResult(), soap() { }
         virtual ~_tempuri__AnDanSLTypeGetResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDanSLTypeGetResponse * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeGetResponse(struct soap*, _tempuri__AnDanSLTypeGetResponse*, _tempuri__AnDanSLTypeGetResponse const*);
         /// Friend allocator used by soap_new__tempuri__AnDanSLTypeGetResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDanSLTypeGetResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeGetResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:241 */
+/* MESService.h:251 */
 #ifndef SOAP_TYPE__tempuri__AnDanSLTypeAdd
-#define SOAP_TYPE__tempuri__AnDanSLTypeAdd (41)
+#define SOAP_TYPE__tempuri__AnDanSLTypeAdd (42)
 /* complex XSD type 'tempuri:AnDanSLTypeAdd': */
 class SOAP_CMAC _tempuri__AnDanSLTypeAdd {
       public:
         /// Optional element 'tempuri:XML' of XSD type 'xsd:string'
-        char *XML_;
+        std::string *XML_;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1376,23 +1581,29 @@ class SOAP_CMAC _tempuri__AnDanSLTypeAdd {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDanSLTypeAdd, default initialized and not managed by a soap context
         virtual _tempuri__AnDanSLTypeAdd *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDanSLTypeAdd); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDanSLTypeAdd *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDanSLTypeAdd(soap, (_tempuri__AnDanSLTypeAdd*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDanSLTypeAdd() : XML_(), soap() { }
         virtual ~_tempuri__AnDanSLTypeAdd() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeAdd(struct soap*, _tempuri__AnDanSLTypeAdd*, _tempuri__AnDanSLTypeAdd const*);
         /// Friend allocator used by soap_new__tempuri__AnDanSLTypeAdd(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeAdd(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:244 */
+/* MESService.h:254 */
 #ifndef SOAP_TYPE__tempuri__AnDanSLTypeAddResponse
-#define SOAP_TYPE__tempuri__AnDanSLTypeAddResponse (42)
+#define SOAP_TYPE__tempuri__AnDanSLTypeAddResponse (43)
 /* complex XSD type 'tempuri:AnDanSLTypeAddResponse': */
 class SOAP_CMAC _tempuri__AnDanSLTypeAddResponse {
       public:
         /// Optional element 'tempuri:AnDanSLTypeAddResult' of XSD type 'xsd:string'
-        char *AnDanSLTypeAddResult;
+        std::string *AnDanSLTypeAddResult;
         /// Context that manages this object
         struct soap *soap;
       public:
@@ -1412,18 +1623,24 @@ class SOAP_CMAC _tempuri__AnDanSLTypeAddResponse {
         virtual void *soap_in(struct soap*, const char *tag, const char *type);
         /// Return a new object of type _tempuri__AnDanSLTypeAddResponse, default initialized and not managed by a soap context
         virtual _tempuri__AnDanSLTypeAddResponse *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(_tempuri__AnDanSLTypeAddResponse); }
+        /// Return a duplicate of this object by deep copying, replicating all deep cycles and shared pointers when a managing soap context is provided as argument.
+        /// Deep copy is a tree when argument is NULL, but the presence of deep cycles will lead to non-termination.
+        /// Use flag SOAP_XML_TREE with a managing context to copy into a tree without cycles and pointers to shared objects
+        virtual _tempuri__AnDanSLTypeAddResponse *soap_dup(struct soap *soap = NULL, void *dest = NULL) const { return soap_dup__tempuri__AnDanSLTypeAddResponse(soap, (_tempuri__AnDanSLTypeAddResponse*)dest, this); }
       public:
         /// Constructor with initializations
         _tempuri__AnDanSLTypeAddResponse() : AnDanSLTypeAddResult(), soap() { }
         virtual ~_tempuri__AnDanSLTypeAddResponse() { }
+        /// Friend duplicator
+        friend SOAP_FMAC1 _tempuri__AnDanSLTypeAddResponse * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeAddResponse(struct soap*, _tempuri__AnDanSLTypeAddResponse*, _tempuri__AnDanSLTypeAddResponse const*);
         /// Friend allocator used by soap_new__tempuri__AnDanSLTypeAddResponse(struct soap*, int)
         friend SOAP_FMAC1 _tempuri__AnDanSLTypeAddResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeAddResponse(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1217 */
+/* MESService.h:1227 */
 #ifndef SOAP_TYPE___tempuri__GetDate
-#define SOAP_TYPE___tempuri__GetDate (48)
+#define SOAP_TYPE___tempuri__GetDate (51)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__GetDate {
       public:
@@ -1434,14 +1651,16 @@ struct SOAP_CMAC __tempuri__GetDate {
         long soap_type() const { return SOAP_TYPE___tempuri__GetDate; }
         /** Constructor with member initializations */
         __tempuri__GetDate() : tempuri__GetDate() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__GetDate * SOAP_FMAC2 soap_dup___tempuri__GetDate(struct soap*, struct __tempuri__GetDate*, struct __tempuri__GetDate const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__GetDate * SOAP_FMAC2 soap_instantiate___tempuri__GetDate(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1287 */
+/* MESService.h:1297 */
 #ifndef SOAP_TYPE___tempuri__GetDocCode
-#define SOAP_TYPE___tempuri__GetDocCode (52)
+#define SOAP_TYPE___tempuri__GetDocCode (55)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__GetDocCode {
       public:
@@ -1452,14 +1671,16 @@ struct SOAP_CMAC __tempuri__GetDocCode {
         long soap_type() const { return SOAP_TYPE___tempuri__GetDocCode; }
         /** Constructor with member initializations */
         __tempuri__GetDocCode() : tempuri__GetDocCode() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__GetDocCode * SOAP_FMAC2 soap_dup___tempuri__GetDocCode(struct soap*, struct __tempuri__GetDocCode*, struct __tempuri__GetDocCode const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__GetDocCode * SOAP_FMAC2 soap_instantiate___tempuri__GetDocCode(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1357 */
+/* MESService.h:1367 */
 #ifndef SOAP_TYPE___tempuri__ToolingTimes
-#define SOAP_TYPE___tempuri__ToolingTimes (56)
+#define SOAP_TYPE___tempuri__ToolingTimes (59)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__ToolingTimes {
       public:
@@ -1470,14 +1691,16 @@ struct SOAP_CMAC __tempuri__ToolingTimes {
         long soap_type() const { return SOAP_TYPE___tempuri__ToolingTimes; }
         /** Constructor with member initializations */
         __tempuri__ToolingTimes() : tempuri__ToolingTimes() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__ToolingTimes * SOAP_FMAC2 soap_dup___tempuri__ToolingTimes(struct soap*, struct __tempuri__ToolingTimes*, struct __tempuri__ToolingTimes const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__ToolingTimes * SOAP_FMAC2 soap_instantiate___tempuri__ToolingTimes(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1427 */
+/* MESService.h:1437 */
 #ifndef SOAP_TYPE___tempuri__WorkOrder
-#define SOAP_TYPE___tempuri__WorkOrder (60)
+#define SOAP_TYPE___tempuri__WorkOrder (63)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__WorkOrder {
       public:
@@ -1488,14 +1711,16 @@ struct SOAP_CMAC __tempuri__WorkOrder {
         long soap_type() const { return SOAP_TYPE___tempuri__WorkOrder; }
         /** Constructor with member initializations */
         __tempuri__WorkOrder() : tempuri__WorkOrder() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__WorkOrder * SOAP_FMAC2 soap_dup___tempuri__WorkOrder(struct soap*, struct __tempuri__WorkOrder*, struct __tempuri__WorkOrder const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__WorkOrder * SOAP_FMAC2 soap_instantiate___tempuri__WorkOrder(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1497 */
+/* MESService.h:1507 */
 #ifndef SOAP_TYPE___tempuri__LineInventory
-#define SOAP_TYPE___tempuri__LineInventory (64)
+#define SOAP_TYPE___tempuri__LineInventory (67)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__LineInventory {
       public:
@@ -1506,14 +1731,16 @@ struct SOAP_CMAC __tempuri__LineInventory {
         long soap_type() const { return SOAP_TYPE___tempuri__LineInventory; }
         /** Constructor with member initializations */
         __tempuri__LineInventory() : tempuri__LineInventory() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__LineInventory * SOAP_FMAC2 soap_dup___tempuri__LineInventory(struct soap*, struct __tempuri__LineInventory*, struct __tempuri__LineInventory const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__LineInventory * SOAP_FMAC2 soap_instantiate___tempuri__LineInventory(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1567 */
+/* MESService.h:1577 */
 #ifndef SOAP_TYPE___tempuri__LineInventoryUpdate
-#define SOAP_TYPE___tempuri__LineInventoryUpdate (68)
+#define SOAP_TYPE___tempuri__LineInventoryUpdate (71)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__LineInventoryUpdate {
       public:
@@ -1524,14 +1751,16 @@ struct SOAP_CMAC __tempuri__LineInventoryUpdate {
         long soap_type() const { return SOAP_TYPE___tempuri__LineInventoryUpdate; }
         /** Constructor with member initializations */
         __tempuri__LineInventoryUpdate() : tempuri__LineInventoryUpdate() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_dup___tempuri__LineInventoryUpdate(struct soap*, struct __tempuri__LineInventoryUpdate*, struct __tempuri__LineInventoryUpdate const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryUpdate(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1637 */
+/* MESService.h:1647 */
 #ifndef SOAP_TYPE___tempuri__LineInventoryReturn
-#define SOAP_TYPE___tempuri__LineInventoryReturn (72)
+#define SOAP_TYPE___tempuri__LineInventoryReturn (75)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__LineInventoryReturn {
       public:
@@ -1542,14 +1771,16 @@ struct SOAP_CMAC __tempuri__LineInventoryReturn {
         long soap_type() const { return SOAP_TYPE___tempuri__LineInventoryReturn; }
         /** Constructor with member initializations */
         __tempuri__LineInventoryReturn() : tempuri__LineInventoryReturn() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__LineInventoryReturn * SOAP_FMAC2 soap_dup___tempuri__LineInventoryReturn(struct soap*, struct __tempuri__LineInventoryReturn*, struct __tempuri__LineInventoryReturn const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__LineInventoryReturn * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryReturn(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1707 */
+/* MESService.h:1717 */
 #ifndef SOAP_TYPE___tempuri__ItemsAdd
-#define SOAP_TYPE___tempuri__ItemsAdd (76)
+#define SOAP_TYPE___tempuri__ItemsAdd (79)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__ItemsAdd {
       public:
@@ -1560,14 +1791,16 @@ struct SOAP_CMAC __tempuri__ItemsAdd {
         long soap_type() const { return SOAP_TYPE___tempuri__ItemsAdd; }
         /** Constructor with member initializations */
         __tempuri__ItemsAdd() : tempuri__ItemsAdd() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__ItemsAdd * SOAP_FMAC2 soap_dup___tempuri__ItemsAdd(struct soap*, struct __tempuri__ItemsAdd*, struct __tempuri__ItemsAdd const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__ItemsAdd * SOAP_FMAC2 soap_instantiate___tempuri__ItemsAdd(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1777 */
+/* MESService.h:1787 */
 #ifndef SOAP_TYPE___tempuri__DocAdd
-#define SOAP_TYPE___tempuri__DocAdd (80)
+#define SOAP_TYPE___tempuri__DocAdd (83)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__DocAdd {
       public:
@@ -1578,14 +1811,16 @@ struct SOAP_CMAC __tempuri__DocAdd {
         long soap_type() const { return SOAP_TYPE___tempuri__DocAdd; }
         /** Constructor with member initializations */
         __tempuri__DocAdd() : tempuri__DocAdd() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__DocAdd * SOAP_FMAC2 soap_dup___tempuri__DocAdd(struct soap*, struct __tempuri__DocAdd*, struct __tempuri__DocAdd const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__DocAdd * SOAP_FMAC2 soap_instantiate___tempuri__DocAdd(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1847 */
+/* MESService.h:1857 */
 #ifndef SOAP_TYPE___tempuri__GetDept
-#define SOAP_TYPE___tempuri__GetDept (84)
+#define SOAP_TYPE___tempuri__GetDept (87)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__GetDept {
       public:
@@ -1596,14 +1831,16 @@ struct SOAP_CMAC __tempuri__GetDept {
         long soap_type() const { return SOAP_TYPE___tempuri__GetDept; }
         /** Constructor with member initializations */
         __tempuri__GetDept() : tempuri__GetDept() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__GetDept * SOAP_FMAC2 soap_dup___tempuri__GetDept(struct soap*, struct __tempuri__GetDept*, struct __tempuri__GetDept const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__GetDept * SOAP_FMAC2 soap_instantiate___tempuri__GetDept(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1917 */
+/* MESService.h:1927 */
 #ifndef SOAP_TYPE___tempuri__GetPower
-#define SOAP_TYPE___tempuri__GetPower (88)
+#define SOAP_TYPE___tempuri__GetPower (91)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__GetPower {
       public:
@@ -1614,14 +1851,16 @@ struct SOAP_CMAC __tempuri__GetPower {
         long soap_type() const { return SOAP_TYPE___tempuri__GetPower; }
         /** Constructor with member initializations */
         __tempuri__GetPower() : tempuri__GetPower() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__GetPower * SOAP_FMAC2 soap_dup___tempuri__GetPower(struct soap*, struct __tempuri__GetPower*, struct __tempuri__GetPower const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__GetPower * SOAP_FMAC2 soap_instantiate___tempuri__GetPower(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:1987 */
+/* MESService.h:1997 */
 #ifndef SOAP_TYPE___tempuri__Login
-#define SOAP_TYPE___tempuri__Login (92)
+#define SOAP_TYPE___tempuri__Login (95)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__Login {
       public:
@@ -1632,14 +1871,16 @@ struct SOAP_CMAC __tempuri__Login {
         long soap_type() const { return SOAP_TYPE___tempuri__Login; }
         /** Constructor with member initializations */
         __tempuri__Login() : tempuri__Login() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__Login * SOAP_FMAC2 soap_dup___tempuri__Login(struct soap*, struct __tempuri__Login*, struct __tempuri__Login const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__Login * SOAP_FMAC2 soap_instantiate___tempuri__Login(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2057 */
+/* MESService.h:2067 */
 #ifndef SOAP_TYPE___tempuri__AnDan1Send
-#define SOAP_TYPE___tempuri__AnDan1Send (96)
+#define SOAP_TYPE___tempuri__AnDan1Send (99)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDan1Send {
       public:
@@ -1650,14 +1891,16 @@ struct SOAP_CMAC __tempuri__AnDan1Send {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDan1Send; }
         /** Constructor with member initializations */
         __tempuri__AnDan1Send() : tempuri__AnDan1Send() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDan1Send * SOAP_FMAC2 soap_dup___tempuri__AnDan1Send(struct soap*, struct __tempuri__AnDan1Send*, struct __tempuri__AnDan1Send const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDan1Send * SOAP_FMAC2 soap_instantiate___tempuri__AnDan1Send(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2127 */
+/* MESService.h:2137 */
 #ifndef SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent
-#define SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent (100)
+#define SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent (103)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDan4UpdPeoplePresent {
       public:
@@ -1668,14 +1911,16 @@ struct SOAP_CMAC __tempuri__AnDan4UpdPeoplePresent {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent; }
         /** Constructor with member initializations */
         __tempuri__AnDan4UpdPeoplePresent() : tempuri__AnDan4UpdPeoplePresent() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_dup___tempuri__AnDan4UpdPeoplePresent(struct soap*, struct __tempuri__AnDan4UpdPeoplePresent*, struct __tempuri__AnDan4UpdPeoplePresent const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_instantiate___tempuri__AnDan4UpdPeoplePresent(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2197 */
+/* MESService.h:2207 */
 #ifndef SOAP_TYPE___tempuri__AnDan3AddUsers
-#define SOAP_TYPE___tempuri__AnDan3AddUsers (104)
+#define SOAP_TYPE___tempuri__AnDan3AddUsers (107)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDan3AddUsers {
       public:
@@ -1686,14 +1931,16 @@ struct SOAP_CMAC __tempuri__AnDan3AddUsers {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDan3AddUsers; }
         /** Constructor with member initializations */
         __tempuri__AnDan3AddUsers() : tempuri__AnDan3AddUsers() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_dup___tempuri__AnDan3AddUsers(struct soap*, struct __tempuri__AnDan3AddUsers*, struct __tempuri__AnDan3AddUsers const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_instantiate___tempuri__AnDan3AddUsers(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2267 */
+/* MESService.h:2277 */
 #ifndef SOAP_TYPE___tempuri__AnDan2PeoplePresent
-#define SOAP_TYPE___tempuri__AnDan2PeoplePresent (108)
+#define SOAP_TYPE___tempuri__AnDan2PeoplePresent (111)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDan2PeoplePresent {
       public:
@@ -1704,14 +1951,16 @@ struct SOAP_CMAC __tempuri__AnDan2PeoplePresent {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDan2PeoplePresent; }
         /** Constructor with member initializations */
         __tempuri__AnDan2PeoplePresent() : tempuri__AnDan2PeoplePresent() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_dup___tempuri__AnDan2PeoplePresent(struct soap*, struct __tempuri__AnDan2PeoplePresent*, struct __tempuri__AnDan2PeoplePresent const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_instantiate___tempuri__AnDan2PeoplePresent(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2337 */
+/* MESService.h:2347 */
 #ifndef SOAP_TYPE___tempuri__AnDanSLTypeGet
-#define SOAP_TYPE___tempuri__AnDanSLTypeGet (112)
+#define SOAP_TYPE___tempuri__AnDanSLTypeGet (115)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDanSLTypeGet {
       public:
@@ -1722,14 +1971,16 @@ struct SOAP_CMAC __tempuri__AnDanSLTypeGet {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDanSLTypeGet; }
         /** Constructor with member initializations */
         __tempuri__AnDanSLTypeGet() : tempuri__AnDanSLTypeGet() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeGet(struct soap*, struct __tempuri__AnDanSLTypeGet*, struct __tempuri__AnDanSLTypeGet const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeGet(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2407 */
+/* MESService.h:2417 */
 #ifndef SOAP_TYPE___tempuri__AnDanSLTypeAdd
-#define SOAP_TYPE___tempuri__AnDanSLTypeAdd (116)
+#define SOAP_TYPE___tempuri__AnDanSLTypeAdd (119)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDanSLTypeAdd {
       public:
@@ -1740,14 +1991,16 @@ struct SOAP_CMAC __tempuri__AnDanSLTypeAdd {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDanSLTypeAdd; }
         /** Constructor with member initializations */
         __tempuri__AnDanSLTypeAdd() : tempuri__AnDanSLTypeAdd() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeAdd(struct soap*, struct __tempuri__AnDanSLTypeAdd*, struct __tempuri__AnDanSLTypeAdd const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeAdd(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2477 */
+/* MESService.h:2487 */
 #ifndef SOAP_TYPE___tempuri__GetDate_
-#define SOAP_TYPE___tempuri__GetDate_ (118)
+#define SOAP_TYPE___tempuri__GetDate_ (121)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__GetDate_ {
       public:
@@ -1758,14 +2011,16 @@ struct SOAP_CMAC __tempuri__GetDate_ {
         long soap_type() const { return SOAP_TYPE___tempuri__GetDate_; }
         /** Constructor with member initializations */
         __tempuri__GetDate_() : tempuri__GetDate() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__GetDate_ * SOAP_FMAC2 soap_dup___tempuri__GetDate_(struct soap*, struct __tempuri__GetDate_*, struct __tempuri__GetDate_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__GetDate_ * SOAP_FMAC2 soap_instantiate___tempuri__GetDate_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2547 */
+/* MESService.h:2557 */
 #ifndef SOAP_TYPE___tempuri__GetDocCode_
-#define SOAP_TYPE___tempuri__GetDocCode_ (120)
+#define SOAP_TYPE___tempuri__GetDocCode_ (123)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__GetDocCode_ {
       public:
@@ -1776,14 +2031,16 @@ struct SOAP_CMAC __tempuri__GetDocCode_ {
         long soap_type() const { return SOAP_TYPE___tempuri__GetDocCode_; }
         /** Constructor with member initializations */
         __tempuri__GetDocCode_() : tempuri__GetDocCode() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__GetDocCode_ * SOAP_FMAC2 soap_dup___tempuri__GetDocCode_(struct soap*, struct __tempuri__GetDocCode_*, struct __tempuri__GetDocCode_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__GetDocCode_ * SOAP_FMAC2 soap_instantiate___tempuri__GetDocCode_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2617 */
+/* MESService.h:2627 */
 #ifndef SOAP_TYPE___tempuri__ToolingTimes_
-#define SOAP_TYPE___tempuri__ToolingTimes_ (122)
+#define SOAP_TYPE___tempuri__ToolingTimes_ (125)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__ToolingTimes_ {
       public:
@@ -1794,14 +2051,16 @@ struct SOAP_CMAC __tempuri__ToolingTimes_ {
         long soap_type() const { return SOAP_TYPE___tempuri__ToolingTimes_; }
         /** Constructor with member initializations */
         __tempuri__ToolingTimes_() : tempuri__ToolingTimes() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__ToolingTimes_ * SOAP_FMAC2 soap_dup___tempuri__ToolingTimes_(struct soap*, struct __tempuri__ToolingTimes_*, struct __tempuri__ToolingTimes_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__ToolingTimes_ * SOAP_FMAC2 soap_instantiate___tempuri__ToolingTimes_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2687 */
+/* MESService.h:2697 */
 #ifndef SOAP_TYPE___tempuri__WorkOrder_
-#define SOAP_TYPE___tempuri__WorkOrder_ (124)
+#define SOAP_TYPE___tempuri__WorkOrder_ (127)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__WorkOrder_ {
       public:
@@ -1812,14 +2071,16 @@ struct SOAP_CMAC __tempuri__WorkOrder_ {
         long soap_type() const { return SOAP_TYPE___tempuri__WorkOrder_; }
         /** Constructor with member initializations */
         __tempuri__WorkOrder_() : tempuri__WorkOrder() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__WorkOrder_ * SOAP_FMAC2 soap_dup___tempuri__WorkOrder_(struct soap*, struct __tempuri__WorkOrder_*, struct __tempuri__WorkOrder_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__WorkOrder_ * SOAP_FMAC2 soap_instantiate___tempuri__WorkOrder_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2757 */
+/* MESService.h:2767 */
 #ifndef SOAP_TYPE___tempuri__LineInventory_
-#define SOAP_TYPE___tempuri__LineInventory_ (126)
+#define SOAP_TYPE___tempuri__LineInventory_ (129)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__LineInventory_ {
       public:
@@ -1830,14 +2091,16 @@ struct SOAP_CMAC __tempuri__LineInventory_ {
         long soap_type() const { return SOAP_TYPE___tempuri__LineInventory_; }
         /** Constructor with member initializations */
         __tempuri__LineInventory_() : tempuri__LineInventory() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__LineInventory_ * SOAP_FMAC2 soap_dup___tempuri__LineInventory_(struct soap*, struct __tempuri__LineInventory_*, struct __tempuri__LineInventory_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__LineInventory_ * SOAP_FMAC2 soap_instantiate___tempuri__LineInventory_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2827 */
+/* MESService.h:2837 */
 #ifndef SOAP_TYPE___tempuri__LineInventoryUpdate_
-#define SOAP_TYPE___tempuri__LineInventoryUpdate_ (128)
+#define SOAP_TYPE___tempuri__LineInventoryUpdate_ (131)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__LineInventoryUpdate_ {
       public:
@@ -1848,14 +2111,16 @@ struct SOAP_CMAC __tempuri__LineInventoryUpdate_ {
         long soap_type() const { return SOAP_TYPE___tempuri__LineInventoryUpdate_; }
         /** Constructor with member initializations */
         __tempuri__LineInventoryUpdate_() : tempuri__LineInventoryUpdate() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__LineInventoryUpdate_ * SOAP_FMAC2 soap_dup___tempuri__LineInventoryUpdate_(struct soap*, struct __tempuri__LineInventoryUpdate_*, struct __tempuri__LineInventoryUpdate_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__LineInventoryUpdate_ * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryUpdate_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2897 */
+/* MESService.h:2907 */
 #ifndef SOAP_TYPE___tempuri__LineInventoryReturn_
-#define SOAP_TYPE___tempuri__LineInventoryReturn_ (130)
+#define SOAP_TYPE___tempuri__LineInventoryReturn_ (133)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__LineInventoryReturn_ {
       public:
@@ -1866,14 +2131,16 @@ struct SOAP_CMAC __tempuri__LineInventoryReturn_ {
         long soap_type() const { return SOAP_TYPE___tempuri__LineInventoryReturn_; }
         /** Constructor with member initializations */
         __tempuri__LineInventoryReturn_() : tempuri__LineInventoryReturn() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__LineInventoryReturn_ * SOAP_FMAC2 soap_dup___tempuri__LineInventoryReturn_(struct soap*, struct __tempuri__LineInventoryReturn_*, struct __tempuri__LineInventoryReturn_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__LineInventoryReturn_ * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryReturn_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:2967 */
+/* MESService.h:2977 */
 #ifndef SOAP_TYPE___tempuri__ItemsAdd_
-#define SOAP_TYPE___tempuri__ItemsAdd_ (132)
+#define SOAP_TYPE___tempuri__ItemsAdd_ (135)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__ItemsAdd_ {
       public:
@@ -1884,14 +2151,16 @@ struct SOAP_CMAC __tempuri__ItemsAdd_ {
         long soap_type() const { return SOAP_TYPE___tempuri__ItemsAdd_; }
         /** Constructor with member initializations */
         __tempuri__ItemsAdd_() : tempuri__ItemsAdd() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__ItemsAdd_ * SOAP_FMAC2 soap_dup___tempuri__ItemsAdd_(struct soap*, struct __tempuri__ItemsAdd_*, struct __tempuri__ItemsAdd_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__ItemsAdd_ * SOAP_FMAC2 soap_instantiate___tempuri__ItemsAdd_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:3037 */
+/* MESService.h:3047 */
 #ifndef SOAP_TYPE___tempuri__DocAdd_
-#define SOAP_TYPE___tempuri__DocAdd_ (134)
+#define SOAP_TYPE___tempuri__DocAdd_ (137)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__DocAdd_ {
       public:
@@ -1902,14 +2171,16 @@ struct SOAP_CMAC __tempuri__DocAdd_ {
         long soap_type() const { return SOAP_TYPE___tempuri__DocAdd_; }
         /** Constructor with member initializations */
         __tempuri__DocAdd_() : tempuri__DocAdd() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__DocAdd_ * SOAP_FMAC2 soap_dup___tempuri__DocAdd_(struct soap*, struct __tempuri__DocAdd_*, struct __tempuri__DocAdd_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__DocAdd_ * SOAP_FMAC2 soap_instantiate___tempuri__DocAdd_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:3107 */
+/* MESService.h:3117 */
 #ifndef SOAP_TYPE___tempuri__GetDept_
-#define SOAP_TYPE___tempuri__GetDept_ (136)
+#define SOAP_TYPE___tempuri__GetDept_ (139)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__GetDept_ {
       public:
@@ -1920,14 +2191,16 @@ struct SOAP_CMAC __tempuri__GetDept_ {
         long soap_type() const { return SOAP_TYPE___tempuri__GetDept_; }
         /** Constructor with member initializations */
         __tempuri__GetDept_() : tempuri__GetDept() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__GetDept_ * SOAP_FMAC2 soap_dup___tempuri__GetDept_(struct soap*, struct __tempuri__GetDept_*, struct __tempuri__GetDept_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__GetDept_ * SOAP_FMAC2 soap_instantiate___tempuri__GetDept_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:3177 */
+/* MESService.h:3187 */
 #ifndef SOAP_TYPE___tempuri__GetPower_
-#define SOAP_TYPE___tempuri__GetPower_ (138)
+#define SOAP_TYPE___tempuri__GetPower_ (141)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__GetPower_ {
       public:
@@ -1938,14 +2211,16 @@ struct SOAP_CMAC __tempuri__GetPower_ {
         long soap_type() const { return SOAP_TYPE___tempuri__GetPower_; }
         /** Constructor with member initializations */
         __tempuri__GetPower_() : tempuri__GetPower() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__GetPower_ * SOAP_FMAC2 soap_dup___tempuri__GetPower_(struct soap*, struct __tempuri__GetPower_*, struct __tempuri__GetPower_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__GetPower_ * SOAP_FMAC2 soap_instantiate___tempuri__GetPower_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:3247 */
+/* MESService.h:3257 */
 #ifndef SOAP_TYPE___tempuri__Login_
-#define SOAP_TYPE___tempuri__Login_ (140)
+#define SOAP_TYPE___tempuri__Login_ (143)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__Login_ {
       public:
@@ -1956,14 +2231,16 @@ struct SOAP_CMAC __tempuri__Login_ {
         long soap_type() const { return SOAP_TYPE___tempuri__Login_; }
         /** Constructor with member initializations */
         __tempuri__Login_() : tempuri__Login() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__Login_ * SOAP_FMAC2 soap_dup___tempuri__Login_(struct soap*, struct __tempuri__Login_*, struct __tempuri__Login_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__Login_ * SOAP_FMAC2 soap_instantiate___tempuri__Login_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:3317 */
+/* MESService.h:3327 */
 #ifndef SOAP_TYPE___tempuri__AnDan1Send_
-#define SOAP_TYPE___tempuri__AnDan1Send_ (142)
+#define SOAP_TYPE___tempuri__AnDan1Send_ (145)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDan1Send_ {
       public:
@@ -1974,14 +2251,16 @@ struct SOAP_CMAC __tempuri__AnDan1Send_ {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDan1Send_; }
         /** Constructor with member initializations */
         __tempuri__AnDan1Send_() : tempuri__AnDan1Send() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDan1Send_ * SOAP_FMAC2 soap_dup___tempuri__AnDan1Send_(struct soap*, struct __tempuri__AnDan1Send_*, struct __tempuri__AnDan1Send_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDan1Send_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan1Send_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:3387 */
+/* MESService.h:3397 */
 #ifndef SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent_
-#define SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent_ (144)
+#define SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent_ (147)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDan4UpdPeoplePresent_ {
       public:
@@ -1992,14 +2271,16 @@ struct SOAP_CMAC __tempuri__AnDan4UpdPeoplePresent_ {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent_; }
         /** Constructor with member initializations */
         __tempuri__AnDan4UpdPeoplePresent_() : tempuri__AnDan4UpdPeoplePresent() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDan4UpdPeoplePresent_ * SOAP_FMAC2 soap_dup___tempuri__AnDan4UpdPeoplePresent_(struct soap*, struct __tempuri__AnDan4UpdPeoplePresent_*, struct __tempuri__AnDan4UpdPeoplePresent_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDan4UpdPeoplePresent_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan4UpdPeoplePresent_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:3457 */
+/* MESService.h:3467 */
 #ifndef SOAP_TYPE___tempuri__AnDan3AddUsers_
-#define SOAP_TYPE___tempuri__AnDan3AddUsers_ (146)
+#define SOAP_TYPE___tempuri__AnDan3AddUsers_ (149)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDan3AddUsers_ {
       public:
@@ -2010,14 +2291,16 @@ struct SOAP_CMAC __tempuri__AnDan3AddUsers_ {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDan3AddUsers_; }
         /** Constructor with member initializations */
         __tempuri__AnDan3AddUsers_() : tempuri__AnDan3AddUsers() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDan3AddUsers_ * SOAP_FMAC2 soap_dup___tempuri__AnDan3AddUsers_(struct soap*, struct __tempuri__AnDan3AddUsers_*, struct __tempuri__AnDan3AddUsers_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDan3AddUsers_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan3AddUsers_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:3527 */
+/* MESService.h:3537 */
 #ifndef SOAP_TYPE___tempuri__AnDan2PeoplePresent_
-#define SOAP_TYPE___tempuri__AnDan2PeoplePresent_ (148)
+#define SOAP_TYPE___tempuri__AnDan2PeoplePresent_ (151)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDan2PeoplePresent_ {
       public:
@@ -2028,14 +2311,16 @@ struct SOAP_CMAC __tempuri__AnDan2PeoplePresent_ {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDan2PeoplePresent_; }
         /** Constructor with member initializations */
         __tempuri__AnDan2PeoplePresent_() : tempuri__AnDan2PeoplePresent() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDan2PeoplePresent_ * SOAP_FMAC2 soap_dup___tempuri__AnDan2PeoplePresent_(struct soap*, struct __tempuri__AnDan2PeoplePresent_*, struct __tempuri__AnDan2PeoplePresent_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDan2PeoplePresent_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan2PeoplePresent_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:3597 */
+/* MESService.h:3607 */
 #ifndef SOAP_TYPE___tempuri__AnDanSLTypeGet_
-#define SOAP_TYPE___tempuri__AnDanSLTypeGet_ (150)
+#define SOAP_TYPE___tempuri__AnDanSLTypeGet_ (153)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDanSLTypeGet_ {
       public:
@@ -2046,14 +2331,16 @@ struct SOAP_CMAC __tempuri__AnDanSLTypeGet_ {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDanSLTypeGet_; }
         /** Constructor with member initializations */
         __tempuri__AnDanSLTypeGet_() : tempuri__AnDanSLTypeGet() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDanSLTypeGet_ * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeGet_(struct soap*, struct __tempuri__AnDanSLTypeGet_*, struct __tempuri__AnDanSLTypeGet_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDanSLTypeGet_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeGet_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:3667 */
+/* MESService.h:3677 */
 #ifndef SOAP_TYPE___tempuri__AnDanSLTypeAdd_
-#define SOAP_TYPE___tempuri__AnDanSLTypeAdd_ (152)
+#define SOAP_TYPE___tempuri__AnDanSLTypeAdd_ (155)
 /* Wrapper: */
 struct SOAP_CMAC __tempuri__AnDanSLTypeAdd_ {
       public:
@@ -2064,15 +2351,17 @@ struct SOAP_CMAC __tempuri__AnDanSLTypeAdd_ {
         long soap_type() const { return SOAP_TYPE___tempuri__AnDanSLTypeAdd_; }
         /** Constructor with member initializations */
         __tempuri__AnDanSLTypeAdd_() : tempuri__AnDanSLTypeAdd() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct __tempuri__AnDanSLTypeAdd_ * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeAdd_(struct soap*, struct __tempuri__AnDanSLTypeAdd_*, struct __tempuri__AnDanSLTypeAdd_ const*);
         /** Friend allocator */
         friend SOAP_FMAC1 __tempuri__AnDanSLTypeAdd_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeAdd_(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
-/* MESService.h:4270 */
+/* MESService.h:4280 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_SOAP_ENV__Header
-#define SOAP_TYPE_SOAP_ENV__Header (153)
+#define SOAP_TYPE_SOAP_ENV__Header (156)
 /* SOAP_ENV__Header: */
 struct SOAP_CMAC SOAP_ENV__Header {
       public:
@@ -2080,16 +2369,18 @@ struct SOAP_CMAC SOAP_ENV__Header {
         long soap_type() const { return SOAP_TYPE_SOAP_ENV__Header; }
         /** Constructor with member initializations */
         SOAP_ENV__Header() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct SOAP_ENV__Header * SOAP_FMAC2 soap_dup_SOAP_ENV__Header(struct soap*, struct SOAP_ENV__Header*, struct SOAP_ENV__Header const*);
         /** Friend allocator */
         friend SOAP_FMAC1 SOAP_ENV__Header * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Header(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 #endif
 
-/* MESService.h:4270 */
+/* MESService.h:4280 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_SOAP_ENV__Code
-#define SOAP_TYPE_SOAP_ENV__Code (154)
+#define SOAP_TYPE_SOAP_ENV__Code (157)
 /* Type SOAP_ENV__Code is a recursive data type, (in)directly referencing itself through its (base or derived class) members */
 /* SOAP_ENV__Code: */
 struct SOAP_CMAC SOAP_ENV__Code {
@@ -2103,16 +2394,18 @@ struct SOAP_CMAC SOAP_ENV__Code {
         long soap_type() const { return SOAP_TYPE_SOAP_ENV__Code; }
         /** Constructor with member initializations */
         SOAP_ENV__Code() : SOAP_ENV__Value(), SOAP_ENV__Subcode() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct SOAP_ENV__Code * SOAP_FMAC2 soap_dup_SOAP_ENV__Code(struct soap*, struct SOAP_ENV__Code*, struct SOAP_ENV__Code const*);
         /** Friend allocator */
         friend SOAP_FMAC1 SOAP_ENV__Code * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Code(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 #endif
 
-/* MESService.h:4270 */
+/* MESService.h:4280 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_SOAP_ENV__Detail
-#define SOAP_TYPE_SOAP_ENV__Detail (156)
+#define SOAP_TYPE_SOAP_ENV__Detail (159)
 /* SOAP_ENV__Detail: */
 struct SOAP_CMAC SOAP_ENV__Detail {
       public:
@@ -2126,16 +2419,18 @@ struct SOAP_CMAC SOAP_ENV__Detail {
         long soap_type() const { return SOAP_TYPE_SOAP_ENV__Detail; }
         /** Constructor with member initializations */
         SOAP_ENV__Detail() : __any(), __type(), fault() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct SOAP_ENV__Detail * SOAP_FMAC2 soap_dup_SOAP_ENV__Detail(struct soap*, struct SOAP_ENV__Detail*, struct SOAP_ENV__Detail const*);
         /** Friend allocator */
         friend SOAP_FMAC1 SOAP_ENV__Detail * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Detail(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 #endif
 
-/* MESService.h:4270 */
+/* MESService.h:4280 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_SOAP_ENV__Reason
-#define SOAP_TYPE_SOAP_ENV__Reason (159)
+#define SOAP_TYPE_SOAP_ENV__Reason (162)
 /* SOAP_ENV__Reason: */
 struct SOAP_CMAC SOAP_ENV__Reason {
       public:
@@ -2146,16 +2441,18 @@ struct SOAP_CMAC SOAP_ENV__Reason {
         long soap_type() const { return SOAP_TYPE_SOAP_ENV__Reason; }
         /** Constructor with member initializations */
         SOAP_ENV__Reason() : SOAP_ENV__Text() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct SOAP_ENV__Reason * SOAP_FMAC2 soap_dup_SOAP_ENV__Reason(struct soap*, struct SOAP_ENV__Reason*, struct SOAP_ENV__Reason const*);
         /** Friend allocator */
         friend SOAP_FMAC1 SOAP_ENV__Reason * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Reason(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 #endif
 
-/* MESService.h:4270 */
+/* MESService.h:4280 */
 #ifndef WITH_NOGLOBAL
 #ifndef SOAP_TYPE_SOAP_ENV__Fault
-#define SOAP_TYPE_SOAP_ENV__Fault (160)
+#define SOAP_TYPE_SOAP_ENV__Fault (163)
 /* SOAP_ENV__Fault: */
 struct SOAP_CMAC SOAP_ENV__Fault {
       public:
@@ -2182,6 +2479,8 @@ struct SOAP_CMAC SOAP_ENV__Fault {
         long soap_type() const { return SOAP_TYPE_SOAP_ENV__Fault; }
         /** Constructor with member initializations */
         SOAP_ENV__Fault() : faultcode(), faultstring(), faultactor(), detail(), SOAP_ENV__Code(), SOAP_ENV__Reason(), SOAP_ENV__Node(), SOAP_ENV__Role(), SOAP_ENV__Detail() { }
+        /** Friend duplicator */
+        friend SOAP_FMAC1 struct SOAP_ENV__Fault * SOAP_FMAC2 soap_dup_SOAP_ENV__Fault(struct soap*, struct SOAP_ENV__Fault*, struct SOAP_ENV__Fault const*);
         /** Friend allocator */
         friend SOAP_FMAC1 SOAP_ENV__Fault * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Fault(struct soap*, int, const char*, const char*, size_t*);
 };
@@ -2226,317 +2525,327 @@ typedef char *_QName;
 
 /* bool has binding name 'bool' for type 'xsd:boolean' */
 #ifndef SOAP_TYPE_bool
-#define SOAP_TYPE_bool (44)
+#define SOAP_TYPE_bool (47)
+#endif
+
+/* std::string has binding name 'std__string' for type 'xsd:string' */
+#ifndef SOAP_TYPE_std__string
+#define SOAP_TYPE_std__string (45)
 #endif
 
 /* _tempuri__AnDanSLTypeAddResponse has binding name '_tempuri__AnDanSLTypeAddResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDanSLTypeAddResponse
-#define SOAP_TYPE__tempuri__AnDanSLTypeAddResponse (42)
+#define SOAP_TYPE__tempuri__AnDanSLTypeAddResponse (43)
 #endif
 
 /* _tempuri__AnDanSLTypeAdd has binding name '_tempuri__AnDanSLTypeAdd' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDanSLTypeAdd
-#define SOAP_TYPE__tempuri__AnDanSLTypeAdd (41)
+#define SOAP_TYPE__tempuri__AnDanSLTypeAdd (42)
 #endif
 
 /* _tempuri__AnDanSLTypeGetResponse has binding name '_tempuri__AnDanSLTypeGetResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDanSLTypeGetResponse
-#define SOAP_TYPE__tempuri__AnDanSLTypeGetResponse (40)
+#define SOAP_TYPE__tempuri__AnDanSLTypeGetResponse (41)
 #endif
 
 /* _tempuri__AnDanSLTypeGet has binding name '_tempuri__AnDanSLTypeGet' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDanSLTypeGet
-#define SOAP_TYPE__tempuri__AnDanSLTypeGet (39)
+#define SOAP_TYPE__tempuri__AnDanSLTypeGet (40)
 #endif
 
 /* _tempuri__AnDan2PeoplePresentResponse has binding name '_tempuri__AnDan2PeoplePresentResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDan2PeoplePresentResponse
-#define SOAP_TYPE__tempuri__AnDan2PeoplePresentResponse (38)
+#define SOAP_TYPE__tempuri__AnDan2PeoplePresentResponse (39)
 #endif
 
 /* _tempuri__AnDan2PeoplePresent has binding name '_tempuri__AnDan2PeoplePresent' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDan2PeoplePresent
-#define SOAP_TYPE__tempuri__AnDan2PeoplePresent (37)
+#define SOAP_TYPE__tempuri__AnDan2PeoplePresent (38)
 #endif
 
 /* _tempuri__AnDan3AddUsersResponse has binding name '_tempuri__AnDan3AddUsersResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDan3AddUsersResponse
-#define SOAP_TYPE__tempuri__AnDan3AddUsersResponse (36)
+#define SOAP_TYPE__tempuri__AnDan3AddUsersResponse (37)
 #endif
 
 /* _tempuri__AnDan3AddUsers has binding name '_tempuri__AnDan3AddUsers' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDan3AddUsers
-#define SOAP_TYPE__tempuri__AnDan3AddUsers (35)
+#define SOAP_TYPE__tempuri__AnDan3AddUsers (36)
 #endif
 
 /* _tempuri__AnDan4UpdPeoplePresentResponse has binding name '_tempuri__AnDan4UpdPeoplePresentResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDan4UpdPeoplePresentResponse
-#define SOAP_TYPE__tempuri__AnDan4UpdPeoplePresentResponse (34)
+#define SOAP_TYPE__tempuri__AnDan4UpdPeoplePresentResponse (35)
 #endif
 
 /* _tempuri__AnDan4UpdPeoplePresent has binding name '_tempuri__AnDan4UpdPeoplePresent' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDan4UpdPeoplePresent
-#define SOAP_TYPE__tempuri__AnDan4UpdPeoplePresent (33)
+#define SOAP_TYPE__tempuri__AnDan4UpdPeoplePresent (34)
 #endif
 
 /* _tempuri__AnDan1SendResponse has binding name '_tempuri__AnDan1SendResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDan1SendResponse
-#define SOAP_TYPE__tempuri__AnDan1SendResponse (32)
+#define SOAP_TYPE__tempuri__AnDan1SendResponse (33)
 #endif
 
 /* _tempuri__AnDan1Send has binding name '_tempuri__AnDan1Send' for type '' */
 #ifndef SOAP_TYPE__tempuri__AnDan1Send
-#define SOAP_TYPE__tempuri__AnDan1Send (31)
+#define SOAP_TYPE__tempuri__AnDan1Send (32)
 #endif
 
 /* _tempuri__LoginResponse has binding name '_tempuri__LoginResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__LoginResponse
-#define SOAP_TYPE__tempuri__LoginResponse (30)
+#define SOAP_TYPE__tempuri__LoginResponse (31)
 #endif
 
 /* _tempuri__Login has binding name '_tempuri__Login' for type '' */
 #ifndef SOAP_TYPE__tempuri__Login
-#define SOAP_TYPE__tempuri__Login (29)
+#define SOAP_TYPE__tempuri__Login (30)
 #endif
 
 /* _tempuri__GetPowerResponse has binding name '_tempuri__GetPowerResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__GetPowerResponse
-#define SOAP_TYPE__tempuri__GetPowerResponse (28)
+#define SOAP_TYPE__tempuri__GetPowerResponse (29)
 #endif
 
 /* _tempuri__GetPower has binding name '_tempuri__GetPower' for type '' */
 #ifndef SOAP_TYPE__tempuri__GetPower
-#define SOAP_TYPE__tempuri__GetPower (27)
+#define SOAP_TYPE__tempuri__GetPower (28)
 #endif
 
 /* _tempuri__GetDeptResponse has binding name '_tempuri__GetDeptResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__GetDeptResponse
-#define SOAP_TYPE__tempuri__GetDeptResponse (26)
+#define SOAP_TYPE__tempuri__GetDeptResponse (27)
 #endif
 
 /* _tempuri__GetDept has binding name '_tempuri__GetDept' for type '' */
 #ifndef SOAP_TYPE__tempuri__GetDept
-#define SOAP_TYPE__tempuri__GetDept (25)
+#define SOAP_TYPE__tempuri__GetDept (26)
 #endif
 
 /* _tempuri__DocAddResponse has binding name '_tempuri__DocAddResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__DocAddResponse
-#define SOAP_TYPE__tempuri__DocAddResponse (24)
+#define SOAP_TYPE__tempuri__DocAddResponse (25)
 #endif
 
 /* _tempuri__DocAdd has binding name '_tempuri__DocAdd' for type '' */
 #ifndef SOAP_TYPE__tempuri__DocAdd
-#define SOAP_TYPE__tempuri__DocAdd (23)
+#define SOAP_TYPE__tempuri__DocAdd (24)
 #endif
 
 /* _tempuri__ItemsAddResponse has binding name '_tempuri__ItemsAddResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__ItemsAddResponse
-#define SOAP_TYPE__tempuri__ItemsAddResponse (22)
+#define SOAP_TYPE__tempuri__ItemsAddResponse (23)
 #endif
 
 /* _tempuri__ItemsAdd has binding name '_tempuri__ItemsAdd' for type '' */
 #ifndef SOAP_TYPE__tempuri__ItemsAdd
-#define SOAP_TYPE__tempuri__ItemsAdd (21)
+#define SOAP_TYPE__tempuri__ItemsAdd (22)
 #endif
 
 /* _tempuri__LineInventoryReturnResponse has binding name '_tempuri__LineInventoryReturnResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__LineInventoryReturnResponse
-#define SOAP_TYPE__tempuri__LineInventoryReturnResponse (20)
+#define SOAP_TYPE__tempuri__LineInventoryReturnResponse (21)
 #endif
 
 /* _tempuri__LineInventoryReturn has binding name '_tempuri__LineInventoryReturn' for type '' */
 #ifndef SOAP_TYPE__tempuri__LineInventoryReturn
-#define SOAP_TYPE__tempuri__LineInventoryReturn (19)
+#define SOAP_TYPE__tempuri__LineInventoryReturn (20)
 #endif
 
 /* _tempuri__LineInventoryUpdateResponse has binding name '_tempuri__LineInventoryUpdateResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__LineInventoryUpdateResponse
-#define SOAP_TYPE__tempuri__LineInventoryUpdateResponse (18)
+#define SOAP_TYPE__tempuri__LineInventoryUpdateResponse (19)
 #endif
 
 /* _tempuri__LineInventoryUpdate has binding name '_tempuri__LineInventoryUpdate' for type '' */
 #ifndef SOAP_TYPE__tempuri__LineInventoryUpdate
-#define SOAP_TYPE__tempuri__LineInventoryUpdate (17)
+#define SOAP_TYPE__tempuri__LineInventoryUpdate (18)
 #endif
 
 /* _tempuri__LineInventoryResponse has binding name '_tempuri__LineInventoryResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__LineInventoryResponse
-#define SOAP_TYPE__tempuri__LineInventoryResponse (16)
+#define SOAP_TYPE__tempuri__LineInventoryResponse (17)
 #endif
 
 /* _tempuri__LineInventory has binding name '_tempuri__LineInventory' for type '' */
 #ifndef SOAP_TYPE__tempuri__LineInventory
-#define SOAP_TYPE__tempuri__LineInventory (15)
+#define SOAP_TYPE__tempuri__LineInventory (16)
 #endif
 
 /* _tempuri__WorkOrderResponse has binding name '_tempuri__WorkOrderResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__WorkOrderResponse
-#define SOAP_TYPE__tempuri__WorkOrderResponse (14)
+#define SOAP_TYPE__tempuri__WorkOrderResponse (15)
 #endif
 
 /* _tempuri__WorkOrder has binding name '_tempuri__WorkOrder' for type '' */
 #ifndef SOAP_TYPE__tempuri__WorkOrder
-#define SOAP_TYPE__tempuri__WorkOrder (13)
+#define SOAP_TYPE__tempuri__WorkOrder (14)
 #endif
 
 /* _tempuri__ToolingTimesResponse has binding name '_tempuri__ToolingTimesResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__ToolingTimesResponse
-#define SOAP_TYPE__tempuri__ToolingTimesResponse (12)
+#define SOAP_TYPE__tempuri__ToolingTimesResponse (13)
 #endif
 
 /* _tempuri__ToolingTimes has binding name '_tempuri__ToolingTimes' for type '' */
 #ifndef SOAP_TYPE__tempuri__ToolingTimes
-#define SOAP_TYPE__tempuri__ToolingTimes (11)
+#define SOAP_TYPE__tempuri__ToolingTimes (12)
 #endif
 
 /* _tempuri__GetDocCodeResponse has binding name '_tempuri__GetDocCodeResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__GetDocCodeResponse
-#define SOAP_TYPE__tempuri__GetDocCodeResponse (10)
+#define SOAP_TYPE__tempuri__GetDocCodeResponse (11)
 #endif
 
 /* _tempuri__GetDocCode has binding name '_tempuri__GetDocCode' for type '' */
 #ifndef SOAP_TYPE__tempuri__GetDocCode
-#define SOAP_TYPE__tempuri__GetDocCode (9)
+#define SOAP_TYPE__tempuri__GetDocCode (10)
 #endif
 
 /* _tempuri__GetDateResponse has binding name '_tempuri__GetDateResponse' for type '' */
 #ifndef SOAP_TYPE__tempuri__GetDateResponse
-#define SOAP_TYPE__tempuri__GetDateResponse (8)
+#define SOAP_TYPE__tempuri__GetDateResponse (9)
 #endif
 
 /* _tempuri__GetDate has binding name '_tempuri__GetDate' for type '' */
 #ifndef SOAP_TYPE__tempuri__GetDate
-#define SOAP_TYPE__tempuri__GetDate (7)
+#define SOAP_TYPE__tempuri__GetDate (8)
 #endif
 
 /* struct SOAP_ENV__Fault has binding name 'SOAP_ENV__Fault' for type '' */
 #ifndef SOAP_TYPE_SOAP_ENV__Fault
-#define SOAP_TYPE_SOAP_ENV__Fault (160)
+#define SOAP_TYPE_SOAP_ENV__Fault (163)
 #endif
 
 /* struct SOAP_ENV__Reason has binding name 'SOAP_ENV__Reason' for type '' */
 #ifndef SOAP_TYPE_SOAP_ENV__Reason
-#define SOAP_TYPE_SOAP_ENV__Reason (159)
+#define SOAP_TYPE_SOAP_ENV__Reason (162)
 #endif
 
 /* struct SOAP_ENV__Detail has binding name 'SOAP_ENV__Detail' for type '' */
 #ifndef SOAP_TYPE_SOAP_ENV__Detail
-#define SOAP_TYPE_SOAP_ENV__Detail (156)
+#define SOAP_TYPE_SOAP_ENV__Detail (159)
 #endif
 
 /* struct SOAP_ENV__Code has binding name 'SOAP_ENV__Code' for type '' */
 #ifndef SOAP_TYPE_SOAP_ENV__Code
-#define SOAP_TYPE_SOAP_ENV__Code (154)
+#define SOAP_TYPE_SOAP_ENV__Code (157)
 #endif
 
 /* struct SOAP_ENV__Header has binding name 'SOAP_ENV__Header' for type '' */
 #ifndef SOAP_TYPE_SOAP_ENV__Header
-#define SOAP_TYPE_SOAP_ENV__Header (153)
+#define SOAP_TYPE_SOAP_ENV__Header (156)
 #endif
 
 /* struct SOAP_ENV__Reason * has binding name 'PointerToSOAP_ENV__Reason' for type '' */
 #ifndef SOAP_TYPE_PointerToSOAP_ENV__Reason
-#define SOAP_TYPE_PointerToSOAP_ENV__Reason (162)
+#define SOAP_TYPE_PointerToSOAP_ENV__Reason (165)
 #endif
 
 /* struct SOAP_ENV__Detail * has binding name 'PointerToSOAP_ENV__Detail' for type '' */
 #ifndef SOAP_TYPE_PointerToSOAP_ENV__Detail
-#define SOAP_TYPE_PointerToSOAP_ENV__Detail (161)
+#define SOAP_TYPE_PointerToSOAP_ENV__Detail (164)
 #endif
 
 /* struct SOAP_ENV__Code * has binding name 'PointerToSOAP_ENV__Code' for type '' */
 #ifndef SOAP_TYPE_PointerToSOAP_ENV__Code
-#define SOAP_TYPE_PointerToSOAP_ENV__Code (155)
+#define SOAP_TYPE_PointerToSOAP_ENV__Code (158)
 #endif
 
 /* _tempuri__AnDanSLTypeAdd * has binding name 'PointerTo_tempuri__AnDanSLTypeAdd' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__AnDanSLTypeAdd
-#define SOAP_TYPE_PointerTo_tempuri__AnDanSLTypeAdd (113)
+#define SOAP_TYPE_PointerTo_tempuri__AnDanSLTypeAdd (116)
 #endif
 
 /* _tempuri__AnDanSLTypeGet * has binding name 'PointerTo_tempuri__AnDanSLTypeGet' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__AnDanSLTypeGet
-#define SOAP_TYPE_PointerTo_tempuri__AnDanSLTypeGet (109)
+#define SOAP_TYPE_PointerTo_tempuri__AnDanSLTypeGet (112)
 #endif
 
 /* _tempuri__AnDan2PeoplePresent * has binding name 'PointerTo_tempuri__AnDan2PeoplePresent' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__AnDan2PeoplePresent
-#define SOAP_TYPE_PointerTo_tempuri__AnDan2PeoplePresent (105)
+#define SOAP_TYPE_PointerTo_tempuri__AnDan2PeoplePresent (108)
 #endif
 
 /* _tempuri__AnDan3AddUsers * has binding name 'PointerTo_tempuri__AnDan3AddUsers' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__AnDan3AddUsers
-#define SOAP_TYPE_PointerTo_tempuri__AnDan3AddUsers (101)
+#define SOAP_TYPE_PointerTo_tempuri__AnDan3AddUsers (104)
 #endif
 
 /* _tempuri__AnDan4UpdPeoplePresent * has binding name 'PointerTo_tempuri__AnDan4UpdPeoplePresent' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__AnDan4UpdPeoplePresent
-#define SOAP_TYPE_PointerTo_tempuri__AnDan4UpdPeoplePresent (97)
+#define SOAP_TYPE_PointerTo_tempuri__AnDan4UpdPeoplePresent (100)
 #endif
 
 /* _tempuri__AnDan1Send * has binding name 'PointerTo_tempuri__AnDan1Send' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__AnDan1Send
-#define SOAP_TYPE_PointerTo_tempuri__AnDan1Send (93)
+#define SOAP_TYPE_PointerTo_tempuri__AnDan1Send (96)
 #endif
 
 /* _tempuri__Login * has binding name 'PointerTo_tempuri__Login' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__Login
-#define SOAP_TYPE_PointerTo_tempuri__Login (89)
+#define SOAP_TYPE_PointerTo_tempuri__Login (92)
 #endif
 
 /* _tempuri__GetPower * has binding name 'PointerTo_tempuri__GetPower' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__GetPower
-#define SOAP_TYPE_PointerTo_tempuri__GetPower (85)
+#define SOAP_TYPE_PointerTo_tempuri__GetPower (88)
 #endif
 
 /* _tempuri__GetDept * has binding name 'PointerTo_tempuri__GetDept' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__GetDept
-#define SOAP_TYPE_PointerTo_tempuri__GetDept (81)
+#define SOAP_TYPE_PointerTo_tempuri__GetDept (84)
 #endif
 
 /* _tempuri__DocAdd * has binding name 'PointerTo_tempuri__DocAdd' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__DocAdd
-#define SOAP_TYPE_PointerTo_tempuri__DocAdd (77)
+#define SOAP_TYPE_PointerTo_tempuri__DocAdd (80)
 #endif
 
 /* _tempuri__ItemsAdd * has binding name 'PointerTo_tempuri__ItemsAdd' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__ItemsAdd
-#define SOAP_TYPE_PointerTo_tempuri__ItemsAdd (73)
+#define SOAP_TYPE_PointerTo_tempuri__ItemsAdd (76)
 #endif
 
 /* _tempuri__LineInventoryReturn * has binding name 'PointerTo_tempuri__LineInventoryReturn' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__LineInventoryReturn
-#define SOAP_TYPE_PointerTo_tempuri__LineInventoryReturn (69)
+#define SOAP_TYPE_PointerTo_tempuri__LineInventoryReturn (72)
 #endif
 
 /* _tempuri__LineInventoryUpdate * has binding name 'PointerTo_tempuri__LineInventoryUpdate' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__LineInventoryUpdate
-#define SOAP_TYPE_PointerTo_tempuri__LineInventoryUpdate (65)
+#define SOAP_TYPE_PointerTo_tempuri__LineInventoryUpdate (68)
 #endif
 
 /* _tempuri__LineInventory * has binding name 'PointerTo_tempuri__LineInventory' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__LineInventory
-#define SOAP_TYPE_PointerTo_tempuri__LineInventory (61)
+#define SOAP_TYPE_PointerTo_tempuri__LineInventory (64)
 #endif
 
 /* _tempuri__WorkOrder * has binding name 'PointerTo_tempuri__WorkOrder' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__WorkOrder
-#define SOAP_TYPE_PointerTo_tempuri__WorkOrder (57)
+#define SOAP_TYPE_PointerTo_tempuri__WorkOrder (60)
 #endif
 
 /* _tempuri__ToolingTimes * has binding name 'PointerTo_tempuri__ToolingTimes' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__ToolingTimes
-#define SOAP_TYPE_PointerTo_tempuri__ToolingTimes (53)
+#define SOAP_TYPE_PointerTo_tempuri__ToolingTimes (56)
 #endif
 
 /* _tempuri__GetDocCode * has binding name 'PointerTo_tempuri__GetDocCode' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__GetDocCode
-#define SOAP_TYPE_PointerTo_tempuri__GetDocCode (49)
+#define SOAP_TYPE_PointerTo_tempuri__GetDocCode (52)
 #endif
 
 /* _tempuri__GetDate * has binding name 'PointerTo_tempuri__GetDate' for type '' */
 #ifndef SOAP_TYPE_PointerTo_tempuri__GetDate
-#define SOAP_TYPE_PointerTo_tempuri__GetDate (45)
+#define SOAP_TYPE_PointerTo_tempuri__GetDate (48)
+#endif
+
+/* std::string * has binding name 'PointerTostd__string' for type 'xsd:string' */
+#ifndef SOAP_TYPE_PointerTostd__string
+#define SOAP_TYPE_PointerTostd__string (46)
 #endif
 
 /* _QName has binding name '_QName' for type 'xsd:QName' */

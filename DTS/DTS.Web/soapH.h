@@ -256,10 +256,108 @@ inline int soap_POST_recv_bool(struct soap *soap, bool *p)
 }
 #endif
 
+#ifndef SOAP_TYPE_std__string_DEFINED
+#define SOAP_TYPE_std__string_DEFINED
+
+inline void soap_default_std__string(struct soap *soap, std::string *p)
+{
+	(void)soap; /* appease -Wall -Werror */
+	p->erase();
+}
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_std__string(struct soap*, const std::string *);
+
+#define soap_std__string2s(soap, a) ((a).c_str())
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_std__string(struct soap*, const char*, int, const std::string*, const char*);
+
+#define soap_s2std__string(soap, s, a) soap_s2stdchar((soap), (s), (a), 1, 0, -1, NULL)
+SOAP_FMAC3 std::string * SOAP_FMAC4 soap_in_std__string(struct soap*, const char*, std::string*, const char*);
+
+SOAP_FMAC1 std::string * SOAP_FMAC2 soap_dup_std__string(struct soap*, std::string*, std::string const*);
+SOAP_FMAC1 std::string * SOAP_FMAC2 soap_instantiate_std__string(struct soap*, int, const char*, const char*, size_t*);
+
+inline std::string * soap_new_std__string(struct soap *soap, int n = -1)
+{
+	return soap_instantiate_std__string(soap, n, NULL, NULL, NULL);
+}
+
+inline std::string * soap_new_req_std__string(
+	struct soap *soap)
+{
+	std::string *_p = ::soap_new_std__string(soap);
+	if (_p)
+	{	::soap_default_std__string(soap, _p);
+	}
+	return _p;
+}
+
+inline std::string * soap_new_set_std__string(
+	struct soap *soap)
+{
+	std::string *_p = ::soap_new_std__string(soap);
+	if (_p)
+	{	::soap_default_std__string(soap, _p);
+	}
+	return _p;
+}
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_std__string(struct soap*, const std::string *, const char*, const char*);
+
+inline int soap_write_std__string(struct soap *soap, std::string const*p)
+{
+	soap_free_temp(soap);
+	if (p)
+	{	if (soap_begin_send(soap) || ::soap_put_std__string(soap, p, "string", "") || soap_end_send(soap))
+			return soap->error;
+	}
+	return SOAP_OK;
+}
+
+inline int soap_PUT_std__string(struct soap *soap, const char *URL, std::string const*p)
+{
+	soap_free_temp(soap);
+	if (soap_PUT(soap, URL, NULL, "text/xml; charset=utf-8") || ::soap_put_std__string(soap, p, "string", "") || soap_end_send(soap) || soap_recv_empty_response(soap))
+		return soap_closesock(soap);
+	return SOAP_OK;
+}
+
+inline int soap_POST_send_std__string(struct soap *soap, const char *URL, std::string const*p)
+{
+	soap_free_temp(soap);
+	if (soap_POST(soap, URL, NULL, "text/xml; charset=utf-8") || ::soap_put_std__string(soap, p, "string", "") || soap_end_send(soap))
+		return soap_closesock(soap);
+	return SOAP_OK;
+}
+SOAP_FMAC3 std::string * SOAP_FMAC4 soap_get_std__string(struct soap*, std::string *, const char*, const char*);
+
+inline int soap_read_std__string(struct soap *soap, std::string *p)
+{
+	if (p)
+	{	if (soap_begin_recv(soap) || ::soap_get_std__string(soap, p, NULL, NULL) == NULL || soap_end_recv(soap))
+			return soap->error;
+	}
+	return SOAP_OK;
+}
+
+inline int soap_GET_std__string(struct soap *soap, const char *URL, std::string *p)
+{
+	if (soap_GET(soap, URL, NULL) || ::soap_read_std__string(soap, p) || soap_closesock(soap))
+		return soap_closesock(soap);
+	return SOAP_OK;
+}
+
+inline int soap_POST_recv_std__string(struct soap *soap, std::string *p)
+{
+	if (::soap_read_std__string(soap, p) || soap_closesock(soap))
+		return soap_closesock(soap);
+	return SOAP_OK;
+}
+#endif
+
 #ifndef SOAP_TYPE__tempuri__AnDanSLTypeAddResponse_DEFINED
 #define SOAP_TYPE__tempuri__AnDanSLTypeAddResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDanSLTypeAddResponse(struct soap*, const char*, int, const _tempuri__AnDanSLTypeAddResponse *, const char*);
 SOAP_FMAC3 _tempuri__AnDanSLTypeAddResponse * SOAP_FMAC4 soap_in__tempuri__AnDanSLTypeAddResponse(struct soap*, const char*, _tempuri__AnDanSLTypeAddResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDanSLTypeAddResponse * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeAddResponse(struct soap*, _tempuri__AnDanSLTypeAddResponse*, _tempuri__AnDanSLTypeAddResponse const*);
 SOAP_FMAC1 _tempuri__AnDanSLTypeAddResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeAddResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDanSLTypeAddResponse * soap_new__tempuri__AnDanSLTypeAddResponse(struct soap *soap, int n = -1)
@@ -279,7 +377,7 @@ inline _tempuri__AnDanSLTypeAddResponse * soap_new_req__tempuri__AnDanSLTypeAddR
 
 inline _tempuri__AnDanSLTypeAddResponse * soap_new_set__tempuri__AnDanSLTypeAddResponse(
 	struct soap *soap,
-	char *AnDanSLTypeAddResult)
+	std::string *AnDanSLTypeAddResult)
 {
 	_tempuri__AnDanSLTypeAddResponse *_p = ::soap_new__tempuri__AnDanSLTypeAddResponse(soap);
 	if (_p)
@@ -343,6 +441,8 @@ inline int soap_POST_recv__tempuri__AnDanSLTypeAddResponse(struct soap *soap, _t
 #define SOAP_TYPE__tempuri__AnDanSLTypeAdd_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDanSLTypeAdd(struct soap*, const char*, int, const _tempuri__AnDanSLTypeAdd *, const char*);
 SOAP_FMAC3 _tempuri__AnDanSLTypeAdd * SOAP_FMAC4 soap_in__tempuri__AnDanSLTypeAdd(struct soap*, const char*, _tempuri__AnDanSLTypeAdd *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeAdd(struct soap*, _tempuri__AnDanSLTypeAdd*, _tempuri__AnDanSLTypeAdd const*);
 SOAP_FMAC1 _tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeAdd(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDanSLTypeAdd * soap_new__tempuri__AnDanSLTypeAdd(struct soap *soap, int n = -1)
@@ -362,7 +462,7 @@ inline _tempuri__AnDanSLTypeAdd * soap_new_req__tempuri__AnDanSLTypeAdd(
 
 inline _tempuri__AnDanSLTypeAdd * soap_new_set__tempuri__AnDanSLTypeAdd(
 	struct soap *soap,
-	char *XML_)
+	std::string *XML_)
 {
 	_tempuri__AnDanSLTypeAdd *_p = ::soap_new__tempuri__AnDanSLTypeAdd(soap);
 	if (_p)
@@ -426,6 +526,8 @@ inline int soap_POST_recv__tempuri__AnDanSLTypeAdd(struct soap *soap, _tempuri__
 #define SOAP_TYPE__tempuri__AnDanSLTypeGetResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDanSLTypeGetResponse(struct soap*, const char*, int, const _tempuri__AnDanSLTypeGetResponse *, const char*);
 SOAP_FMAC3 _tempuri__AnDanSLTypeGetResponse * SOAP_FMAC4 soap_in__tempuri__AnDanSLTypeGetResponse(struct soap*, const char*, _tempuri__AnDanSLTypeGetResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDanSLTypeGetResponse * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeGetResponse(struct soap*, _tempuri__AnDanSLTypeGetResponse*, _tempuri__AnDanSLTypeGetResponse const*);
 SOAP_FMAC1 _tempuri__AnDanSLTypeGetResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeGetResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDanSLTypeGetResponse * soap_new__tempuri__AnDanSLTypeGetResponse(struct soap *soap, int n = -1)
@@ -445,7 +547,7 @@ inline _tempuri__AnDanSLTypeGetResponse * soap_new_req__tempuri__AnDanSLTypeGetR
 
 inline _tempuri__AnDanSLTypeGetResponse * soap_new_set__tempuri__AnDanSLTypeGetResponse(
 	struct soap *soap,
-	char *AnDanSLTypeGetResult)
+	std::string *AnDanSLTypeGetResult)
 {
 	_tempuri__AnDanSLTypeGetResponse *_p = ::soap_new__tempuri__AnDanSLTypeGetResponse(soap);
 	if (_p)
@@ -509,6 +611,8 @@ inline int soap_POST_recv__tempuri__AnDanSLTypeGetResponse(struct soap *soap, _t
 #define SOAP_TYPE__tempuri__AnDanSLTypeGet_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDanSLTypeGet(struct soap*, const char*, int, const _tempuri__AnDanSLTypeGet *, const char*);
 SOAP_FMAC3 _tempuri__AnDanSLTypeGet * SOAP_FMAC4 soap_in__tempuri__AnDanSLTypeGet(struct soap*, const char*, _tempuri__AnDanSLTypeGet *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeGet(struct soap*, _tempuri__AnDanSLTypeGet*, _tempuri__AnDanSLTypeGet const*);
 SOAP_FMAC1 _tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeGet(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDanSLTypeGet * soap_new__tempuri__AnDanSLTypeGet(struct soap *soap, int n = -1)
@@ -528,7 +632,7 @@ inline _tempuri__AnDanSLTypeGet * soap_new_req__tempuri__AnDanSLTypeGet(
 
 inline _tempuri__AnDanSLTypeGet * soap_new_set__tempuri__AnDanSLTypeGet(
 	struct soap *soap,
-	char *ADMCode)
+	std::string *ADMCode)
 {
 	_tempuri__AnDanSLTypeGet *_p = ::soap_new__tempuri__AnDanSLTypeGet(soap);
 	if (_p)
@@ -592,6 +696,8 @@ inline int soap_POST_recv__tempuri__AnDanSLTypeGet(struct soap *soap, _tempuri__
 #define SOAP_TYPE__tempuri__AnDan2PeoplePresentResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan2PeoplePresentResponse(struct soap*, const char*, int, const _tempuri__AnDan2PeoplePresentResponse *, const char*);
 SOAP_FMAC3 _tempuri__AnDan2PeoplePresentResponse * SOAP_FMAC4 soap_in__tempuri__AnDan2PeoplePresentResponse(struct soap*, const char*, _tempuri__AnDan2PeoplePresentResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan2PeoplePresentResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan2PeoplePresentResponse(struct soap*, _tempuri__AnDan2PeoplePresentResponse*, _tempuri__AnDan2PeoplePresentResponse const*);
 SOAP_FMAC1 _tempuri__AnDan2PeoplePresentResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan2PeoplePresentResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDan2PeoplePresentResponse * soap_new__tempuri__AnDan2PeoplePresentResponse(struct soap *soap, int n = -1)
@@ -611,7 +717,7 @@ inline _tempuri__AnDan2PeoplePresentResponse * soap_new_req__tempuri__AnDan2Peop
 
 inline _tempuri__AnDan2PeoplePresentResponse * soap_new_set__tempuri__AnDan2PeoplePresentResponse(
 	struct soap *soap,
-	char *AnDan2PeoplePresentResult)
+	std::string *AnDan2PeoplePresentResult)
 {
 	_tempuri__AnDan2PeoplePresentResponse *_p = ::soap_new__tempuri__AnDan2PeoplePresentResponse(soap);
 	if (_p)
@@ -675,6 +781,8 @@ inline int soap_POST_recv__tempuri__AnDan2PeoplePresentResponse(struct soap *soa
 #define SOAP_TYPE__tempuri__AnDan2PeoplePresent_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan2PeoplePresent(struct soap*, const char*, int, const _tempuri__AnDan2PeoplePresent *, const char*);
 SOAP_FMAC3 _tempuri__AnDan2PeoplePresent * SOAP_FMAC4 soap_in__tempuri__AnDan2PeoplePresent(struct soap*, const char*, _tempuri__AnDan2PeoplePresent *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_dup__tempuri__AnDan2PeoplePresent(struct soap*, _tempuri__AnDan2PeoplePresent*, _tempuri__AnDan2PeoplePresent const*);
 SOAP_FMAC1 _tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_instantiate__tempuri__AnDan2PeoplePresent(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDan2PeoplePresent * soap_new__tempuri__AnDan2PeoplePresent(struct soap *soap, int n = -1)
@@ -694,7 +802,7 @@ inline _tempuri__AnDan2PeoplePresent * soap_new_req__tempuri__AnDan2PeoplePresen
 
 inline _tempuri__AnDan2PeoplePresent * soap_new_set__tempuri__AnDan2PeoplePresent(
 	struct soap *soap,
-	char *ADMCode)
+	std::string *ADMCode)
 {
 	_tempuri__AnDan2PeoplePresent *_p = ::soap_new__tempuri__AnDan2PeoplePresent(soap);
 	if (_p)
@@ -758,6 +866,8 @@ inline int soap_POST_recv__tempuri__AnDan2PeoplePresent(struct soap *soap, _temp
 #define SOAP_TYPE__tempuri__AnDan3AddUsersResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan3AddUsersResponse(struct soap*, const char*, int, const _tempuri__AnDan3AddUsersResponse *, const char*);
 SOAP_FMAC3 _tempuri__AnDan3AddUsersResponse * SOAP_FMAC4 soap_in__tempuri__AnDan3AddUsersResponse(struct soap*, const char*, _tempuri__AnDan3AddUsersResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan3AddUsersResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan3AddUsersResponse(struct soap*, _tempuri__AnDan3AddUsersResponse*, _tempuri__AnDan3AddUsersResponse const*);
 SOAP_FMAC1 _tempuri__AnDan3AddUsersResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan3AddUsersResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDan3AddUsersResponse * soap_new__tempuri__AnDan3AddUsersResponse(struct soap *soap, int n = -1)
@@ -777,7 +887,7 @@ inline _tempuri__AnDan3AddUsersResponse * soap_new_req__tempuri__AnDan3AddUsersR
 
 inline _tempuri__AnDan3AddUsersResponse * soap_new_set__tempuri__AnDan3AddUsersResponse(
 	struct soap *soap,
-	char *AnDan3AddUsersResult)
+	std::string *AnDan3AddUsersResult)
 {
 	_tempuri__AnDan3AddUsersResponse *_p = ::soap_new__tempuri__AnDan3AddUsersResponse(soap);
 	if (_p)
@@ -841,6 +951,8 @@ inline int soap_POST_recv__tempuri__AnDan3AddUsersResponse(struct soap *soap, _t
 #define SOAP_TYPE__tempuri__AnDan3AddUsers_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan3AddUsers(struct soap*, const char*, int, const _tempuri__AnDan3AddUsers *, const char*);
 SOAP_FMAC3 _tempuri__AnDan3AddUsers * SOAP_FMAC4 soap_in__tempuri__AnDan3AddUsers(struct soap*, const char*, _tempuri__AnDan3AddUsers *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_dup__tempuri__AnDan3AddUsers(struct soap*, _tempuri__AnDan3AddUsers*, _tempuri__AnDan3AddUsers const*);
 SOAP_FMAC1 _tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_instantiate__tempuri__AnDan3AddUsers(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDan3AddUsers * soap_new__tempuri__AnDan3AddUsers(struct soap *soap, int n = -1)
@@ -860,8 +972,8 @@ inline _tempuri__AnDan3AddUsers * soap_new_req__tempuri__AnDan3AddUsers(
 
 inline _tempuri__AnDan3AddUsers * soap_new_set__tempuri__AnDan3AddUsers(
 	struct soap *soap,
-	char *XML_,
-	char *TS_USCOREOPERATORS)
+	std::string *XML_,
+	std::string *TS_USCOREOPERATORS)
 {
 	_tempuri__AnDan3AddUsers *_p = ::soap_new__tempuri__AnDan3AddUsers(soap);
 	if (_p)
@@ -926,6 +1038,8 @@ inline int soap_POST_recv__tempuri__AnDan3AddUsers(struct soap *soap, _tempuri__
 #define SOAP_TYPE__tempuri__AnDan4UpdPeoplePresentResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan4UpdPeoplePresentResponse(struct soap*, const char*, int, const _tempuri__AnDan4UpdPeoplePresentResponse *, const char*);
 SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresentResponse * SOAP_FMAC4 soap_in__tempuri__AnDan4UpdPeoplePresentResponse(struct soap*, const char*, _tempuri__AnDan4UpdPeoplePresentResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresentResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan4UpdPeoplePresentResponse(struct soap*, _tempuri__AnDan4UpdPeoplePresentResponse*, _tempuri__AnDan4UpdPeoplePresentResponse const*);
 SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresentResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan4UpdPeoplePresentResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDan4UpdPeoplePresentResponse * soap_new__tempuri__AnDan4UpdPeoplePresentResponse(struct soap *soap, int n = -1)
@@ -945,7 +1059,7 @@ inline _tempuri__AnDan4UpdPeoplePresentResponse * soap_new_req__tempuri__AnDan4U
 
 inline _tempuri__AnDan4UpdPeoplePresentResponse * soap_new_set__tempuri__AnDan4UpdPeoplePresentResponse(
 	struct soap *soap,
-	char *AnDan4UpdPeoplePresentResult)
+	std::string *AnDan4UpdPeoplePresentResult)
 {
 	_tempuri__AnDan4UpdPeoplePresentResponse *_p = ::soap_new__tempuri__AnDan4UpdPeoplePresentResponse(soap);
 	if (_p)
@@ -1009,6 +1123,8 @@ inline int soap_POST_recv__tempuri__AnDan4UpdPeoplePresentResponse(struct soap *
 #define SOAP_TYPE__tempuri__AnDan4UpdPeoplePresent_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan4UpdPeoplePresent(struct soap*, const char*, int, const _tempuri__AnDan4UpdPeoplePresent *, const char*);
 SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC4 soap_in__tempuri__AnDan4UpdPeoplePresent(struct soap*, const char*, _tempuri__AnDan4UpdPeoplePresent *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_dup__tempuri__AnDan4UpdPeoplePresent(struct soap*, _tempuri__AnDan4UpdPeoplePresent*, _tempuri__AnDan4UpdPeoplePresent const*);
 SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_instantiate__tempuri__AnDan4UpdPeoplePresent(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDan4UpdPeoplePresent * soap_new__tempuri__AnDan4UpdPeoplePresent(struct soap *soap, int n = -1)
@@ -1028,7 +1144,7 @@ inline _tempuri__AnDan4UpdPeoplePresent * soap_new_req__tempuri__AnDan4UpdPeople
 
 inline _tempuri__AnDan4UpdPeoplePresent * soap_new_set__tempuri__AnDan4UpdPeoplePresent(
 	struct soap *soap,
-	char *Presens)
+	std::string *Presens)
 {
 	_tempuri__AnDan4UpdPeoplePresent *_p = ::soap_new__tempuri__AnDan4UpdPeoplePresent(soap);
 	if (_p)
@@ -1092,6 +1208,8 @@ inline int soap_POST_recv__tempuri__AnDan4UpdPeoplePresent(struct soap *soap, _t
 #define SOAP_TYPE__tempuri__AnDan1SendResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan1SendResponse(struct soap*, const char*, int, const _tempuri__AnDan1SendResponse *, const char*);
 SOAP_FMAC3 _tempuri__AnDan1SendResponse * SOAP_FMAC4 soap_in__tempuri__AnDan1SendResponse(struct soap*, const char*, _tempuri__AnDan1SendResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan1SendResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan1SendResponse(struct soap*, _tempuri__AnDan1SendResponse*, _tempuri__AnDan1SendResponse const*);
 SOAP_FMAC1 _tempuri__AnDan1SendResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan1SendResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDan1SendResponse * soap_new__tempuri__AnDan1SendResponse(struct soap *soap, int n = -1)
@@ -1111,7 +1229,7 @@ inline _tempuri__AnDan1SendResponse * soap_new_req__tempuri__AnDan1SendResponse(
 
 inline _tempuri__AnDan1SendResponse * soap_new_set__tempuri__AnDan1SendResponse(
 	struct soap *soap,
-	char *AnDan1SendResult)
+	std::string *AnDan1SendResult)
 {
 	_tempuri__AnDan1SendResponse *_p = ::soap_new__tempuri__AnDan1SendResponse(soap);
 	if (_p)
@@ -1175,6 +1293,8 @@ inline int soap_POST_recv__tempuri__AnDan1SendResponse(struct soap *soap, _tempu
 #define SOAP_TYPE__tempuri__AnDan1Send_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan1Send(struct soap*, const char*, int, const _tempuri__AnDan1Send *, const char*);
 SOAP_FMAC3 _tempuri__AnDan1Send * SOAP_FMAC4 soap_in__tempuri__AnDan1Send(struct soap*, const char*, _tempuri__AnDan1Send *, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan1Send * SOAP_FMAC2 soap_dup__tempuri__AnDan1Send(struct soap*, _tempuri__AnDan1Send*, _tempuri__AnDan1Send const*);
 SOAP_FMAC1 _tempuri__AnDan1Send * SOAP_FMAC2 soap_instantiate__tempuri__AnDan1Send(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__AnDan1Send * soap_new__tempuri__AnDan1Send(struct soap *soap, int n = -1)
@@ -1197,7 +1317,7 @@ inline _tempuri__AnDan1Send * soap_new_req__tempuri__AnDan1Send(
 inline _tempuri__AnDan1Send * soap_new_set__tempuri__AnDan1Send(
 	struct soap *soap,
 	bool flag,
-	char *XML_)
+	std::string *XML_)
 {
 	_tempuri__AnDan1Send *_p = ::soap_new__tempuri__AnDan1Send(soap);
 	if (_p)
@@ -1262,6 +1382,8 @@ inline int soap_POST_recv__tempuri__AnDan1Send(struct soap *soap, _tempuri__AnDa
 #define SOAP_TYPE__tempuri__LoginResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LoginResponse(struct soap*, const char*, int, const _tempuri__LoginResponse *, const char*);
 SOAP_FMAC3 _tempuri__LoginResponse * SOAP_FMAC4 soap_in__tempuri__LoginResponse(struct soap*, const char*, _tempuri__LoginResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__LoginResponse * SOAP_FMAC2 soap_dup__tempuri__LoginResponse(struct soap*, _tempuri__LoginResponse*, _tempuri__LoginResponse const*);
 SOAP_FMAC1 _tempuri__LoginResponse * SOAP_FMAC2 soap_instantiate__tempuri__LoginResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__LoginResponse * soap_new__tempuri__LoginResponse(struct soap *soap, int n = -1)
@@ -1281,7 +1403,7 @@ inline _tempuri__LoginResponse * soap_new_req__tempuri__LoginResponse(
 
 inline _tempuri__LoginResponse * soap_new_set__tempuri__LoginResponse(
 	struct soap *soap,
-	char *LoginResult)
+	std::string *LoginResult)
 {
 	_tempuri__LoginResponse *_p = ::soap_new__tempuri__LoginResponse(soap);
 	if (_p)
@@ -1345,6 +1467,8 @@ inline int soap_POST_recv__tempuri__LoginResponse(struct soap *soap, _tempuri__L
 #define SOAP_TYPE__tempuri__Login_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__Login(struct soap*, const char*, int, const _tempuri__Login *, const char*);
 SOAP_FMAC3 _tempuri__Login * SOAP_FMAC4 soap_in__tempuri__Login(struct soap*, const char*, _tempuri__Login *, const char*);
+
+SOAP_FMAC1 _tempuri__Login * SOAP_FMAC2 soap_dup__tempuri__Login(struct soap*, _tempuri__Login*, _tempuri__Login const*);
 SOAP_FMAC1 _tempuri__Login * SOAP_FMAC2 soap_instantiate__tempuri__Login(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__Login * soap_new__tempuri__Login(struct soap *soap, int n = -1)
@@ -1364,9 +1488,9 @@ inline _tempuri__Login * soap_new_req__tempuri__Login(
 
 inline _tempuri__Login * soap_new_set__tempuri__Login(
 	struct soap *soap,
-	char *Role,
-	char *UserName,
-	char *UserPwd)
+	std::string *Role,
+	std::string *UserName,
+	std::string *UserPwd)
 {
 	_tempuri__Login *_p = ::soap_new__tempuri__Login(soap);
 	if (_p)
@@ -1432,6 +1556,8 @@ inline int soap_POST_recv__tempuri__Login(struct soap *soap, _tempuri__Login *p)
 #define SOAP_TYPE__tempuri__GetPowerResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetPowerResponse(struct soap*, const char*, int, const _tempuri__GetPowerResponse *, const char*);
 SOAP_FMAC3 _tempuri__GetPowerResponse * SOAP_FMAC4 soap_in__tempuri__GetPowerResponse(struct soap*, const char*, _tempuri__GetPowerResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__GetPowerResponse * SOAP_FMAC2 soap_dup__tempuri__GetPowerResponse(struct soap*, _tempuri__GetPowerResponse*, _tempuri__GetPowerResponse const*);
 SOAP_FMAC1 _tempuri__GetPowerResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetPowerResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__GetPowerResponse * soap_new__tempuri__GetPowerResponse(struct soap *soap, int n = -1)
@@ -1451,7 +1577,7 @@ inline _tempuri__GetPowerResponse * soap_new_req__tempuri__GetPowerResponse(
 
 inline _tempuri__GetPowerResponse * soap_new_set__tempuri__GetPowerResponse(
 	struct soap *soap,
-	char *GetPowerResult)
+	std::string *GetPowerResult)
 {
 	_tempuri__GetPowerResponse *_p = ::soap_new__tempuri__GetPowerResponse(soap);
 	if (_p)
@@ -1515,6 +1641,8 @@ inline int soap_POST_recv__tempuri__GetPowerResponse(struct soap *soap, _tempuri
 #define SOAP_TYPE__tempuri__GetPower_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetPower(struct soap*, const char*, int, const _tempuri__GetPower *, const char*);
 SOAP_FMAC3 _tempuri__GetPower * SOAP_FMAC4 soap_in__tempuri__GetPower(struct soap*, const char*, _tempuri__GetPower *, const char*);
+
+SOAP_FMAC1 _tempuri__GetPower * SOAP_FMAC2 soap_dup__tempuri__GetPower(struct soap*, _tempuri__GetPower*, _tempuri__GetPower const*);
 SOAP_FMAC1 _tempuri__GetPower * SOAP_FMAC2 soap_instantiate__tempuri__GetPower(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__GetPower * soap_new__tempuri__GetPower(struct soap *soap, int n = -1)
@@ -1534,7 +1662,7 @@ inline _tempuri__GetPower * soap_new_req__tempuri__GetPower(
 
 inline _tempuri__GetPower * soap_new_set__tempuri__GetPower(
 	struct soap *soap,
-	char *DeptID)
+	std::string *DeptID)
 {
 	_tempuri__GetPower *_p = ::soap_new__tempuri__GetPower(soap);
 	if (_p)
@@ -1598,6 +1726,8 @@ inline int soap_POST_recv__tempuri__GetPower(struct soap *soap, _tempuri__GetPow
 #define SOAP_TYPE__tempuri__GetDeptResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetDeptResponse(struct soap*, const char*, int, const _tempuri__GetDeptResponse *, const char*);
 SOAP_FMAC3 _tempuri__GetDeptResponse * SOAP_FMAC4 soap_in__tempuri__GetDeptResponse(struct soap*, const char*, _tempuri__GetDeptResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__GetDeptResponse * SOAP_FMAC2 soap_dup__tempuri__GetDeptResponse(struct soap*, _tempuri__GetDeptResponse*, _tempuri__GetDeptResponse const*);
 SOAP_FMAC1 _tempuri__GetDeptResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetDeptResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__GetDeptResponse * soap_new__tempuri__GetDeptResponse(struct soap *soap, int n = -1)
@@ -1617,7 +1747,7 @@ inline _tempuri__GetDeptResponse * soap_new_req__tempuri__GetDeptResponse(
 
 inline _tempuri__GetDeptResponse * soap_new_set__tempuri__GetDeptResponse(
 	struct soap *soap,
-	char *GetDeptResult)
+	std::string *GetDeptResult)
 {
 	_tempuri__GetDeptResponse *_p = ::soap_new__tempuri__GetDeptResponse(soap);
 	if (_p)
@@ -1681,6 +1811,8 @@ inline int soap_POST_recv__tempuri__GetDeptResponse(struct soap *soap, _tempuri_
 #define SOAP_TYPE__tempuri__GetDept_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetDept(struct soap*, const char*, int, const _tempuri__GetDept *, const char*);
 SOAP_FMAC3 _tempuri__GetDept * SOAP_FMAC4 soap_in__tempuri__GetDept(struct soap*, const char*, _tempuri__GetDept *, const char*);
+
+SOAP_FMAC1 _tempuri__GetDept * SOAP_FMAC2 soap_dup__tempuri__GetDept(struct soap*, _tempuri__GetDept*, _tempuri__GetDept const*);
 SOAP_FMAC1 _tempuri__GetDept * SOAP_FMAC2 soap_instantiate__tempuri__GetDept(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__GetDept * soap_new__tempuri__GetDept(struct soap *soap, int n = -1)
@@ -1762,6 +1894,8 @@ inline int soap_POST_recv__tempuri__GetDept(struct soap *soap, _tempuri__GetDept
 #define SOAP_TYPE__tempuri__DocAddResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__DocAddResponse(struct soap*, const char*, int, const _tempuri__DocAddResponse *, const char*);
 SOAP_FMAC3 _tempuri__DocAddResponse * SOAP_FMAC4 soap_in__tempuri__DocAddResponse(struct soap*, const char*, _tempuri__DocAddResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__DocAddResponse * SOAP_FMAC2 soap_dup__tempuri__DocAddResponse(struct soap*, _tempuri__DocAddResponse*, _tempuri__DocAddResponse const*);
 SOAP_FMAC1 _tempuri__DocAddResponse * SOAP_FMAC2 soap_instantiate__tempuri__DocAddResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__DocAddResponse * soap_new__tempuri__DocAddResponse(struct soap *soap, int n = -1)
@@ -1781,7 +1915,7 @@ inline _tempuri__DocAddResponse * soap_new_req__tempuri__DocAddResponse(
 
 inline _tempuri__DocAddResponse * soap_new_set__tempuri__DocAddResponse(
 	struct soap *soap,
-	char *DocAddResult)
+	std::string *DocAddResult)
 {
 	_tempuri__DocAddResponse *_p = ::soap_new__tempuri__DocAddResponse(soap);
 	if (_p)
@@ -1845,6 +1979,8 @@ inline int soap_POST_recv__tempuri__DocAddResponse(struct soap *soap, _tempuri__
 #define SOAP_TYPE__tempuri__DocAdd_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__DocAdd(struct soap*, const char*, int, const _tempuri__DocAdd *, const char*);
 SOAP_FMAC3 _tempuri__DocAdd * SOAP_FMAC4 soap_in__tempuri__DocAdd(struct soap*, const char*, _tempuri__DocAdd *, const char*);
+
+SOAP_FMAC1 _tempuri__DocAdd * SOAP_FMAC2 soap_dup__tempuri__DocAdd(struct soap*, _tempuri__DocAdd*, _tempuri__DocAdd const*);
 SOAP_FMAC1 _tempuri__DocAdd * SOAP_FMAC2 soap_instantiate__tempuri__DocAdd(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__DocAdd * soap_new__tempuri__DocAdd(struct soap *soap, int n = -1)
@@ -1864,9 +2000,9 @@ inline _tempuri__DocAdd * soap_new_req__tempuri__DocAdd(
 
 inline _tempuri__DocAdd * soap_new_set__tempuri__DocAdd(
 	struct soap *soap,
-	char *DocTypeCode,
-	char *DocXmlMaster,
-	char *DocXmlItems)
+	std::string *DocTypeCode,
+	std::string *DocXmlMaster,
+	std::string *DocXmlItems)
 {
 	_tempuri__DocAdd *_p = ::soap_new__tempuri__DocAdd(soap);
 	if (_p)
@@ -1932,6 +2068,8 @@ inline int soap_POST_recv__tempuri__DocAdd(struct soap *soap, _tempuri__DocAdd *
 #define SOAP_TYPE__tempuri__ItemsAddResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__ItemsAddResponse(struct soap*, const char*, int, const _tempuri__ItemsAddResponse *, const char*);
 SOAP_FMAC3 _tempuri__ItemsAddResponse * SOAP_FMAC4 soap_in__tempuri__ItemsAddResponse(struct soap*, const char*, _tempuri__ItemsAddResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__ItemsAddResponse * SOAP_FMAC2 soap_dup__tempuri__ItemsAddResponse(struct soap*, _tempuri__ItemsAddResponse*, _tempuri__ItemsAddResponse const*);
 SOAP_FMAC1 _tempuri__ItemsAddResponse * SOAP_FMAC2 soap_instantiate__tempuri__ItemsAddResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__ItemsAddResponse * soap_new__tempuri__ItemsAddResponse(struct soap *soap, int n = -1)
@@ -1951,7 +2089,7 @@ inline _tempuri__ItemsAddResponse * soap_new_req__tempuri__ItemsAddResponse(
 
 inline _tempuri__ItemsAddResponse * soap_new_set__tempuri__ItemsAddResponse(
 	struct soap *soap,
-	char *ItemsAddResult)
+	std::string *ItemsAddResult)
 {
 	_tempuri__ItemsAddResponse *_p = ::soap_new__tempuri__ItemsAddResponse(soap);
 	if (_p)
@@ -2015,6 +2153,8 @@ inline int soap_POST_recv__tempuri__ItemsAddResponse(struct soap *soap, _tempuri
 #define SOAP_TYPE__tempuri__ItemsAdd_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__ItemsAdd(struct soap*, const char*, int, const _tempuri__ItemsAdd *, const char*);
 SOAP_FMAC3 _tempuri__ItemsAdd * SOAP_FMAC4 soap_in__tempuri__ItemsAdd(struct soap*, const char*, _tempuri__ItemsAdd *, const char*);
+
+SOAP_FMAC1 _tempuri__ItemsAdd * SOAP_FMAC2 soap_dup__tempuri__ItemsAdd(struct soap*, _tempuri__ItemsAdd*, _tempuri__ItemsAdd const*);
 SOAP_FMAC1 _tempuri__ItemsAdd * SOAP_FMAC2 soap_instantiate__tempuri__ItemsAdd(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__ItemsAdd * soap_new__tempuri__ItemsAdd(struct soap *soap, int n = -1)
@@ -2034,7 +2174,7 @@ inline _tempuri__ItemsAdd * soap_new_req__tempuri__ItemsAdd(
 
 inline _tempuri__ItemsAdd * soap_new_set__tempuri__ItemsAdd(
 	struct soap *soap,
-	char *itemDocXml)
+	std::string *itemDocXml)
 {
 	_tempuri__ItemsAdd *_p = ::soap_new__tempuri__ItemsAdd(soap);
 	if (_p)
@@ -2098,6 +2238,8 @@ inline int soap_POST_recv__tempuri__ItemsAdd(struct soap *soap, _tempuri__ItemsA
 #define SOAP_TYPE__tempuri__LineInventoryReturnResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventoryReturnResponse(struct soap*, const char*, int, const _tempuri__LineInventoryReturnResponse *, const char*);
 SOAP_FMAC3 _tempuri__LineInventoryReturnResponse * SOAP_FMAC4 soap_in__tempuri__LineInventoryReturnResponse(struct soap*, const char*, _tempuri__LineInventoryReturnResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__LineInventoryReturnResponse * SOAP_FMAC2 soap_dup__tempuri__LineInventoryReturnResponse(struct soap*, _tempuri__LineInventoryReturnResponse*, _tempuri__LineInventoryReturnResponse const*);
 SOAP_FMAC1 _tempuri__LineInventoryReturnResponse * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryReturnResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__LineInventoryReturnResponse * soap_new__tempuri__LineInventoryReturnResponse(struct soap *soap, int n = -1)
@@ -2117,7 +2259,7 @@ inline _tempuri__LineInventoryReturnResponse * soap_new_req__tempuri__LineInvent
 
 inline _tempuri__LineInventoryReturnResponse * soap_new_set__tempuri__LineInventoryReturnResponse(
 	struct soap *soap,
-	char *LineInventoryReturnResult)
+	std::string *LineInventoryReturnResult)
 {
 	_tempuri__LineInventoryReturnResponse *_p = ::soap_new__tempuri__LineInventoryReturnResponse(soap);
 	if (_p)
@@ -2181,6 +2323,8 @@ inline int soap_POST_recv__tempuri__LineInventoryReturnResponse(struct soap *soa
 #define SOAP_TYPE__tempuri__LineInventoryReturn_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventoryReturn(struct soap*, const char*, int, const _tempuri__LineInventoryReturn *, const char*);
 SOAP_FMAC3 _tempuri__LineInventoryReturn * SOAP_FMAC4 soap_in__tempuri__LineInventoryReturn(struct soap*, const char*, _tempuri__LineInventoryReturn *, const char*);
+
+SOAP_FMAC1 _tempuri__LineInventoryReturn * SOAP_FMAC2 soap_dup__tempuri__LineInventoryReturn(struct soap*, _tempuri__LineInventoryReturn*, _tempuri__LineInventoryReturn const*);
 SOAP_FMAC1 _tempuri__LineInventoryReturn * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryReturn(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__LineInventoryReturn * soap_new__tempuri__LineInventoryReturn(struct soap *soap, int n = -1)
@@ -2200,7 +2344,7 @@ inline _tempuri__LineInventoryReturn * soap_new_req__tempuri__LineInventoryRetur
 
 inline _tempuri__LineInventoryReturn * soap_new_set__tempuri__LineInventoryReturn(
 	struct soap *soap,
-	char *LRXml)
+	std::string *LRXml)
 {
 	_tempuri__LineInventoryReturn *_p = ::soap_new__tempuri__LineInventoryReturn(soap);
 	if (_p)
@@ -2264,6 +2408,8 @@ inline int soap_POST_recv__tempuri__LineInventoryReturn(struct soap *soap, _temp
 #define SOAP_TYPE__tempuri__LineInventoryUpdateResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventoryUpdateResponse(struct soap*, const char*, int, const _tempuri__LineInventoryUpdateResponse *, const char*);
 SOAP_FMAC3 _tempuri__LineInventoryUpdateResponse * SOAP_FMAC4 soap_in__tempuri__LineInventoryUpdateResponse(struct soap*, const char*, _tempuri__LineInventoryUpdateResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__LineInventoryUpdateResponse * SOAP_FMAC2 soap_dup__tempuri__LineInventoryUpdateResponse(struct soap*, _tempuri__LineInventoryUpdateResponse*, _tempuri__LineInventoryUpdateResponse const*);
 SOAP_FMAC1 _tempuri__LineInventoryUpdateResponse * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryUpdateResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__LineInventoryUpdateResponse * soap_new__tempuri__LineInventoryUpdateResponse(struct soap *soap, int n = -1)
@@ -2283,7 +2429,7 @@ inline _tempuri__LineInventoryUpdateResponse * soap_new_req__tempuri__LineInvent
 
 inline _tempuri__LineInventoryUpdateResponse * soap_new_set__tempuri__LineInventoryUpdateResponse(
 	struct soap *soap,
-	char *LineInventoryUpdateResult)
+	std::string *LineInventoryUpdateResult)
 {
 	_tempuri__LineInventoryUpdateResponse *_p = ::soap_new__tempuri__LineInventoryUpdateResponse(soap);
 	if (_p)
@@ -2347,6 +2493,8 @@ inline int soap_POST_recv__tempuri__LineInventoryUpdateResponse(struct soap *soa
 #define SOAP_TYPE__tempuri__LineInventoryUpdate_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventoryUpdate(struct soap*, const char*, int, const _tempuri__LineInventoryUpdate *, const char*);
 SOAP_FMAC3 _tempuri__LineInventoryUpdate * SOAP_FMAC4 soap_in__tempuri__LineInventoryUpdate(struct soap*, const char*, _tempuri__LineInventoryUpdate *, const char*);
+
+SOAP_FMAC1 _tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_dup__tempuri__LineInventoryUpdate(struct soap*, _tempuri__LineInventoryUpdate*, _tempuri__LineInventoryUpdate const*);
 SOAP_FMAC1 _tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryUpdate(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__LineInventoryUpdate * soap_new__tempuri__LineInventoryUpdate(struct soap *soap, int n = -1)
@@ -2366,7 +2514,7 @@ inline _tempuri__LineInventoryUpdate * soap_new_req__tempuri__LineInventoryUpdat
 
 inline _tempuri__LineInventoryUpdate * soap_new_set__tempuri__LineInventoryUpdate(
 	struct soap *soap,
-	char *LIXml)
+	std::string *LIXml)
 {
 	_tempuri__LineInventoryUpdate *_p = ::soap_new__tempuri__LineInventoryUpdate(soap);
 	if (_p)
@@ -2430,6 +2578,8 @@ inline int soap_POST_recv__tempuri__LineInventoryUpdate(struct soap *soap, _temp
 #define SOAP_TYPE__tempuri__LineInventoryResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventoryResponse(struct soap*, const char*, int, const _tempuri__LineInventoryResponse *, const char*);
 SOAP_FMAC3 _tempuri__LineInventoryResponse * SOAP_FMAC4 soap_in__tempuri__LineInventoryResponse(struct soap*, const char*, _tempuri__LineInventoryResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__LineInventoryResponse * SOAP_FMAC2 soap_dup__tempuri__LineInventoryResponse(struct soap*, _tempuri__LineInventoryResponse*, _tempuri__LineInventoryResponse const*);
 SOAP_FMAC1 _tempuri__LineInventoryResponse * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__LineInventoryResponse * soap_new__tempuri__LineInventoryResponse(struct soap *soap, int n = -1)
@@ -2449,7 +2599,7 @@ inline _tempuri__LineInventoryResponse * soap_new_req__tempuri__LineInventoryRes
 
 inline _tempuri__LineInventoryResponse * soap_new_set__tempuri__LineInventoryResponse(
 	struct soap *soap,
-	char *LineInventoryResult)
+	std::string *LineInventoryResult)
 {
 	_tempuri__LineInventoryResponse *_p = ::soap_new__tempuri__LineInventoryResponse(soap);
 	if (_p)
@@ -2513,6 +2663,8 @@ inline int soap_POST_recv__tempuri__LineInventoryResponse(struct soap *soap, _te
 #define SOAP_TYPE__tempuri__LineInventory_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventory(struct soap*, const char*, int, const _tempuri__LineInventory *, const char*);
 SOAP_FMAC3 _tempuri__LineInventory * SOAP_FMAC4 soap_in__tempuri__LineInventory(struct soap*, const char*, _tempuri__LineInventory *, const char*);
+
+SOAP_FMAC1 _tempuri__LineInventory * SOAP_FMAC2 soap_dup__tempuri__LineInventory(struct soap*, _tempuri__LineInventory*, _tempuri__LineInventory const*);
 SOAP_FMAC1 _tempuri__LineInventory * SOAP_FMAC2 soap_instantiate__tempuri__LineInventory(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__LineInventory * soap_new__tempuri__LineInventory(struct soap *soap, int n = -1)
@@ -2532,10 +2684,10 @@ inline _tempuri__LineInventory * soap_new_req__tempuri__LineInventory(
 
 inline _tempuri__LineInventory * soap_new_set__tempuri__LineInventory(
 	struct soap *soap,
-	char *WorkLineCode,
-	char *MCode,
-	char *BatchNo,
-	char *BarCode)
+	std::string *WorkLineCode,
+	std::string *MCode,
+	std::string *BatchNo,
+	std::string *BarCode)
 {
 	_tempuri__LineInventory *_p = ::soap_new__tempuri__LineInventory(soap);
 	if (_p)
@@ -2602,6 +2754,8 @@ inline int soap_POST_recv__tempuri__LineInventory(struct soap *soap, _tempuri__L
 #define SOAP_TYPE__tempuri__WorkOrderResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__WorkOrderResponse(struct soap*, const char*, int, const _tempuri__WorkOrderResponse *, const char*);
 SOAP_FMAC3 _tempuri__WorkOrderResponse * SOAP_FMAC4 soap_in__tempuri__WorkOrderResponse(struct soap*, const char*, _tempuri__WorkOrderResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__WorkOrderResponse * SOAP_FMAC2 soap_dup__tempuri__WorkOrderResponse(struct soap*, _tempuri__WorkOrderResponse*, _tempuri__WorkOrderResponse const*);
 SOAP_FMAC1 _tempuri__WorkOrderResponse * SOAP_FMAC2 soap_instantiate__tempuri__WorkOrderResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__WorkOrderResponse * soap_new__tempuri__WorkOrderResponse(struct soap *soap, int n = -1)
@@ -2621,7 +2775,7 @@ inline _tempuri__WorkOrderResponse * soap_new_req__tempuri__WorkOrderResponse(
 
 inline _tempuri__WorkOrderResponse * soap_new_set__tempuri__WorkOrderResponse(
 	struct soap *soap,
-	char *WorkOrderResult)
+	std::string *WorkOrderResult)
 {
 	_tempuri__WorkOrderResponse *_p = ::soap_new__tempuri__WorkOrderResponse(soap);
 	if (_p)
@@ -2685,6 +2839,8 @@ inline int soap_POST_recv__tempuri__WorkOrderResponse(struct soap *soap, _tempur
 #define SOAP_TYPE__tempuri__WorkOrder_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__WorkOrder(struct soap*, const char*, int, const _tempuri__WorkOrder *, const char*);
 SOAP_FMAC3 _tempuri__WorkOrder * SOAP_FMAC4 soap_in__tempuri__WorkOrder(struct soap*, const char*, _tempuri__WorkOrder *, const char*);
+
+SOAP_FMAC1 _tempuri__WorkOrder * SOAP_FMAC2 soap_dup__tempuri__WorkOrder(struct soap*, _tempuri__WorkOrder*, _tempuri__WorkOrder const*);
 SOAP_FMAC1 _tempuri__WorkOrder * SOAP_FMAC2 soap_instantiate__tempuri__WorkOrder(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__WorkOrder * soap_new__tempuri__WorkOrder(struct soap *soap, int n = -1)
@@ -2704,7 +2860,7 @@ inline _tempuri__WorkOrder * soap_new_req__tempuri__WorkOrder(
 
 inline _tempuri__WorkOrder * soap_new_set__tempuri__WorkOrder(
 	struct soap *soap,
-	char *WorkOrderXml)
+	std::string *WorkOrderXml)
 {
 	_tempuri__WorkOrder *_p = ::soap_new__tempuri__WorkOrder(soap);
 	if (_p)
@@ -2768,6 +2924,8 @@ inline int soap_POST_recv__tempuri__WorkOrder(struct soap *soap, _tempuri__WorkO
 #define SOAP_TYPE__tempuri__ToolingTimesResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__ToolingTimesResponse(struct soap*, const char*, int, const _tempuri__ToolingTimesResponse *, const char*);
 SOAP_FMAC3 _tempuri__ToolingTimesResponse * SOAP_FMAC4 soap_in__tempuri__ToolingTimesResponse(struct soap*, const char*, _tempuri__ToolingTimesResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__ToolingTimesResponse * SOAP_FMAC2 soap_dup__tempuri__ToolingTimesResponse(struct soap*, _tempuri__ToolingTimesResponse*, _tempuri__ToolingTimesResponse const*);
 SOAP_FMAC1 _tempuri__ToolingTimesResponse * SOAP_FMAC2 soap_instantiate__tempuri__ToolingTimesResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__ToolingTimesResponse * soap_new__tempuri__ToolingTimesResponse(struct soap *soap, int n = -1)
@@ -2787,7 +2945,7 @@ inline _tempuri__ToolingTimesResponse * soap_new_req__tempuri__ToolingTimesRespo
 
 inline _tempuri__ToolingTimesResponse * soap_new_set__tempuri__ToolingTimesResponse(
 	struct soap *soap,
-	char *ToolingTimesResult)
+	std::string *ToolingTimesResult)
 {
 	_tempuri__ToolingTimesResponse *_p = ::soap_new__tempuri__ToolingTimesResponse(soap);
 	if (_p)
@@ -2851,6 +3009,8 @@ inline int soap_POST_recv__tempuri__ToolingTimesResponse(struct soap *soap, _tem
 #define SOAP_TYPE__tempuri__ToolingTimes_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__ToolingTimes(struct soap*, const char*, int, const _tempuri__ToolingTimes *, const char*);
 SOAP_FMAC3 _tempuri__ToolingTimes * SOAP_FMAC4 soap_in__tempuri__ToolingTimes(struct soap*, const char*, _tempuri__ToolingTimes *, const char*);
+
+SOAP_FMAC1 _tempuri__ToolingTimes * SOAP_FMAC2 soap_dup__tempuri__ToolingTimes(struct soap*, _tempuri__ToolingTimes*, _tempuri__ToolingTimes const*);
 SOAP_FMAC1 _tempuri__ToolingTimes * SOAP_FMAC2 soap_instantiate__tempuri__ToolingTimes(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__ToolingTimes * soap_new__tempuri__ToolingTimes(struct soap *soap, int n = -1)
@@ -2872,8 +3032,8 @@ inline _tempuri__ToolingTimes * soap_new_req__tempuri__ToolingTimes(
 
 inline _tempuri__ToolingTimes * soap_new_set__tempuri__ToolingTimes(
 	struct soap *soap,
-	char *BillCode,
-	char *DeviceCode,
+	std::string *BillCode,
+	std::string *DeviceCode,
 	int Times)
 {
 	_tempuri__ToolingTimes *_p = ::soap_new__tempuri__ToolingTimes(soap);
@@ -2940,6 +3100,8 @@ inline int soap_POST_recv__tempuri__ToolingTimes(struct soap *soap, _tempuri__To
 #define SOAP_TYPE__tempuri__GetDocCodeResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetDocCodeResponse(struct soap*, const char*, int, const _tempuri__GetDocCodeResponse *, const char*);
 SOAP_FMAC3 _tempuri__GetDocCodeResponse * SOAP_FMAC4 soap_in__tempuri__GetDocCodeResponse(struct soap*, const char*, _tempuri__GetDocCodeResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__GetDocCodeResponse * SOAP_FMAC2 soap_dup__tempuri__GetDocCodeResponse(struct soap*, _tempuri__GetDocCodeResponse*, _tempuri__GetDocCodeResponse const*);
 SOAP_FMAC1 _tempuri__GetDocCodeResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetDocCodeResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__GetDocCodeResponse * soap_new__tempuri__GetDocCodeResponse(struct soap *soap, int n = -1)
@@ -2959,7 +3121,7 @@ inline _tempuri__GetDocCodeResponse * soap_new_req__tempuri__GetDocCodeResponse(
 
 inline _tempuri__GetDocCodeResponse * soap_new_set__tempuri__GetDocCodeResponse(
 	struct soap *soap,
-	char *GetDocCodeResult)
+	std::string *GetDocCodeResult)
 {
 	_tempuri__GetDocCodeResponse *_p = ::soap_new__tempuri__GetDocCodeResponse(soap);
 	if (_p)
@@ -3023,6 +3185,8 @@ inline int soap_POST_recv__tempuri__GetDocCodeResponse(struct soap *soap, _tempu
 #define SOAP_TYPE__tempuri__GetDocCode_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetDocCode(struct soap*, const char*, int, const _tempuri__GetDocCode *, const char*);
 SOAP_FMAC3 _tempuri__GetDocCode * SOAP_FMAC4 soap_in__tempuri__GetDocCode(struct soap*, const char*, _tempuri__GetDocCode *, const char*);
+
+SOAP_FMAC1 _tempuri__GetDocCode * SOAP_FMAC2 soap_dup__tempuri__GetDocCode(struct soap*, _tempuri__GetDocCode*, _tempuri__GetDocCode const*);
 SOAP_FMAC1 _tempuri__GetDocCode * SOAP_FMAC2 soap_instantiate__tempuri__GetDocCode(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__GetDocCode * soap_new__tempuri__GetDocCode(struct soap *soap, int n = -1)
@@ -3108,6 +3272,8 @@ inline int soap_POST_recv__tempuri__GetDocCode(struct soap *soap, _tempuri__GetD
 #define SOAP_TYPE__tempuri__GetDateResponse_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetDateResponse(struct soap*, const char*, int, const _tempuri__GetDateResponse *, const char*);
 SOAP_FMAC3 _tempuri__GetDateResponse * SOAP_FMAC4 soap_in__tempuri__GetDateResponse(struct soap*, const char*, _tempuri__GetDateResponse *, const char*);
+
+SOAP_FMAC1 _tempuri__GetDateResponse * SOAP_FMAC2 soap_dup__tempuri__GetDateResponse(struct soap*, _tempuri__GetDateResponse*, _tempuri__GetDateResponse const*);
 SOAP_FMAC1 _tempuri__GetDateResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetDateResponse(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__GetDateResponse * soap_new__tempuri__GetDateResponse(struct soap *soap, int n = -1)
@@ -3127,7 +3293,7 @@ inline _tempuri__GetDateResponse * soap_new_req__tempuri__GetDateResponse(
 
 inline _tempuri__GetDateResponse * soap_new_set__tempuri__GetDateResponse(
 	struct soap *soap,
-	char *GetDateResult)
+	std::string *GetDateResult)
 {
 	_tempuri__GetDateResponse *_p = ::soap_new__tempuri__GetDateResponse(soap);
 	if (_p)
@@ -3191,6 +3357,8 @@ inline int soap_POST_recv__tempuri__GetDateResponse(struct soap *soap, _tempuri_
 #define SOAP_TYPE__tempuri__GetDate_DEFINED
 SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetDate(struct soap*, const char*, int, const _tempuri__GetDate *, const char*);
 SOAP_FMAC3 _tempuri__GetDate * SOAP_FMAC4 soap_in__tempuri__GetDate(struct soap*, const char*, _tempuri__GetDate *, const char*);
+
+SOAP_FMAC1 _tempuri__GetDate * SOAP_FMAC2 soap_dup__tempuri__GetDate(struct soap*, _tempuri__GetDate*, _tempuri__GetDate const*);
 SOAP_FMAC1 _tempuri__GetDate * SOAP_FMAC2 soap_instantiate__tempuri__GetDate(struct soap*, int, const char*, const char*, size_t*);
 
 inline _tempuri__GetDate * soap_new__tempuri__GetDate(struct soap *soap, int n = -1)
@@ -3276,6 +3444,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default_SOAP_ENV__Fault(struct soap*, struct SOA
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_SOAP_ENV__Fault(struct soap*, const struct SOAP_ENV__Fault *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_SOAP_ENV__Fault(struct soap*, const char*, int, const struct SOAP_ENV__Fault *, const char*);
 SOAP_FMAC3 struct SOAP_ENV__Fault * SOAP_FMAC4 soap_in_SOAP_ENV__Fault(struct soap*, const char*, struct SOAP_ENV__Fault *, const char*);
+
+SOAP_FMAC1 struct SOAP_ENV__Fault * SOAP_FMAC2 soap_dup_SOAP_ENV__Fault(struct soap*, struct SOAP_ENV__Fault*, struct SOAP_ENV__Fault const*);
 SOAP_FMAC1 struct SOAP_ENV__Fault * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Fault(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct SOAP_ENV__Fault * soap_new_SOAP_ENV__Fault(struct soap *soap, int n = -1)
@@ -3382,6 +3552,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default_SOAP_ENV__Reason(struct soap*, struct SO
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_SOAP_ENV__Reason(struct soap*, const struct SOAP_ENV__Reason *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_SOAP_ENV__Reason(struct soap*, const char*, int, const struct SOAP_ENV__Reason *, const char*);
 SOAP_FMAC3 struct SOAP_ENV__Reason * SOAP_FMAC4 soap_in_SOAP_ENV__Reason(struct soap*, const char*, struct SOAP_ENV__Reason *, const char*);
+
+SOAP_FMAC1 struct SOAP_ENV__Reason * SOAP_FMAC2 soap_dup_SOAP_ENV__Reason(struct soap*, struct SOAP_ENV__Reason*, struct SOAP_ENV__Reason const*);
 SOAP_FMAC1 struct SOAP_ENV__Reason * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Reason(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct SOAP_ENV__Reason * soap_new_SOAP_ENV__Reason(struct soap *soap, int n = -1)
@@ -3472,6 +3644,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default_SOAP_ENV__Detail(struct soap*, struct SO
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_SOAP_ENV__Detail(struct soap*, const struct SOAP_ENV__Detail *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_SOAP_ENV__Detail(struct soap*, const char*, int, const struct SOAP_ENV__Detail *, const char*);
 SOAP_FMAC3 struct SOAP_ENV__Detail * SOAP_FMAC4 soap_in_SOAP_ENV__Detail(struct soap*, const char*, struct SOAP_ENV__Detail *, const char*);
+
+SOAP_FMAC1 struct SOAP_ENV__Detail * SOAP_FMAC2 soap_dup_SOAP_ENV__Detail(struct soap*, struct SOAP_ENV__Detail*, struct SOAP_ENV__Detail const*);
 SOAP_FMAC1 struct SOAP_ENV__Detail * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Detail(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct SOAP_ENV__Detail * soap_new_SOAP_ENV__Detail(struct soap *soap, int n = -1)
@@ -3570,6 +3744,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default_SOAP_ENV__Code(struct soap*, struct SOAP
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_SOAP_ENV__Code(struct soap*, const struct SOAP_ENV__Code *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_SOAP_ENV__Code(struct soap*, const char*, int, const struct SOAP_ENV__Code *, const char*);
 SOAP_FMAC3 struct SOAP_ENV__Code * SOAP_FMAC4 soap_in_SOAP_ENV__Code(struct soap*, const char*, struct SOAP_ENV__Code *, const char*);
+
+SOAP_FMAC1 struct SOAP_ENV__Code * SOAP_FMAC2 soap_dup_SOAP_ENV__Code(struct soap*, struct SOAP_ENV__Code*, struct SOAP_ENV__Code const*);
 SOAP_FMAC1 struct SOAP_ENV__Code * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Code(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct SOAP_ENV__Code * soap_new_SOAP_ENV__Code(struct soap *soap, int n = -1)
@@ -3662,6 +3838,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default_SOAP_ENV__Header(struct soap*, struct SO
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_SOAP_ENV__Header(struct soap*, const struct SOAP_ENV__Header *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_SOAP_ENV__Header(struct soap*, const char*, int, const struct SOAP_ENV__Header *, const char*);
 SOAP_FMAC3 struct SOAP_ENV__Header * SOAP_FMAC4 soap_in_SOAP_ENV__Header(struct soap*, const char*, struct SOAP_ENV__Header *, const char*);
+
+SOAP_FMAC1 struct SOAP_ENV__Header * SOAP_FMAC2 soap_dup_SOAP_ENV__Header(struct soap*, struct SOAP_ENV__Header*, struct SOAP_ENV__Header const*);
 SOAP_FMAC1 struct SOAP_ENV__Header * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Header(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct SOAP_ENV__Header * soap_new_SOAP_ENV__Header(struct soap *soap, int n = -1)
@@ -3748,6 +3926,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDanSLTypeAdd_(struct soap*,
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDanSLTypeAdd_(struct soap*, const struct __tempuri__AnDanSLTypeAdd_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDanSLTypeAdd_(struct soap*, const char*, int, const struct __tempuri__AnDanSLTypeAdd_ *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDanSLTypeAdd_ * SOAP_FMAC4 soap_in___tempuri__AnDanSLTypeAdd_(struct soap*, const char*, struct __tempuri__AnDanSLTypeAdd_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDanSLTypeAdd_ * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeAdd_(struct soap*, struct __tempuri__AnDanSLTypeAdd_*, struct __tempuri__AnDanSLTypeAdd_ const*);
 SOAP_FMAC1 struct __tempuri__AnDanSLTypeAdd_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeAdd_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDanSLTypeAdd_ * soap_new___tempuri__AnDanSLTypeAdd_(struct soap *soap, int n = -1)
@@ -3834,6 +4014,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDanSLTypeGet_(struct soap*,
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDanSLTypeGet_(struct soap*, const struct __tempuri__AnDanSLTypeGet_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDanSLTypeGet_(struct soap*, const char*, int, const struct __tempuri__AnDanSLTypeGet_ *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDanSLTypeGet_ * SOAP_FMAC4 soap_in___tempuri__AnDanSLTypeGet_(struct soap*, const char*, struct __tempuri__AnDanSLTypeGet_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDanSLTypeGet_ * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeGet_(struct soap*, struct __tempuri__AnDanSLTypeGet_*, struct __tempuri__AnDanSLTypeGet_ const*);
 SOAP_FMAC1 struct __tempuri__AnDanSLTypeGet_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeGet_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDanSLTypeGet_ * soap_new___tempuri__AnDanSLTypeGet_(struct soap *soap, int n = -1)
@@ -3920,6 +4102,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDan2PeoplePresent_(struct s
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDan2PeoplePresent_(struct soap*, const struct __tempuri__AnDan2PeoplePresent_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDan2PeoplePresent_(struct soap*, const char*, int, const struct __tempuri__AnDan2PeoplePresent_ *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDan2PeoplePresent_ * SOAP_FMAC4 soap_in___tempuri__AnDan2PeoplePresent_(struct soap*, const char*, struct __tempuri__AnDan2PeoplePresent_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDan2PeoplePresent_ * SOAP_FMAC2 soap_dup___tempuri__AnDan2PeoplePresent_(struct soap*, struct __tempuri__AnDan2PeoplePresent_*, struct __tempuri__AnDan2PeoplePresent_ const*);
 SOAP_FMAC1 struct __tempuri__AnDan2PeoplePresent_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan2PeoplePresent_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDan2PeoplePresent_ * soap_new___tempuri__AnDan2PeoplePresent_(struct soap *soap, int n = -1)
@@ -4006,6 +4190,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDan3AddUsers_(struct soap*,
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDan3AddUsers_(struct soap*, const struct __tempuri__AnDan3AddUsers_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDan3AddUsers_(struct soap*, const char*, int, const struct __tempuri__AnDan3AddUsers_ *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDan3AddUsers_ * SOAP_FMAC4 soap_in___tempuri__AnDan3AddUsers_(struct soap*, const char*, struct __tempuri__AnDan3AddUsers_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDan3AddUsers_ * SOAP_FMAC2 soap_dup___tempuri__AnDan3AddUsers_(struct soap*, struct __tempuri__AnDan3AddUsers_*, struct __tempuri__AnDan3AddUsers_ const*);
 SOAP_FMAC1 struct __tempuri__AnDan3AddUsers_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan3AddUsers_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDan3AddUsers_ * soap_new___tempuri__AnDan3AddUsers_(struct soap *soap, int n = -1)
@@ -4092,6 +4278,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDan4UpdPeoplePresent_(struc
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDan4UpdPeoplePresent_(struct soap*, const struct __tempuri__AnDan4UpdPeoplePresent_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDan4UpdPeoplePresent_(struct soap*, const char*, int, const struct __tempuri__AnDan4UpdPeoplePresent_ *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDan4UpdPeoplePresent_ * SOAP_FMAC4 soap_in___tempuri__AnDan4UpdPeoplePresent_(struct soap*, const char*, struct __tempuri__AnDan4UpdPeoplePresent_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDan4UpdPeoplePresent_ * SOAP_FMAC2 soap_dup___tempuri__AnDan4UpdPeoplePresent_(struct soap*, struct __tempuri__AnDan4UpdPeoplePresent_*, struct __tempuri__AnDan4UpdPeoplePresent_ const*);
 SOAP_FMAC1 struct __tempuri__AnDan4UpdPeoplePresent_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan4UpdPeoplePresent_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDan4UpdPeoplePresent_ * soap_new___tempuri__AnDan4UpdPeoplePresent_(struct soap *soap, int n = -1)
@@ -4178,6 +4366,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDan1Send_(struct soap*, str
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDan1Send_(struct soap*, const struct __tempuri__AnDan1Send_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDan1Send_(struct soap*, const char*, int, const struct __tempuri__AnDan1Send_ *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDan1Send_ * SOAP_FMAC4 soap_in___tempuri__AnDan1Send_(struct soap*, const char*, struct __tempuri__AnDan1Send_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDan1Send_ * SOAP_FMAC2 soap_dup___tempuri__AnDan1Send_(struct soap*, struct __tempuri__AnDan1Send_*, struct __tempuri__AnDan1Send_ const*);
 SOAP_FMAC1 struct __tempuri__AnDan1Send_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan1Send_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDan1Send_ * soap_new___tempuri__AnDan1Send_(struct soap *soap, int n = -1)
@@ -4264,6 +4454,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__Login_(struct soap*, struct _
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__Login_(struct soap*, const struct __tempuri__Login_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__Login_(struct soap*, const char*, int, const struct __tempuri__Login_ *, const char*);
 SOAP_FMAC3 struct __tempuri__Login_ * SOAP_FMAC4 soap_in___tempuri__Login_(struct soap*, const char*, struct __tempuri__Login_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__Login_ * SOAP_FMAC2 soap_dup___tempuri__Login_(struct soap*, struct __tempuri__Login_*, struct __tempuri__Login_ const*);
 SOAP_FMAC1 struct __tempuri__Login_ * SOAP_FMAC2 soap_instantiate___tempuri__Login_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__Login_ * soap_new___tempuri__Login_(struct soap *soap, int n = -1)
@@ -4350,6 +4542,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__GetPower_(struct soap*, struc
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__GetPower_(struct soap*, const struct __tempuri__GetPower_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__GetPower_(struct soap*, const char*, int, const struct __tempuri__GetPower_ *, const char*);
 SOAP_FMAC3 struct __tempuri__GetPower_ * SOAP_FMAC4 soap_in___tempuri__GetPower_(struct soap*, const char*, struct __tempuri__GetPower_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__GetPower_ * SOAP_FMAC2 soap_dup___tempuri__GetPower_(struct soap*, struct __tempuri__GetPower_*, struct __tempuri__GetPower_ const*);
 SOAP_FMAC1 struct __tempuri__GetPower_ * SOAP_FMAC2 soap_instantiate___tempuri__GetPower_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__GetPower_ * soap_new___tempuri__GetPower_(struct soap *soap, int n = -1)
@@ -4436,6 +4630,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__GetDept_(struct soap*, struct
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__GetDept_(struct soap*, const struct __tempuri__GetDept_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__GetDept_(struct soap*, const char*, int, const struct __tempuri__GetDept_ *, const char*);
 SOAP_FMAC3 struct __tempuri__GetDept_ * SOAP_FMAC4 soap_in___tempuri__GetDept_(struct soap*, const char*, struct __tempuri__GetDept_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__GetDept_ * SOAP_FMAC2 soap_dup___tempuri__GetDept_(struct soap*, struct __tempuri__GetDept_*, struct __tempuri__GetDept_ const*);
 SOAP_FMAC1 struct __tempuri__GetDept_ * SOAP_FMAC2 soap_instantiate___tempuri__GetDept_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__GetDept_ * soap_new___tempuri__GetDept_(struct soap *soap, int n = -1)
@@ -4522,6 +4718,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__DocAdd_(struct soap*, struct 
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__DocAdd_(struct soap*, const struct __tempuri__DocAdd_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__DocAdd_(struct soap*, const char*, int, const struct __tempuri__DocAdd_ *, const char*);
 SOAP_FMAC3 struct __tempuri__DocAdd_ * SOAP_FMAC4 soap_in___tempuri__DocAdd_(struct soap*, const char*, struct __tempuri__DocAdd_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__DocAdd_ * SOAP_FMAC2 soap_dup___tempuri__DocAdd_(struct soap*, struct __tempuri__DocAdd_*, struct __tempuri__DocAdd_ const*);
 SOAP_FMAC1 struct __tempuri__DocAdd_ * SOAP_FMAC2 soap_instantiate___tempuri__DocAdd_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__DocAdd_ * soap_new___tempuri__DocAdd_(struct soap *soap, int n = -1)
@@ -4608,6 +4806,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__ItemsAdd_(struct soap*, struc
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__ItemsAdd_(struct soap*, const struct __tempuri__ItemsAdd_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__ItemsAdd_(struct soap*, const char*, int, const struct __tempuri__ItemsAdd_ *, const char*);
 SOAP_FMAC3 struct __tempuri__ItemsAdd_ * SOAP_FMAC4 soap_in___tempuri__ItemsAdd_(struct soap*, const char*, struct __tempuri__ItemsAdd_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__ItemsAdd_ * SOAP_FMAC2 soap_dup___tempuri__ItemsAdd_(struct soap*, struct __tempuri__ItemsAdd_*, struct __tempuri__ItemsAdd_ const*);
 SOAP_FMAC1 struct __tempuri__ItemsAdd_ * SOAP_FMAC2 soap_instantiate___tempuri__ItemsAdd_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__ItemsAdd_ * soap_new___tempuri__ItemsAdd_(struct soap *soap, int n = -1)
@@ -4694,6 +4894,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__LineInventoryReturn_(struct s
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__LineInventoryReturn_(struct soap*, const struct __tempuri__LineInventoryReturn_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__LineInventoryReturn_(struct soap*, const char*, int, const struct __tempuri__LineInventoryReturn_ *, const char*);
 SOAP_FMAC3 struct __tempuri__LineInventoryReturn_ * SOAP_FMAC4 soap_in___tempuri__LineInventoryReturn_(struct soap*, const char*, struct __tempuri__LineInventoryReturn_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__LineInventoryReturn_ * SOAP_FMAC2 soap_dup___tempuri__LineInventoryReturn_(struct soap*, struct __tempuri__LineInventoryReturn_*, struct __tempuri__LineInventoryReturn_ const*);
 SOAP_FMAC1 struct __tempuri__LineInventoryReturn_ * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryReturn_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__LineInventoryReturn_ * soap_new___tempuri__LineInventoryReturn_(struct soap *soap, int n = -1)
@@ -4780,6 +4982,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__LineInventoryUpdate_(struct s
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__LineInventoryUpdate_(struct soap*, const struct __tempuri__LineInventoryUpdate_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__LineInventoryUpdate_(struct soap*, const char*, int, const struct __tempuri__LineInventoryUpdate_ *, const char*);
 SOAP_FMAC3 struct __tempuri__LineInventoryUpdate_ * SOAP_FMAC4 soap_in___tempuri__LineInventoryUpdate_(struct soap*, const char*, struct __tempuri__LineInventoryUpdate_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__LineInventoryUpdate_ * SOAP_FMAC2 soap_dup___tempuri__LineInventoryUpdate_(struct soap*, struct __tempuri__LineInventoryUpdate_*, struct __tempuri__LineInventoryUpdate_ const*);
 SOAP_FMAC1 struct __tempuri__LineInventoryUpdate_ * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryUpdate_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__LineInventoryUpdate_ * soap_new___tempuri__LineInventoryUpdate_(struct soap *soap, int n = -1)
@@ -4866,6 +5070,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__LineInventory_(struct soap*, 
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__LineInventory_(struct soap*, const struct __tempuri__LineInventory_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__LineInventory_(struct soap*, const char*, int, const struct __tempuri__LineInventory_ *, const char*);
 SOAP_FMAC3 struct __tempuri__LineInventory_ * SOAP_FMAC4 soap_in___tempuri__LineInventory_(struct soap*, const char*, struct __tempuri__LineInventory_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__LineInventory_ * SOAP_FMAC2 soap_dup___tempuri__LineInventory_(struct soap*, struct __tempuri__LineInventory_*, struct __tempuri__LineInventory_ const*);
 SOAP_FMAC1 struct __tempuri__LineInventory_ * SOAP_FMAC2 soap_instantiate___tempuri__LineInventory_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__LineInventory_ * soap_new___tempuri__LineInventory_(struct soap *soap, int n = -1)
@@ -4952,6 +5158,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__WorkOrder_(struct soap*, stru
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__WorkOrder_(struct soap*, const struct __tempuri__WorkOrder_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__WorkOrder_(struct soap*, const char*, int, const struct __tempuri__WorkOrder_ *, const char*);
 SOAP_FMAC3 struct __tempuri__WorkOrder_ * SOAP_FMAC4 soap_in___tempuri__WorkOrder_(struct soap*, const char*, struct __tempuri__WorkOrder_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__WorkOrder_ * SOAP_FMAC2 soap_dup___tempuri__WorkOrder_(struct soap*, struct __tempuri__WorkOrder_*, struct __tempuri__WorkOrder_ const*);
 SOAP_FMAC1 struct __tempuri__WorkOrder_ * SOAP_FMAC2 soap_instantiate___tempuri__WorkOrder_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__WorkOrder_ * soap_new___tempuri__WorkOrder_(struct soap *soap, int n = -1)
@@ -5038,6 +5246,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__ToolingTimes_(struct soap*, s
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__ToolingTimes_(struct soap*, const struct __tempuri__ToolingTimes_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__ToolingTimes_(struct soap*, const char*, int, const struct __tempuri__ToolingTimes_ *, const char*);
 SOAP_FMAC3 struct __tempuri__ToolingTimes_ * SOAP_FMAC4 soap_in___tempuri__ToolingTimes_(struct soap*, const char*, struct __tempuri__ToolingTimes_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__ToolingTimes_ * SOAP_FMAC2 soap_dup___tempuri__ToolingTimes_(struct soap*, struct __tempuri__ToolingTimes_*, struct __tempuri__ToolingTimes_ const*);
 SOAP_FMAC1 struct __tempuri__ToolingTimes_ * SOAP_FMAC2 soap_instantiate___tempuri__ToolingTimes_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__ToolingTimes_ * soap_new___tempuri__ToolingTimes_(struct soap *soap, int n = -1)
@@ -5124,6 +5334,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__GetDocCode_(struct soap*, str
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__GetDocCode_(struct soap*, const struct __tempuri__GetDocCode_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__GetDocCode_(struct soap*, const char*, int, const struct __tempuri__GetDocCode_ *, const char*);
 SOAP_FMAC3 struct __tempuri__GetDocCode_ * SOAP_FMAC4 soap_in___tempuri__GetDocCode_(struct soap*, const char*, struct __tempuri__GetDocCode_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__GetDocCode_ * SOAP_FMAC2 soap_dup___tempuri__GetDocCode_(struct soap*, struct __tempuri__GetDocCode_*, struct __tempuri__GetDocCode_ const*);
 SOAP_FMAC1 struct __tempuri__GetDocCode_ * SOAP_FMAC2 soap_instantiate___tempuri__GetDocCode_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__GetDocCode_ * soap_new___tempuri__GetDocCode_(struct soap *soap, int n = -1)
@@ -5210,6 +5422,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__GetDate_(struct soap*, struct
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__GetDate_(struct soap*, const struct __tempuri__GetDate_ *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__GetDate_(struct soap*, const char*, int, const struct __tempuri__GetDate_ *, const char*);
 SOAP_FMAC3 struct __tempuri__GetDate_ * SOAP_FMAC4 soap_in___tempuri__GetDate_(struct soap*, const char*, struct __tempuri__GetDate_ *, const char*);
+
+SOAP_FMAC1 struct __tempuri__GetDate_ * SOAP_FMAC2 soap_dup___tempuri__GetDate_(struct soap*, struct __tempuri__GetDate_*, struct __tempuri__GetDate_ const*);
 SOAP_FMAC1 struct __tempuri__GetDate_ * SOAP_FMAC2 soap_instantiate___tempuri__GetDate_(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__GetDate_ * soap_new___tempuri__GetDate_(struct soap *soap, int n = -1)
@@ -5296,6 +5510,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDanSLTypeAdd(struct soap*, 
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDanSLTypeAdd(struct soap*, const struct __tempuri__AnDanSLTypeAdd *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDanSLTypeAdd(struct soap*, const char*, int, const struct __tempuri__AnDanSLTypeAdd *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDanSLTypeAdd * SOAP_FMAC4 soap_in___tempuri__AnDanSLTypeAdd(struct soap*, const char*, struct __tempuri__AnDanSLTypeAdd *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeAdd(struct soap*, struct __tempuri__AnDanSLTypeAdd*, struct __tempuri__AnDanSLTypeAdd const*);
 SOAP_FMAC1 struct __tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeAdd(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDanSLTypeAdd * soap_new___tempuri__AnDanSLTypeAdd(struct soap *soap, int n = -1)
@@ -5382,6 +5598,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDanSLTypeGet(struct soap*, 
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDanSLTypeGet(struct soap*, const struct __tempuri__AnDanSLTypeGet *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDanSLTypeGet(struct soap*, const char*, int, const struct __tempuri__AnDanSLTypeGet *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDanSLTypeGet * SOAP_FMAC4 soap_in___tempuri__AnDanSLTypeGet(struct soap*, const char*, struct __tempuri__AnDanSLTypeGet *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeGet(struct soap*, struct __tempuri__AnDanSLTypeGet*, struct __tempuri__AnDanSLTypeGet const*);
 SOAP_FMAC1 struct __tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeGet(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDanSLTypeGet * soap_new___tempuri__AnDanSLTypeGet(struct soap *soap, int n = -1)
@@ -5468,6 +5686,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDan2PeoplePresent(struct so
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDan2PeoplePresent(struct soap*, const struct __tempuri__AnDan2PeoplePresent *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDan2PeoplePresent(struct soap*, const char*, int, const struct __tempuri__AnDan2PeoplePresent *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDan2PeoplePresent * SOAP_FMAC4 soap_in___tempuri__AnDan2PeoplePresent(struct soap*, const char*, struct __tempuri__AnDan2PeoplePresent *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_dup___tempuri__AnDan2PeoplePresent(struct soap*, struct __tempuri__AnDan2PeoplePresent*, struct __tempuri__AnDan2PeoplePresent const*);
 SOAP_FMAC1 struct __tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_instantiate___tempuri__AnDan2PeoplePresent(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDan2PeoplePresent * soap_new___tempuri__AnDan2PeoplePresent(struct soap *soap, int n = -1)
@@ -5554,6 +5774,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDan3AddUsers(struct soap*, 
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDan3AddUsers(struct soap*, const struct __tempuri__AnDan3AddUsers *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDan3AddUsers(struct soap*, const char*, int, const struct __tempuri__AnDan3AddUsers *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDan3AddUsers * SOAP_FMAC4 soap_in___tempuri__AnDan3AddUsers(struct soap*, const char*, struct __tempuri__AnDan3AddUsers *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_dup___tempuri__AnDan3AddUsers(struct soap*, struct __tempuri__AnDan3AddUsers*, struct __tempuri__AnDan3AddUsers const*);
 SOAP_FMAC1 struct __tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_instantiate___tempuri__AnDan3AddUsers(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDan3AddUsers * soap_new___tempuri__AnDan3AddUsers(struct soap *soap, int n = -1)
@@ -5640,6 +5862,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDan4UpdPeoplePresent(struct
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDan4UpdPeoplePresent(struct soap*, const struct __tempuri__AnDan4UpdPeoplePresent *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDan4UpdPeoplePresent(struct soap*, const char*, int, const struct __tempuri__AnDan4UpdPeoplePresent *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC4 soap_in___tempuri__AnDan4UpdPeoplePresent(struct soap*, const char*, struct __tempuri__AnDan4UpdPeoplePresent *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_dup___tempuri__AnDan4UpdPeoplePresent(struct soap*, struct __tempuri__AnDan4UpdPeoplePresent*, struct __tempuri__AnDan4UpdPeoplePresent const*);
 SOAP_FMAC1 struct __tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_instantiate___tempuri__AnDan4UpdPeoplePresent(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDan4UpdPeoplePresent * soap_new___tempuri__AnDan4UpdPeoplePresent(struct soap *soap, int n = -1)
@@ -5726,6 +5950,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__AnDan1Send(struct soap*, stru
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__AnDan1Send(struct soap*, const struct __tempuri__AnDan1Send *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__AnDan1Send(struct soap*, const char*, int, const struct __tempuri__AnDan1Send *, const char*);
 SOAP_FMAC3 struct __tempuri__AnDan1Send * SOAP_FMAC4 soap_in___tempuri__AnDan1Send(struct soap*, const char*, struct __tempuri__AnDan1Send *, const char*);
+
+SOAP_FMAC1 struct __tempuri__AnDan1Send * SOAP_FMAC2 soap_dup___tempuri__AnDan1Send(struct soap*, struct __tempuri__AnDan1Send*, struct __tempuri__AnDan1Send const*);
 SOAP_FMAC1 struct __tempuri__AnDan1Send * SOAP_FMAC2 soap_instantiate___tempuri__AnDan1Send(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__AnDan1Send * soap_new___tempuri__AnDan1Send(struct soap *soap, int n = -1)
@@ -5812,6 +6038,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__Login(struct soap*, struct __
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__Login(struct soap*, const struct __tempuri__Login *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__Login(struct soap*, const char*, int, const struct __tempuri__Login *, const char*);
 SOAP_FMAC3 struct __tempuri__Login * SOAP_FMAC4 soap_in___tempuri__Login(struct soap*, const char*, struct __tempuri__Login *, const char*);
+
+SOAP_FMAC1 struct __tempuri__Login * SOAP_FMAC2 soap_dup___tempuri__Login(struct soap*, struct __tempuri__Login*, struct __tempuri__Login const*);
 SOAP_FMAC1 struct __tempuri__Login * SOAP_FMAC2 soap_instantiate___tempuri__Login(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__Login * soap_new___tempuri__Login(struct soap *soap, int n = -1)
@@ -5898,6 +6126,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__GetPower(struct soap*, struct
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__GetPower(struct soap*, const struct __tempuri__GetPower *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__GetPower(struct soap*, const char*, int, const struct __tempuri__GetPower *, const char*);
 SOAP_FMAC3 struct __tempuri__GetPower * SOAP_FMAC4 soap_in___tempuri__GetPower(struct soap*, const char*, struct __tempuri__GetPower *, const char*);
+
+SOAP_FMAC1 struct __tempuri__GetPower * SOAP_FMAC2 soap_dup___tempuri__GetPower(struct soap*, struct __tempuri__GetPower*, struct __tempuri__GetPower const*);
 SOAP_FMAC1 struct __tempuri__GetPower * SOAP_FMAC2 soap_instantiate___tempuri__GetPower(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__GetPower * soap_new___tempuri__GetPower(struct soap *soap, int n = -1)
@@ -5984,6 +6214,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__GetDept(struct soap*, struct 
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__GetDept(struct soap*, const struct __tempuri__GetDept *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__GetDept(struct soap*, const char*, int, const struct __tempuri__GetDept *, const char*);
 SOAP_FMAC3 struct __tempuri__GetDept * SOAP_FMAC4 soap_in___tempuri__GetDept(struct soap*, const char*, struct __tempuri__GetDept *, const char*);
+
+SOAP_FMAC1 struct __tempuri__GetDept * SOAP_FMAC2 soap_dup___tempuri__GetDept(struct soap*, struct __tempuri__GetDept*, struct __tempuri__GetDept const*);
 SOAP_FMAC1 struct __tempuri__GetDept * SOAP_FMAC2 soap_instantiate___tempuri__GetDept(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__GetDept * soap_new___tempuri__GetDept(struct soap *soap, int n = -1)
@@ -6070,6 +6302,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__DocAdd(struct soap*, struct _
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__DocAdd(struct soap*, const struct __tempuri__DocAdd *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__DocAdd(struct soap*, const char*, int, const struct __tempuri__DocAdd *, const char*);
 SOAP_FMAC3 struct __tempuri__DocAdd * SOAP_FMAC4 soap_in___tempuri__DocAdd(struct soap*, const char*, struct __tempuri__DocAdd *, const char*);
+
+SOAP_FMAC1 struct __tempuri__DocAdd * SOAP_FMAC2 soap_dup___tempuri__DocAdd(struct soap*, struct __tempuri__DocAdd*, struct __tempuri__DocAdd const*);
 SOAP_FMAC1 struct __tempuri__DocAdd * SOAP_FMAC2 soap_instantiate___tempuri__DocAdd(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__DocAdd * soap_new___tempuri__DocAdd(struct soap *soap, int n = -1)
@@ -6156,6 +6390,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__ItemsAdd(struct soap*, struct
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__ItemsAdd(struct soap*, const struct __tempuri__ItemsAdd *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__ItemsAdd(struct soap*, const char*, int, const struct __tempuri__ItemsAdd *, const char*);
 SOAP_FMAC3 struct __tempuri__ItemsAdd * SOAP_FMAC4 soap_in___tempuri__ItemsAdd(struct soap*, const char*, struct __tempuri__ItemsAdd *, const char*);
+
+SOAP_FMAC1 struct __tempuri__ItemsAdd * SOAP_FMAC2 soap_dup___tempuri__ItemsAdd(struct soap*, struct __tempuri__ItemsAdd*, struct __tempuri__ItemsAdd const*);
 SOAP_FMAC1 struct __tempuri__ItemsAdd * SOAP_FMAC2 soap_instantiate___tempuri__ItemsAdd(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__ItemsAdd * soap_new___tempuri__ItemsAdd(struct soap *soap, int n = -1)
@@ -6242,6 +6478,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__LineInventoryReturn(struct so
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__LineInventoryReturn(struct soap*, const struct __tempuri__LineInventoryReturn *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__LineInventoryReturn(struct soap*, const char*, int, const struct __tempuri__LineInventoryReturn *, const char*);
 SOAP_FMAC3 struct __tempuri__LineInventoryReturn * SOAP_FMAC4 soap_in___tempuri__LineInventoryReturn(struct soap*, const char*, struct __tempuri__LineInventoryReturn *, const char*);
+
+SOAP_FMAC1 struct __tempuri__LineInventoryReturn * SOAP_FMAC2 soap_dup___tempuri__LineInventoryReturn(struct soap*, struct __tempuri__LineInventoryReturn*, struct __tempuri__LineInventoryReturn const*);
 SOAP_FMAC1 struct __tempuri__LineInventoryReturn * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryReturn(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__LineInventoryReturn * soap_new___tempuri__LineInventoryReturn(struct soap *soap, int n = -1)
@@ -6328,6 +6566,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__LineInventoryUpdate(struct so
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__LineInventoryUpdate(struct soap*, const struct __tempuri__LineInventoryUpdate *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__LineInventoryUpdate(struct soap*, const char*, int, const struct __tempuri__LineInventoryUpdate *, const char*);
 SOAP_FMAC3 struct __tempuri__LineInventoryUpdate * SOAP_FMAC4 soap_in___tempuri__LineInventoryUpdate(struct soap*, const char*, struct __tempuri__LineInventoryUpdate *, const char*);
+
+SOAP_FMAC1 struct __tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_dup___tempuri__LineInventoryUpdate(struct soap*, struct __tempuri__LineInventoryUpdate*, struct __tempuri__LineInventoryUpdate const*);
 SOAP_FMAC1 struct __tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryUpdate(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__LineInventoryUpdate * soap_new___tempuri__LineInventoryUpdate(struct soap *soap, int n = -1)
@@ -6414,6 +6654,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__LineInventory(struct soap*, s
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__LineInventory(struct soap*, const struct __tempuri__LineInventory *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__LineInventory(struct soap*, const char*, int, const struct __tempuri__LineInventory *, const char*);
 SOAP_FMAC3 struct __tempuri__LineInventory * SOAP_FMAC4 soap_in___tempuri__LineInventory(struct soap*, const char*, struct __tempuri__LineInventory *, const char*);
+
+SOAP_FMAC1 struct __tempuri__LineInventory * SOAP_FMAC2 soap_dup___tempuri__LineInventory(struct soap*, struct __tempuri__LineInventory*, struct __tempuri__LineInventory const*);
 SOAP_FMAC1 struct __tempuri__LineInventory * SOAP_FMAC2 soap_instantiate___tempuri__LineInventory(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__LineInventory * soap_new___tempuri__LineInventory(struct soap *soap, int n = -1)
@@ -6500,6 +6742,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__WorkOrder(struct soap*, struc
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__WorkOrder(struct soap*, const struct __tempuri__WorkOrder *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__WorkOrder(struct soap*, const char*, int, const struct __tempuri__WorkOrder *, const char*);
 SOAP_FMAC3 struct __tempuri__WorkOrder * SOAP_FMAC4 soap_in___tempuri__WorkOrder(struct soap*, const char*, struct __tempuri__WorkOrder *, const char*);
+
+SOAP_FMAC1 struct __tempuri__WorkOrder * SOAP_FMAC2 soap_dup___tempuri__WorkOrder(struct soap*, struct __tempuri__WorkOrder*, struct __tempuri__WorkOrder const*);
 SOAP_FMAC1 struct __tempuri__WorkOrder * SOAP_FMAC2 soap_instantiate___tempuri__WorkOrder(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__WorkOrder * soap_new___tempuri__WorkOrder(struct soap *soap, int n = -1)
@@ -6586,6 +6830,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__ToolingTimes(struct soap*, st
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__ToolingTimes(struct soap*, const struct __tempuri__ToolingTimes *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__ToolingTimes(struct soap*, const char*, int, const struct __tempuri__ToolingTimes *, const char*);
 SOAP_FMAC3 struct __tempuri__ToolingTimes * SOAP_FMAC4 soap_in___tempuri__ToolingTimes(struct soap*, const char*, struct __tempuri__ToolingTimes *, const char*);
+
+SOAP_FMAC1 struct __tempuri__ToolingTimes * SOAP_FMAC2 soap_dup___tempuri__ToolingTimes(struct soap*, struct __tempuri__ToolingTimes*, struct __tempuri__ToolingTimes const*);
 SOAP_FMAC1 struct __tempuri__ToolingTimes * SOAP_FMAC2 soap_instantiate___tempuri__ToolingTimes(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__ToolingTimes * soap_new___tempuri__ToolingTimes(struct soap *soap, int n = -1)
@@ -6672,6 +6918,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__GetDocCode(struct soap*, stru
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__GetDocCode(struct soap*, const struct __tempuri__GetDocCode *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__GetDocCode(struct soap*, const char*, int, const struct __tempuri__GetDocCode *, const char*);
 SOAP_FMAC3 struct __tempuri__GetDocCode * SOAP_FMAC4 soap_in___tempuri__GetDocCode(struct soap*, const char*, struct __tempuri__GetDocCode *, const char*);
+
+SOAP_FMAC1 struct __tempuri__GetDocCode * SOAP_FMAC2 soap_dup___tempuri__GetDocCode(struct soap*, struct __tempuri__GetDocCode*, struct __tempuri__GetDocCode const*);
 SOAP_FMAC1 struct __tempuri__GetDocCode * SOAP_FMAC2 soap_instantiate___tempuri__GetDocCode(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__GetDocCode * soap_new___tempuri__GetDocCode(struct soap *soap, int n = -1)
@@ -6758,6 +7006,8 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_default___tempuri__GetDate(struct soap*, struct 
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize___tempuri__GetDate(struct soap*, const struct __tempuri__GetDate *);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out___tempuri__GetDate(struct soap*, const char*, int, const struct __tempuri__GetDate *, const char*);
 SOAP_FMAC3 struct __tempuri__GetDate * SOAP_FMAC4 soap_in___tempuri__GetDate(struct soap*, const char*, struct __tempuri__GetDate *, const char*);
+
+SOAP_FMAC1 struct __tempuri__GetDate * SOAP_FMAC2 soap_dup___tempuri__GetDate(struct soap*, struct __tempuri__GetDate*, struct __tempuri__GetDate const*);
 SOAP_FMAC1 struct __tempuri__GetDate * SOAP_FMAC2 soap_instantiate___tempuri__GetDate(struct soap*, int, const char*, const char*, size_t*);
 
 inline struct __tempuri__GetDate * soap_new___tempuri__GetDate(struct soap *soap, int n = -1)
@@ -6845,6 +7095,8 @@ inline int soap_POST_recv___tempuri__GetDate(struct soap *soap, struct __tempuri
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerToSOAP_ENV__Reason(struct soap*, struct SOAP_ENV__Reason *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerToSOAP_ENV__Reason(struct soap*, const char *, int, struct SOAP_ENV__Reason *const*, const char *);
 SOAP_FMAC3 struct SOAP_ENV__Reason ** SOAP_FMAC4 soap_in_PointerToSOAP_ENV__Reason(struct soap*, const char*, struct SOAP_ENV__Reason **, const char*);
+
+SOAP_FMAC1 struct SOAP_ENV__Reason * * SOAP_FMAC2 soap_dup_PointerToSOAP_ENV__Reason(struct soap*, struct SOAP_ENV__Reason **, struct SOAP_ENV__Reason *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerToSOAP_ENV__Reason(struct soap*, struct SOAP_ENV__Reason *const*, const char*, const char*);
 SOAP_FMAC3 struct SOAP_ENV__Reason ** SOAP_FMAC4 soap_get_PointerToSOAP_ENV__Reason(struct soap*, struct SOAP_ENV__Reason **, const char*, const char*);
 #endif
@@ -6858,6 +7110,8 @@ SOAP_FMAC3 struct SOAP_ENV__Reason ** SOAP_FMAC4 soap_get_PointerToSOAP_ENV__Rea
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerToSOAP_ENV__Detail(struct soap*, struct SOAP_ENV__Detail *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerToSOAP_ENV__Detail(struct soap*, const char *, int, struct SOAP_ENV__Detail *const*, const char *);
 SOAP_FMAC3 struct SOAP_ENV__Detail ** SOAP_FMAC4 soap_in_PointerToSOAP_ENV__Detail(struct soap*, const char*, struct SOAP_ENV__Detail **, const char*);
+
+SOAP_FMAC1 struct SOAP_ENV__Detail * * SOAP_FMAC2 soap_dup_PointerToSOAP_ENV__Detail(struct soap*, struct SOAP_ENV__Detail **, struct SOAP_ENV__Detail *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerToSOAP_ENV__Detail(struct soap*, struct SOAP_ENV__Detail *const*, const char*, const char*);
 SOAP_FMAC3 struct SOAP_ENV__Detail ** SOAP_FMAC4 soap_get_PointerToSOAP_ENV__Detail(struct soap*, struct SOAP_ENV__Detail **, const char*, const char*);
 #endif
@@ -6871,6 +7125,8 @@ SOAP_FMAC3 struct SOAP_ENV__Detail ** SOAP_FMAC4 soap_get_PointerToSOAP_ENV__Det
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerToSOAP_ENV__Code(struct soap*, struct SOAP_ENV__Code *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerToSOAP_ENV__Code(struct soap*, const char *, int, struct SOAP_ENV__Code *const*, const char *);
 SOAP_FMAC3 struct SOAP_ENV__Code ** SOAP_FMAC4 soap_in_PointerToSOAP_ENV__Code(struct soap*, const char*, struct SOAP_ENV__Code **, const char*);
+
+SOAP_FMAC1 struct SOAP_ENV__Code * * SOAP_FMAC2 soap_dup_PointerToSOAP_ENV__Code(struct soap*, struct SOAP_ENV__Code **, struct SOAP_ENV__Code *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerToSOAP_ENV__Code(struct soap*, struct SOAP_ENV__Code *const*, const char*, const char*);
 SOAP_FMAC3 struct SOAP_ENV__Code ** SOAP_FMAC4 soap_get_PointerToSOAP_ENV__Code(struct soap*, struct SOAP_ENV__Code **, const char*, const char*);
 #endif
@@ -6882,6 +7138,8 @@ SOAP_FMAC3 struct SOAP_ENV__Code ** SOAP_FMAC4 soap_get_PointerToSOAP_ENV__Code(
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__AnDanSLTypeAdd(struct soap*, _tempuri__AnDanSLTypeAdd *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__AnDanSLTypeAdd(struct soap*, const char *, int, _tempuri__AnDanSLTypeAdd *const*, const char *);
 SOAP_FMAC3 _tempuri__AnDanSLTypeAdd ** SOAP_FMAC4 soap_in_PointerTo_tempuri__AnDanSLTypeAdd(struct soap*, const char*, _tempuri__AnDanSLTypeAdd **, const char*);
+
+SOAP_FMAC1 _tempuri__AnDanSLTypeAdd * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDanSLTypeAdd(struct soap*, _tempuri__AnDanSLTypeAdd **, _tempuri__AnDanSLTypeAdd *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDanSLTypeAdd(struct soap*, _tempuri__AnDanSLTypeAdd *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__AnDanSLTypeAdd ** SOAP_FMAC4 soap_get_PointerTo_tempuri__AnDanSLTypeAdd(struct soap*, _tempuri__AnDanSLTypeAdd **, const char*, const char*);
 #endif
@@ -6891,6 +7149,8 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeAdd ** SOAP_FMAC4 soap_get_PointerTo_tempuri__An
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__AnDanSLTypeGet(struct soap*, _tempuri__AnDanSLTypeGet *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__AnDanSLTypeGet(struct soap*, const char *, int, _tempuri__AnDanSLTypeGet *const*, const char *);
 SOAP_FMAC3 _tempuri__AnDanSLTypeGet ** SOAP_FMAC4 soap_in_PointerTo_tempuri__AnDanSLTypeGet(struct soap*, const char*, _tempuri__AnDanSLTypeGet **, const char*);
+
+SOAP_FMAC1 _tempuri__AnDanSLTypeGet * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDanSLTypeGet(struct soap*, _tempuri__AnDanSLTypeGet **, _tempuri__AnDanSLTypeGet *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDanSLTypeGet(struct soap*, _tempuri__AnDanSLTypeGet *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__AnDanSLTypeGet ** SOAP_FMAC4 soap_get_PointerTo_tempuri__AnDanSLTypeGet(struct soap*, _tempuri__AnDanSLTypeGet **, const char*, const char*);
 #endif
@@ -6900,6 +7160,8 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeGet ** SOAP_FMAC4 soap_get_PointerTo_tempuri__An
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__AnDan2PeoplePresent(struct soap*, _tempuri__AnDan2PeoplePresent *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__AnDan2PeoplePresent(struct soap*, const char *, int, _tempuri__AnDan2PeoplePresent *const*, const char *);
 SOAP_FMAC3 _tempuri__AnDan2PeoplePresent ** SOAP_FMAC4 soap_in_PointerTo_tempuri__AnDan2PeoplePresent(struct soap*, const char*, _tempuri__AnDan2PeoplePresent **, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan2PeoplePresent * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDan2PeoplePresent(struct soap*, _tempuri__AnDan2PeoplePresent **, _tempuri__AnDan2PeoplePresent *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDan2PeoplePresent(struct soap*, _tempuri__AnDan2PeoplePresent *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__AnDan2PeoplePresent ** SOAP_FMAC4 soap_get_PointerTo_tempuri__AnDan2PeoplePresent(struct soap*, _tempuri__AnDan2PeoplePresent **, const char*, const char*);
 #endif
@@ -6909,6 +7171,8 @@ SOAP_FMAC3 _tempuri__AnDan2PeoplePresent ** SOAP_FMAC4 soap_get_PointerTo_tempur
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__AnDan3AddUsers(struct soap*, _tempuri__AnDan3AddUsers *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__AnDan3AddUsers(struct soap*, const char *, int, _tempuri__AnDan3AddUsers *const*, const char *);
 SOAP_FMAC3 _tempuri__AnDan3AddUsers ** SOAP_FMAC4 soap_in_PointerTo_tempuri__AnDan3AddUsers(struct soap*, const char*, _tempuri__AnDan3AddUsers **, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan3AddUsers * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDan3AddUsers(struct soap*, _tempuri__AnDan3AddUsers **, _tempuri__AnDan3AddUsers *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDan3AddUsers(struct soap*, _tempuri__AnDan3AddUsers *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__AnDan3AddUsers ** SOAP_FMAC4 soap_get_PointerTo_tempuri__AnDan3AddUsers(struct soap*, _tempuri__AnDan3AddUsers **, const char*, const char*);
 #endif
@@ -6918,6 +7182,8 @@ SOAP_FMAC3 _tempuri__AnDan3AddUsers ** SOAP_FMAC4 soap_get_PointerTo_tempuri__An
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__AnDan4UpdPeoplePresent(struct soap*, _tempuri__AnDan4UpdPeoplePresent *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__AnDan4UpdPeoplePresent(struct soap*, const char *, int, _tempuri__AnDan4UpdPeoplePresent *const*, const char *);
 SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresent ** SOAP_FMAC4 soap_in_PointerTo_tempuri__AnDan4UpdPeoplePresent(struct soap*, const char*, _tempuri__AnDan4UpdPeoplePresent **, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresent * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDan4UpdPeoplePresent(struct soap*, _tempuri__AnDan4UpdPeoplePresent **, _tempuri__AnDan4UpdPeoplePresent *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDan4UpdPeoplePresent(struct soap*, _tempuri__AnDan4UpdPeoplePresent *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresent ** SOAP_FMAC4 soap_get_PointerTo_tempuri__AnDan4UpdPeoplePresent(struct soap*, _tempuri__AnDan4UpdPeoplePresent **, const char*, const char*);
 #endif
@@ -6927,6 +7193,8 @@ SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresent ** SOAP_FMAC4 soap_get_PointerTo_tem
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__AnDan1Send(struct soap*, _tempuri__AnDan1Send *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__AnDan1Send(struct soap*, const char *, int, _tempuri__AnDan1Send *const*, const char *);
 SOAP_FMAC3 _tempuri__AnDan1Send ** SOAP_FMAC4 soap_in_PointerTo_tempuri__AnDan1Send(struct soap*, const char*, _tempuri__AnDan1Send **, const char*);
+
+SOAP_FMAC1 _tempuri__AnDan1Send * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDan1Send(struct soap*, _tempuri__AnDan1Send **, _tempuri__AnDan1Send *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDan1Send(struct soap*, _tempuri__AnDan1Send *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__AnDan1Send ** SOAP_FMAC4 soap_get_PointerTo_tempuri__AnDan1Send(struct soap*, _tempuri__AnDan1Send **, const char*, const char*);
 #endif
@@ -6936,6 +7204,8 @@ SOAP_FMAC3 _tempuri__AnDan1Send ** SOAP_FMAC4 soap_get_PointerTo_tempuri__AnDan1
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__Login(struct soap*, _tempuri__Login *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__Login(struct soap*, const char *, int, _tempuri__Login *const*, const char *);
 SOAP_FMAC3 _tempuri__Login ** SOAP_FMAC4 soap_in_PointerTo_tempuri__Login(struct soap*, const char*, _tempuri__Login **, const char*);
+
+SOAP_FMAC1 _tempuri__Login * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__Login(struct soap*, _tempuri__Login **, _tempuri__Login *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__Login(struct soap*, _tempuri__Login *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__Login ** SOAP_FMAC4 soap_get_PointerTo_tempuri__Login(struct soap*, _tempuri__Login **, const char*, const char*);
 #endif
@@ -6945,6 +7215,8 @@ SOAP_FMAC3 _tempuri__Login ** SOAP_FMAC4 soap_get_PointerTo_tempuri__Login(struc
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__GetPower(struct soap*, _tempuri__GetPower *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__GetPower(struct soap*, const char *, int, _tempuri__GetPower *const*, const char *);
 SOAP_FMAC3 _tempuri__GetPower ** SOAP_FMAC4 soap_in_PointerTo_tempuri__GetPower(struct soap*, const char*, _tempuri__GetPower **, const char*);
+
+SOAP_FMAC1 _tempuri__GetPower * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__GetPower(struct soap*, _tempuri__GetPower **, _tempuri__GetPower *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__GetPower(struct soap*, _tempuri__GetPower *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__GetPower ** SOAP_FMAC4 soap_get_PointerTo_tempuri__GetPower(struct soap*, _tempuri__GetPower **, const char*, const char*);
 #endif
@@ -6954,6 +7226,8 @@ SOAP_FMAC3 _tempuri__GetPower ** SOAP_FMAC4 soap_get_PointerTo_tempuri__GetPower
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__GetDept(struct soap*, _tempuri__GetDept *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__GetDept(struct soap*, const char *, int, _tempuri__GetDept *const*, const char *);
 SOAP_FMAC3 _tempuri__GetDept ** SOAP_FMAC4 soap_in_PointerTo_tempuri__GetDept(struct soap*, const char*, _tempuri__GetDept **, const char*);
+
+SOAP_FMAC1 _tempuri__GetDept * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__GetDept(struct soap*, _tempuri__GetDept **, _tempuri__GetDept *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__GetDept(struct soap*, _tempuri__GetDept *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__GetDept ** SOAP_FMAC4 soap_get_PointerTo_tempuri__GetDept(struct soap*, _tempuri__GetDept **, const char*, const char*);
 #endif
@@ -6963,6 +7237,8 @@ SOAP_FMAC3 _tempuri__GetDept ** SOAP_FMAC4 soap_get_PointerTo_tempuri__GetDept(s
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__DocAdd(struct soap*, _tempuri__DocAdd *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__DocAdd(struct soap*, const char *, int, _tempuri__DocAdd *const*, const char *);
 SOAP_FMAC3 _tempuri__DocAdd ** SOAP_FMAC4 soap_in_PointerTo_tempuri__DocAdd(struct soap*, const char*, _tempuri__DocAdd **, const char*);
+
+SOAP_FMAC1 _tempuri__DocAdd * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__DocAdd(struct soap*, _tempuri__DocAdd **, _tempuri__DocAdd *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__DocAdd(struct soap*, _tempuri__DocAdd *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__DocAdd ** SOAP_FMAC4 soap_get_PointerTo_tempuri__DocAdd(struct soap*, _tempuri__DocAdd **, const char*, const char*);
 #endif
@@ -6972,6 +7248,8 @@ SOAP_FMAC3 _tempuri__DocAdd ** SOAP_FMAC4 soap_get_PointerTo_tempuri__DocAdd(str
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__ItemsAdd(struct soap*, _tempuri__ItemsAdd *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__ItemsAdd(struct soap*, const char *, int, _tempuri__ItemsAdd *const*, const char *);
 SOAP_FMAC3 _tempuri__ItemsAdd ** SOAP_FMAC4 soap_in_PointerTo_tempuri__ItemsAdd(struct soap*, const char*, _tempuri__ItemsAdd **, const char*);
+
+SOAP_FMAC1 _tempuri__ItemsAdd * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__ItemsAdd(struct soap*, _tempuri__ItemsAdd **, _tempuri__ItemsAdd *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__ItemsAdd(struct soap*, _tempuri__ItemsAdd *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__ItemsAdd ** SOAP_FMAC4 soap_get_PointerTo_tempuri__ItemsAdd(struct soap*, _tempuri__ItemsAdd **, const char*, const char*);
 #endif
@@ -6981,6 +7259,8 @@ SOAP_FMAC3 _tempuri__ItemsAdd ** SOAP_FMAC4 soap_get_PointerTo_tempuri__ItemsAdd
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__LineInventoryReturn(struct soap*, _tempuri__LineInventoryReturn *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__LineInventoryReturn(struct soap*, const char *, int, _tempuri__LineInventoryReturn *const*, const char *);
 SOAP_FMAC3 _tempuri__LineInventoryReturn ** SOAP_FMAC4 soap_in_PointerTo_tempuri__LineInventoryReturn(struct soap*, const char*, _tempuri__LineInventoryReturn **, const char*);
+
+SOAP_FMAC1 _tempuri__LineInventoryReturn * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__LineInventoryReturn(struct soap*, _tempuri__LineInventoryReturn **, _tempuri__LineInventoryReturn *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__LineInventoryReturn(struct soap*, _tempuri__LineInventoryReturn *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__LineInventoryReturn ** SOAP_FMAC4 soap_get_PointerTo_tempuri__LineInventoryReturn(struct soap*, _tempuri__LineInventoryReturn **, const char*, const char*);
 #endif
@@ -6990,6 +7270,8 @@ SOAP_FMAC3 _tempuri__LineInventoryReturn ** SOAP_FMAC4 soap_get_PointerTo_tempur
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__LineInventoryUpdate(struct soap*, _tempuri__LineInventoryUpdate *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__LineInventoryUpdate(struct soap*, const char *, int, _tempuri__LineInventoryUpdate *const*, const char *);
 SOAP_FMAC3 _tempuri__LineInventoryUpdate ** SOAP_FMAC4 soap_in_PointerTo_tempuri__LineInventoryUpdate(struct soap*, const char*, _tempuri__LineInventoryUpdate **, const char*);
+
+SOAP_FMAC1 _tempuri__LineInventoryUpdate * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__LineInventoryUpdate(struct soap*, _tempuri__LineInventoryUpdate **, _tempuri__LineInventoryUpdate *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__LineInventoryUpdate(struct soap*, _tempuri__LineInventoryUpdate *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__LineInventoryUpdate ** SOAP_FMAC4 soap_get_PointerTo_tempuri__LineInventoryUpdate(struct soap*, _tempuri__LineInventoryUpdate **, const char*, const char*);
 #endif
@@ -6999,6 +7281,8 @@ SOAP_FMAC3 _tempuri__LineInventoryUpdate ** SOAP_FMAC4 soap_get_PointerTo_tempur
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__LineInventory(struct soap*, _tempuri__LineInventory *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__LineInventory(struct soap*, const char *, int, _tempuri__LineInventory *const*, const char *);
 SOAP_FMAC3 _tempuri__LineInventory ** SOAP_FMAC4 soap_in_PointerTo_tempuri__LineInventory(struct soap*, const char*, _tempuri__LineInventory **, const char*);
+
+SOAP_FMAC1 _tempuri__LineInventory * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__LineInventory(struct soap*, _tempuri__LineInventory **, _tempuri__LineInventory *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__LineInventory(struct soap*, _tempuri__LineInventory *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__LineInventory ** SOAP_FMAC4 soap_get_PointerTo_tempuri__LineInventory(struct soap*, _tempuri__LineInventory **, const char*, const char*);
 #endif
@@ -7008,6 +7292,8 @@ SOAP_FMAC3 _tempuri__LineInventory ** SOAP_FMAC4 soap_get_PointerTo_tempuri__Lin
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__WorkOrder(struct soap*, _tempuri__WorkOrder *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__WorkOrder(struct soap*, const char *, int, _tempuri__WorkOrder *const*, const char *);
 SOAP_FMAC3 _tempuri__WorkOrder ** SOAP_FMAC4 soap_in_PointerTo_tempuri__WorkOrder(struct soap*, const char*, _tempuri__WorkOrder **, const char*);
+
+SOAP_FMAC1 _tempuri__WorkOrder * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__WorkOrder(struct soap*, _tempuri__WorkOrder **, _tempuri__WorkOrder *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__WorkOrder(struct soap*, _tempuri__WorkOrder *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__WorkOrder ** SOAP_FMAC4 soap_get_PointerTo_tempuri__WorkOrder(struct soap*, _tempuri__WorkOrder **, const char*, const char*);
 #endif
@@ -7017,6 +7303,8 @@ SOAP_FMAC3 _tempuri__WorkOrder ** SOAP_FMAC4 soap_get_PointerTo_tempuri__WorkOrd
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__ToolingTimes(struct soap*, _tempuri__ToolingTimes *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__ToolingTimes(struct soap*, const char *, int, _tempuri__ToolingTimes *const*, const char *);
 SOAP_FMAC3 _tempuri__ToolingTimes ** SOAP_FMAC4 soap_in_PointerTo_tempuri__ToolingTimes(struct soap*, const char*, _tempuri__ToolingTimes **, const char*);
+
+SOAP_FMAC1 _tempuri__ToolingTimes * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__ToolingTimes(struct soap*, _tempuri__ToolingTimes **, _tempuri__ToolingTimes *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__ToolingTimes(struct soap*, _tempuri__ToolingTimes *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__ToolingTimes ** SOAP_FMAC4 soap_get_PointerTo_tempuri__ToolingTimes(struct soap*, _tempuri__ToolingTimes **, const char*, const char*);
 #endif
@@ -7026,6 +7314,8 @@ SOAP_FMAC3 _tempuri__ToolingTimes ** SOAP_FMAC4 soap_get_PointerTo_tempuri__Tool
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__GetDocCode(struct soap*, _tempuri__GetDocCode *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__GetDocCode(struct soap*, const char *, int, _tempuri__GetDocCode *const*, const char *);
 SOAP_FMAC3 _tempuri__GetDocCode ** SOAP_FMAC4 soap_in_PointerTo_tempuri__GetDocCode(struct soap*, const char*, _tempuri__GetDocCode **, const char*);
+
+SOAP_FMAC1 _tempuri__GetDocCode * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__GetDocCode(struct soap*, _tempuri__GetDocCode **, _tempuri__GetDocCode *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__GetDocCode(struct soap*, _tempuri__GetDocCode *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__GetDocCode ** SOAP_FMAC4 soap_get_PointerTo_tempuri__GetDocCode(struct soap*, _tempuri__GetDocCode **, const char*, const char*);
 #endif
@@ -7035,8 +7325,21 @@ SOAP_FMAC3 _tempuri__GetDocCode ** SOAP_FMAC4 soap_get_PointerTo_tempuri__GetDoc
 SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTo_tempuri__GetDate(struct soap*, _tempuri__GetDate *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTo_tempuri__GetDate(struct soap*, const char *, int, _tempuri__GetDate *const*, const char *);
 SOAP_FMAC3 _tempuri__GetDate ** SOAP_FMAC4 soap_in_PointerTo_tempuri__GetDate(struct soap*, const char*, _tempuri__GetDate **, const char*);
+
+SOAP_FMAC1 _tempuri__GetDate * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__GetDate(struct soap*, _tempuri__GetDate **, _tempuri__GetDate *const*);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__GetDate(struct soap*, _tempuri__GetDate *const*, const char*, const char*);
 SOAP_FMAC3 _tempuri__GetDate ** SOAP_FMAC4 soap_get_PointerTo_tempuri__GetDate(struct soap*, _tempuri__GetDate **, const char*, const char*);
+#endif
+
+#ifndef SOAP_TYPE_PointerTostd__string_DEFINED
+#define SOAP_TYPE_PointerTostd__string_DEFINED
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTostd__string(struct soap*, std::string *const*);
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTostd__string(struct soap*, const char *, int, std::string *const*, const char *);
+SOAP_FMAC3 std::string ** SOAP_FMAC4 soap_in_PointerTostd__string(struct soap*, const char*, std::string **, const char*);
+
+SOAP_FMAC1 std::string * * SOAP_FMAC2 soap_dup_PointerTostd__string(struct soap*, std::string **, std::string *const*);
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTostd__string(struct soap*, std::string *const*, const char*, const char*);
+SOAP_FMAC3 std::string ** SOAP_FMAC4 soap_get_PointerTostd__string(struct soap*, std::string **, const char*, const char*);
 #endif
 
 #ifndef SOAP_TYPE__QName_DEFINED
@@ -7058,6 +7361,9 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__QName(struct soap*, const char*, int, char*c
 
 #define soap_s2_QName(soap, s, a) soap_s2QName((soap), (s), (char**)(a), 0, -1, NULL)
 SOAP_FMAC3 char * * SOAP_FMAC4 soap_in__QName(struct soap*, const char*, char **, const char*);
+
+#define soap_dup__QName soap_dup_string
+
 
 #define soap_instantiate__QName soap_instantiate_string
 
@@ -7140,6 +7446,8 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out_string(struct soap*, const char*, int, char*c
 
 #define soap_s2string(soap, s, a) soap_s2char((soap), (s), (char**)(a), 1, 0, -1, NULL)
 SOAP_FMAC3 char * * SOAP_FMAC4 soap_in_string(struct soap*, const char*, char **, const char*);
+
+SOAP_FMAC1 char * * SOAP_FMAC2 soap_dup_string(struct soap*, char **, char *const*);
 
 SOAP_FMAC3 char * * SOAP_FMAC4 soap_new_string(struct soap *soap, int n = -1);
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_string(struct soap*, char *const*, const char*, const char*);

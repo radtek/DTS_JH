@@ -62,7 +62,7 @@ int MESServiceSoapService::WorkOrder(_tempuri__WorkOrder *request, _tempuri__Wor
     {
         if (result == SOAP_OK)
         {
-            QString strRequest(request->WorkOrderXml);
+            QString strRequest(request->WorkOrderXml->c_str());
 
             QDomDocument doc;
             if (!doc.setContent(strRequest))

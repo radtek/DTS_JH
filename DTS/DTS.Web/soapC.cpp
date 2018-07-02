@@ -18,7 +18,7 @@ A commercial use license is available from Genivia Inc., contact@genivia.com
 
 #include "soapH.h"
 
-SOAP_SOURCE_STAMP("@(#) soapC.cpp ver 2.8.64 2018-06-21 16:14:20 GMT")
+SOAP_SOURCE_STAMP("@(#) soapC.cpp ver 2.8.64 2018-06-26 07:04:54 GMT")
 
 
 #ifndef WITH_NOGLOBAL
@@ -197,6 +197,8 @@ SOAP_FMAC3 void * SOAP_FMAC4 soap_getelement(struct soap *soap, int *type)
 		return soap_in_int(soap, NULL, NULL, "xsd:int");
 	case SOAP_TYPE_bool:
 		return soap_in_bool(soap, NULL, NULL, "xsd:boolean");
+	case SOAP_TYPE_std__string:
+		return soap_in_std__string(soap, NULL, NULL, "xsd:string");
 	case SOAP_TYPE_PointerTo_tempuri__AnDanSLTypeAdd:
 		return soap_in_PointerTo_tempuri__AnDanSLTypeAdd(soap, NULL, NULL, "tempuri:AnDanSLTypeAdd");
 	case SOAP_TYPE_PointerTo_tempuri__AnDanSLTypeGet:
@@ -233,6 +235,8 @@ SOAP_FMAC3 void * SOAP_FMAC4 soap_getelement(struct soap *soap, int *type)
 		return soap_in_PointerTo_tempuri__GetDocCode(soap, NULL, NULL, "tempuri:GetDocCode");
 	case SOAP_TYPE_PointerTo_tempuri__GetDate:
 		return soap_in_PointerTo_tempuri__GetDate(soap, NULL, NULL, "tempuri:GetDate");
+	case SOAP_TYPE_PointerTostd__string:
+		return soap_in_PointerTostd__string(soap, NULL, NULL, "xsd:string");
 	case SOAP_TYPE__QName:
 	{	char **s;
 		s = soap_in__QName(soap, NULL, NULL, "xsd:QName");
@@ -250,6 +254,10 @@ SOAP_FMAC3 void * SOAP_FMAC4 soap_getelement(struct soap *soap, int *type)
 	{	const char *t = soap->type;
 		if (!*t)
 			t = soap->tag;
+		if (!soap_match_tag(soap, t, "xsd:string"))
+		{	*type = SOAP_TYPE_std__string;
+			return soap_in_std__string(soap, NULL, NULL, NULL);
+		}
 		if (!soap_match_tag(soap, t, "xsd:byte"))
 		{	*type = SOAP_TYPE_byte;
 			return soap_in_byte(soap, NULL, NULL, NULL);
@@ -484,6 +492,8 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_putelement(struct soap *soap, const void *ptr, co
 		return soap_out_int(soap, tag, id, (const int *)ptr, "xsd:int");
 	case SOAP_TYPE_bool:
 		return soap_out_bool(soap, tag, id, (const bool *)ptr, "xsd:boolean");
+	case SOAP_TYPE_std__string:
+		return soap_out_std__string(soap, tag, id, (const std::string *)ptr, "xsd:string");
 	case SOAP_TYPE__tempuri__AnDanSLTypeAddResponse:
 		return ((_tempuri__AnDanSLTypeAddResponse *)ptr)->soap_out(soap, "tempuri:AnDanSLTypeAddResponse", id, "");
 	case SOAP_TYPE__tempuri__AnDanSLTypeAdd:
@@ -592,6 +602,8 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_putelement(struct soap *soap, const void *ptr, co
 		return soap_out_PointerTo_tempuri__GetDocCode(soap, tag, id, (_tempuri__GetDocCode *const*)ptr, "tempuri:GetDocCode");
 	case SOAP_TYPE_PointerTo_tempuri__GetDate:
 		return soap_out_PointerTo_tempuri__GetDate(soap, tag, id, (_tempuri__GetDate *const*)ptr, "tempuri:GetDate");
+	case SOAP_TYPE_PointerTostd__string:
+		return soap_out_PointerTostd__string(soap, tag, id, (std::string *const*)ptr, "xsd:string");
 	case SOAP_TYPE__QName:
 		return soap_out_string(soap, tag, id, (char*const*)(void*)&ptr, "xsd:QName");
 	case SOAP_TYPE_string:
@@ -616,6 +628,9 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_markelement(struct soap *soap, const void *ptr, 
 	(void)soap; (void)ptr; (void)type; /* appease -Wall -Werror */
 	switch (type)
 	{
+	case SOAP_TYPE_std__string:
+		soap_serialize_std__string(soap, (const std::string *)ptr);
+		break;
 	case SOAP_TYPE__tempuri__AnDanSLTypeAddResponse:
 		((_tempuri__AnDanSLTypeAddResponse *)ptr)->soap_serialize(soap);
 		break;
@@ -886,6 +901,9 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_markelement(struct soap *soap, const void *ptr, 
 	case SOAP_TYPE_PointerTo_tempuri__GetDate:
 		soap_serialize_PointerTo_tempuri__GetDate(soap, (_tempuri__GetDate *const*)ptr);
 		break;
+	case SOAP_TYPE_PointerTostd__string:
+		soap_serialize_PointerTostd__string(soap, (std::string *const*)ptr);
+		break;
 	case SOAP_TYPE__QName:
 		soap_serialize_string(soap, (char*const*)(void*)&ptr);
 		break;
@@ -904,7 +922,204 @@ extern "C" {
 #endif
 
 SOAP_FMAC3 void * SOAP_FMAC4 soap_dupelement(struct soap *soap, const void *ptr, int type)
-{(void)soap; (void)ptr; (void)type; /* appease -Wall -Werror */
+{
+	switch (type)
+	{
+	case SOAP_TYPE_byte:
+		return soap_memdup(soap, ptr, sizeof(char));
+	case SOAP_TYPE_int:
+		return soap_memdup(soap, ptr, sizeof(int));
+	case SOAP_TYPE_bool:
+		return soap_memdup(soap, ptr, sizeof(bool));
+	case SOAP_TYPE_std__string:
+		return (void*)soap_dup_std__string(soap, NULL, (const std::string *)ptr);
+	case SOAP_TYPE__tempuri__AnDanSLTypeAddResponse:
+		return (void*)((_tempuri__AnDanSLTypeAddResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__AnDanSLTypeAdd:
+		return (void*)((_tempuri__AnDanSLTypeAdd *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__AnDanSLTypeGetResponse:
+		return (void*)((_tempuri__AnDanSLTypeGetResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__AnDanSLTypeGet:
+		return (void*)((_tempuri__AnDanSLTypeGet *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__AnDan2PeoplePresentResponse:
+		return (void*)((_tempuri__AnDan2PeoplePresentResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__AnDan2PeoplePresent:
+		return (void*)((_tempuri__AnDan2PeoplePresent *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__AnDan3AddUsersResponse:
+		return (void*)((_tempuri__AnDan3AddUsersResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__AnDan3AddUsers:
+		return (void*)((_tempuri__AnDan3AddUsers *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__AnDan4UpdPeoplePresentResponse:
+		return (void*)((_tempuri__AnDan4UpdPeoplePresentResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__AnDan4UpdPeoplePresent:
+		return (void*)((_tempuri__AnDan4UpdPeoplePresent *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__AnDan1SendResponse:
+		return (void*)((_tempuri__AnDan1SendResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__AnDan1Send:
+		return (void*)((_tempuri__AnDan1Send *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__LoginResponse:
+		return (void*)((_tempuri__LoginResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__Login:
+		return (void*)((_tempuri__Login *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__GetPowerResponse:
+		return (void*)((_tempuri__GetPowerResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__GetPower:
+		return (void*)((_tempuri__GetPower *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__GetDeptResponse:
+		return (void*)((_tempuri__GetDeptResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__GetDept:
+		return (void*)((_tempuri__GetDept *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__DocAddResponse:
+		return (void*)((_tempuri__DocAddResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__DocAdd:
+		return (void*)((_tempuri__DocAdd *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__ItemsAddResponse:
+		return (void*)((_tempuri__ItemsAddResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__ItemsAdd:
+		return (void*)((_tempuri__ItemsAdd *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__LineInventoryReturnResponse:
+		return (void*)((_tempuri__LineInventoryReturnResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__LineInventoryReturn:
+		return (void*)((_tempuri__LineInventoryReturn *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__LineInventoryUpdateResponse:
+		return (void*)((_tempuri__LineInventoryUpdateResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__LineInventoryUpdate:
+		return (void*)((_tempuri__LineInventoryUpdate *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__LineInventoryResponse:
+		return (void*)((_tempuri__LineInventoryResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__LineInventory:
+		return (void*)((_tempuri__LineInventory *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__WorkOrderResponse:
+		return (void*)((_tempuri__WorkOrderResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__WorkOrder:
+		return (void*)((_tempuri__WorkOrder *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__ToolingTimesResponse:
+		return (void*)((_tempuri__ToolingTimesResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__ToolingTimes:
+		return (void*)((_tempuri__ToolingTimes *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__GetDocCodeResponse:
+		return (void*)((_tempuri__GetDocCodeResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__GetDocCode:
+		return (void*)((_tempuri__GetDocCode *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__GetDateResponse:
+		return (void*)((_tempuri__GetDateResponse *)ptr)->soap_dup(soap);
+	case SOAP_TYPE__tempuri__GetDate:
+		return (void*)((_tempuri__GetDate *)ptr)->soap_dup(soap);
+	case SOAP_TYPE___tempuri__AnDanSLTypeAdd_:
+		return (void*)soap_dup___tempuri__AnDanSLTypeAdd_(soap, NULL, (const struct __tempuri__AnDanSLTypeAdd_ *)ptr);
+	case SOAP_TYPE___tempuri__AnDanSLTypeGet_:
+		return (void*)soap_dup___tempuri__AnDanSLTypeGet_(soap, NULL, (const struct __tempuri__AnDanSLTypeGet_ *)ptr);
+	case SOAP_TYPE___tempuri__AnDan2PeoplePresent_:
+		return (void*)soap_dup___tempuri__AnDan2PeoplePresent_(soap, NULL, (const struct __tempuri__AnDan2PeoplePresent_ *)ptr);
+	case SOAP_TYPE___tempuri__AnDan3AddUsers_:
+		return (void*)soap_dup___tempuri__AnDan3AddUsers_(soap, NULL, (const struct __tempuri__AnDan3AddUsers_ *)ptr);
+	case SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent_:
+		return (void*)soap_dup___tempuri__AnDan4UpdPeoplePresent_(soap, NULL, (const struct __tempuri__AnDan4UpdPeoplePresent_ *)ptr);
+	case SOAP_TYPE___tempuri__AnDan1Send_:
+		return (void*)soap_dup___tempuri__AnDan1Send_(soap, NULL, (const struct __tempuri__AnDan1Send_ *)ptr);
+	case SOAP_TYPE___tempuri__Login_:
+		return (void*)soap_dup___tempuri__Login_(soap, NULL, (const struct __tempuri__Login_ *)ptr);
+	case SOAP_TYPE___tempuri__GetPower_:
+		return (void*)soap_dup___tempuri__GetPower_(soap, NULL, (const struct __tempuri__GetPower_ *)ptr);
+	case SOAP_TYPE___tempuri__GetDept_:
+		return (void*)soap_dup___tempuri__GetDept_(soap, NULL, (const struct __tempuri__GetDept_ *)ptr);
+	case SOAP_TYPE___tempuri__DocAdd_:
+		return (void*)soap_dup___tempuri__DocAdd_(soap, NULL, (const struct __tempuri__DocAdd_ *)ptr);
+	case SOAP_TYPE___tempuri__ItemsAdd_:
+		return (void*)soap_dup___tempuri__ItemsAdd_(soap, NULL, (const struct __tempuri__ItemsAdd_ *)ptr);
+	case SOAP_TYPE___tempuri__LineInventoryReturn_:
+		return (void*)soap_dup___tempuri__LineInventoryReturn_(soap, NULL, (const struct __tempuri__LineInventoryReturn_ *)ptr);
+	case SOAP_TYPE___tempuri__LineInventoryUpdate_:
+		return (void*)soap_dup___tempuri__LineInventoryUpdate_(soap, NULL, (const struct __tempuri__LineInventoryUpdate_ *)ptr);
+	case SOAP_TYPE___tempuri__LineInventory_:
+		return (void*)soap_dup___tempuri__LineInventory_(soap, NULL, (const struct __tempuri__LineInventory_ *)ptr);
+	case SOAP_TYPE___tempuri__WorkOrder_:
+		return (void*)soap_dup___tempuri__WorkOrder_(soap, NULL, (const struct __tempuri__WorkOrder_ *)ptr);
+	case SOAP_TYPE___tempuri__ToolingTimes_:
+		return (void*)soap_dup___tempuri__ToolingTimes_(soap, NULL, (const struct __tempuri__ToolingTimes_ *)ptr);
+	case SOAP_TYPE___tempuri__GetDocCode_:
+		return (void*)soap_dup___tempuri__GetDocCode_(soap, NULL, (const struct __tempuri__GetDocCode_ *)ptr);
+	case SOAP_TYPE___tempuri__GetDate_:
+		return (void*)soap_dup___tempuri__GetDate_(soap, NULL, (const struct __tempuri__GetDate_ *)ptr);
+	case SOAP_TYPE___tempuri__AnDanSLTypeAdd:
+		return (void*)soap_dup___tempuri__AnDanSLTypeAdd(soap, NULL, (const struct __tempuri__AnDanSLTypeAdd *)ptr);
+	case SOAP_TYPE___tempuri__AnDanSLTypeGet:
+		return (void*)soap_dup___tempuri__AnDanSLTypeGet(soap, NULL, (const struct __tempuri__AnDanSLTypeGet *)ptr);
+	case SOAP_TYPE___tempuri__AnDan2PeoplePresent:
+		return (void*)soap_dup___tempuri__AnDan2PeoplePresent(soap, NULL, (const struct __tempuri__AnDan2PeoplePresent *)ptr);
+	case SOAP_TYPE___tempuri__AnDan3AddUsers:
+		return (void*)soap_dup___tempuri__AnDan3AddUsers(soap, NULL, (const struct __tempuri__AnDan3AddUsers *)ptr);
+	case SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent:
+		return (void*)soap_dup___tempuri__AnDan4UpdPeoplePresent(soap, NULL, (const struct __tempuri__AnDan4UpdPeoplePresent *)ptr);
+	case SOAP_TYPE___tempuri__AnDan1Send:
+		return (void*)soap_dup___tempuri__AnDan1Send(soap, NULL, (const struct __tempuri__AnDan1Send *)ptr);
+	case SOAP_TYPE___tempuri__Login:
+		return (void*)soap_dup___tempuri__Login(soap, NULL, (const struct __tempuri__Login *)ptr);
+	case SOAP_TYPE___tempuri__GetPower:
+		return (void*)soap_dup___tempuri__GetPower(soap, NULL, (const struct __tempuri__GetPower *)ptr);
+	case SOAP_TYPE___tempuri__GetDept:
+		return (void*)soap_dup___tempuri__GetDept(soap, NULL, (const struct __tempuri__GetDept *)ptr);
+	case SOAP_TYPE___tempuri__DocAdd:
+		return (void*)soap_dup___tempuri__DocAdd(soap, NULL, (const struct __tempuri__DocAdd *)ptr);
+	case SOAP_TYPE___tempuri__ItemsAdd:
+		return (void*)soap_dup___tempuri__ItemsAdd(soap, NULL, (const struct __tempuri__ItemsAdd *)ptr);
+	case SOAP_TYPE___tempuri__LineInventoryReturn:
+		return (void*)soap_dup___tempuri__LineInventoryReturn(soap, NULL, (const struct __tempuri__LineInventoryReturn *)ptr);
+	case SOAP_TYPE___tempuri__LineInventoryUpdate:
+		return (void*)soap_dup___tempuri__LineInventoryUpdate(soap, NULL, (const struct __tempuri__LineInventoryUpdate *)ptr);
+	case SOAP_TYPE___tempuri__LineInventory:
+		return (void*)soap_dup___tempuri__LineInventory(soap, NULL, (const struct __tempuri__LineInventory *)ptr);
+	case SOAP_TYPE___tempuri__WorkOrder:
+		return (void*)soap_dup___tempuri__WorkOrder(soap, NULL, (const struct __tempuri__WorkOrder *)ptr);
+	case SOAP_TYPE___tempuri__ToolingTimes:
+		return (void*)soap_dup___tempuri__ToolingTimes(soap, NULL, (const struct __tempuri__ToolingTimes *)ptr);
+	case SOAP_TYPE___tempuri__GetDocCode:
+		return (void*)soap_dup___tempuri__GetDocCode(soap, NULL, (const struct __tempuri__GetDocCode *)ptr);
+	case SOAP_TYPE___tempuri__GetDate:
+		return (void*)soap_dup___tempuri__GetDate(soap, NULL, (const struct __tempuri__GetDate *)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__AnDanSLTypeAdd:
+		return (void*)soap_dup_PointerTo_tempuri__AnDanSLTypeAdd(soap, NULL, (_tempuri__AnDanSLTypeAdd *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__AnDanSLTypeGet:
+		return (void*)soap_dup_PointerTo_tempuri__AnDanSLTypeGet(soap, NULL, (_tempuri__AnDanSLTypeGet *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__AnDan2PeoplePresent:
+		return (void*)soap_dup_PointerTo_tempuri__AnDan2PeoplePresent(soap, NULL, (_tempuri__AnDan2PeoplePresent *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__AnDan3AddUsers:
+		return (void*)soap_dup_PointerTo_tempuri__AnDan3AddUsers(soap, NULL, (_tempuri__AnDan3AddUsers *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__AnDan4UpdPeoplePresent:
+		return (void*)soap_dup_PointerTo_tempuri__AnDan4UpdPeoplePresent(soap, NULL, (_tempuri__AnDan4UpdPeoplePresent *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__AnDan1Send:
+		return (void*)soap_dup_PointerTo_tempuri__AnDan1Send(soap, NULL, (_tempuri__AnDan1Send *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__Login:
+		return (void*)soap_dup_PointerTo_tempuri__Login(soap, NULL, (_tempuri__Login *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__GetPower:
+		return (void*)soap_dup_PointerTo_tempuri__GetPower(soap, NULL, (_tempuri__GetPower *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__GetDept:
+		return (void*)soap_dup_PointerTo_tempuri__GetDept(soap, NULL, (_tempuri__GetDept *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__DocAdd:
+		return (void*)soap_dup_PointerTo_tempuri__DocAdd(soap, NULL, (_tempuri__DocAdd *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__ItemsAdd:
+		return (void*)soap_dup_PointerTo_tempuri__ItemsAdd(soap, NULL, (_tempuri__ItemsAdd *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__LineInventoryReturn:
+		return (void*)soap_dup_PointerTo_tempuri__LineInventoryReturn(soap, NULL, (_tempuri__LineInventoryReturn *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__LineInventoryUpdate:
+		return (void*)soap_dup_PointerTo_tempuri__LineInventoryUpdate(soap, NULL, (_tempuri__LineInventoryUpdate *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__LineInventory:
+		return (void*)soap_dup_PointerTo_tempuri__LineInventory(soap, NULL, (_tempuri__LineInventory *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__WorkOrder:
+		return (void*)soap_dup_PointerTo_tempuri__WorkOrder(soap, NULL, (_tempuri__WorkOrder *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__ToolingTimes:
+		return (void*)soap_dup_PointerTo_tempuri__ToolingTimes(soap, NULL, (_tempuri__ToolingTimes *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__GetDocCode:
+		return (void*)soap_dup_PointerTo_tempuri__GetDocCode(soap, NULL, (_tempuri__GetDocCode *const*)ptr);
+	case SOAP_TYPE_PointerTo_tempuri__GetDate:
+		return (void*)soap_dup_PointerTo_tempuri__GetDate(soap, NULL, (_tempuri__GetDate *const*)ptr);
+	case SOAP_TYPE_PointerTostd__string:
+		return (void*)soap_dup_PointerTostd__string(soap, NULL, (std::string *const*)ptr);
+	case SOAP_TYPE__QName:
+		return (void*)soap_strdup(soap, (const char*)ptr);
+	case SOAP_TYPE_string:
+		return (void*)soap_strdup(soap, (const char*)ptr);
+	}
 	return NULL;
 }
 #ifdef __cplusplus
@@ -928,6 +1143,8 @@ SOAP_FMAC3 void * SOAP_FMAC4 soap_instantiate(struct soap *soap, int t, const ch
 	{
 	case SOAP_TYPE__tempuri__GetDate:
 		return (void*)soap_instantiate__tempuri__GetDate(soap, -1, type, arrayType, n);
+	case SOAP_TYPE_std__string:
+		return (void*)soap_instantiate_std__string(soap, -1, type, arrayType, n);
 	case SOAP_TYPE__tempuri__GetDateResponse:
 		return (void*)soap_instantiate__tempuri__GetDateResponse(soap, -1, type, arrayType, n);
 	case SOAP_TYPE__tempuri__GetDocCode:
@@ -1105,6 +1322,12 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_fdelete(struct soap *soap, struct soap_clist *p)
 			SOAP_DELETE(soap, static_cast<_tempuri__GetDate*>(p->ptr), _tempuri__GetDate);
 		else
 			SOAP_DELETE_ARRAY(soap, static_cast<_tempuri__GetDate*>(p->ptr), _tempuri__GetDate);
+		break;
+	case SOAP_TYPE_std__string:
+		if (p->size < 0)
+			SOAP_DELETE(soap, static_cast<std::string*>(p->ptr), std::string);
+		else
+			SOAP_DELETE_ARRAY(soap, static_cast<std::string*>(p->ptr), std::string);
 		break;
 	case SOAP_TYPE__tempuri__GetDateResponse:
 		if (p->size < 0)
@@ -1606,6 +1829,10 @@ SOAP_FMAC3 void SOAP_FMAC4 soap_finsert(struct soap *soap, int t, int tt, void *
 		DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copy _tempuri__GetDate type=%d location=%p object=%p\n", t, p, q));
 		*(_tempuri__GetDate*)p = *(_tempuri__GetDate*)q;
 		break;
+	case SOAP_TYPE_std__string:
+		DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copy std::string type=%d location=%p object=%p\n", t, p, q));
+		*(std::string*)p = *(std::string*)q;
+		break;
 	case SOAP_TYPE__tempuri__GetDateResponse:
 		DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Copy _tempuri__GetDateResponse type=%d location=%p object=%p\n", t, p, q));
 		*(_tempuri__GetDateResponse*)p = *(_tempuri__GetDateResponse*)q;
@@ -2082,10 +2309,104 @@ SOAP_FMAC3 bool * SOAP_FMAC4 soap_get_bool(struct soap *soap, bool *p, const cha
 	return p;
 }
 
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_std__string(struct soap *soap, const std::string *a)
+{	(void)soap; (void)a; /* appease -Wall -Werror */
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_std__string(struct soap *soap, const char *tag, int id, const std::string *s, const char *type)
+{
+	if ((soap->mode & SOAP_C_NILSTRING) && s->empty())
+		return soap_element_null(soap, tag, id, type);
+	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, s, SOAP_TYPE_std__string), type) || soap_string_out(soap, s->c_str(), 0) || soap_element_end_out(soap, tag))
+		return soap->error;
+	return SOAP_OK;
+}
+
+SOAP_FMAC3 std::string * SOAP_FMAC4 soap_in_std__string(struct soap *soap, const char *tag, std::string *s, const char *type)
+{
+	(void)type; /* appease -Wall -Werror */
+	if (soap_element_begin_in(soap, tag, 1, NULL))
+		return NULL;
+	if (!s)
+		s = soap_new_std__string(soap, -1);
+	if (soap->null)
+		if (s)
+			s->erase();
+	if (soap->body && *soap->href != '#')
+	{	char *t;
+		s = (std::string*)soap_id_enter(soap, soap->id, s, SOAP_TYPE_std__string, sizeof(std::string), soap->type, soap->arrayType, soap_instantiate, soap_fbase);
+		if (s)
+		{	if (!(t = soap_string_in(soap, 1, 0, -1, NULL)))
+				return NULL;
+			s->assign(t);
+		}
+	}
+	else
+		s = (std::string*)soap_id_forward(soap, soap->href, soap_id_enter(soap, soap->id, s, SOAP_TYPE_std__string, sizeof(std::string), soap->type, soap->arrayType, soap_instantiate, soap_fbase), 0, SOAP_TYPE_std__string, SOAP_TYPE_std__string, sizeof(std::string), 0, soap_finsert, NULL);
+	if (soap->body && soap_element_end_in(soap, tag))
+		return NULL;
+	return s;
+}
+
+SOAP_FMAC1 std::string * SOAP_FMAC2 soap_dup_std__string(struct soap *soap, std::string *d, std::string const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (std::string*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE_std__string, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new_std__string(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	*d = *a;
+	return d;
+}
+
+SOAP_FMAC1 std::string * SOAP_FMAC2 soap_instantiate_std__string(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
+{
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_std__string(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
+	(void)type; (void)arrayType; /* appease -Wall -Werror */
+	std::string *p;
+	size_t k = sizeof(std::string);
+	struct soap_clist *cp = soap_link(soap, SOAP_TYPE_std__string, n, soap_fdelete);
+	if (!cp && soap && n != SOAP_NO_LINK_TO_DELETE)
+		return NULL;
+	if (n < 0)
+	{	p = SOAP_NEW(soap, std::string);
+	}
+	else
+	{	p = SOAP_NEW_ARRAY(soap, std::string, n);
+		k *= n;
+	}
+	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated std::string location=%p n=%d\n", (void*)p, n));
+	if (size)
+		*size = k;
+	if (!p)
+		soap->error = SOAP_EOM;
+	else if (cp)
+		cp->ptr = (void*)p;
+	return p;
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_std__string(struct soap *soap, const std::string *a, const char *tag, const char *type)
+{
+	if (soap_out_std__string(soap, tag ? tag : "string", -2, a, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+SOAP_FMAC3 std::string * SOAP_FMAC4 soap_get_std__string(struct soap *soap, std::string *p, const char *tag, const char *type)
+{
+	if ((p = soap_in_std__string(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
 void _tempuri__AnDanSLTypeAddResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__AnDanSLTypeAddResponse::AnDanSLTypeAddResult);
+	this->_tempuri__AnDanSLTypeAddResponse::AnDanSLTypeAddResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -2093,7 +2414,7 @@ void _tempuri__AnDanSLTypeAddResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDanSLTypeAddResponse::AnDanSLTypeAddResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDanSLTypeAddResponse::AnDanSLTypeAddResult);
 #endif
 }
 
@@ -2109,7 +2430,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDanSLTypeAddResponse(struct soap 
 		return soap->error;
 	if (a->AnDanSLTypeAddResult)
 		soap_element_result(soap, "tempuri:AnDanSLTypeAddResult");
-	if (soap_out_string(soap, "tempuri:AnDanSLTypeAddResult", -1, (char*const*)&a->_tempuri__AnDanSLTypeAddResponse::AnDanSLTypeAddResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:AnDanSLTypeAddResult", -1, &a->_tempuri__AnDanSLTypeAddResponse::AnDanSLTypeAddResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -2139,7 +2460,7 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeAddResponse * SOAP_FMAC4 soap_in__tempuri__AnDan
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_AnDanSLTypeAddResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:AnDanSLTypeAddResult", (char**)&a->_tempuri__AnDanSLTypeAddResponse::AnDanSLTypeAddResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:AnDanSLTypeAddResult", &a->_tempuri__AnDanSLTypeAddResponse::AnDanSLTypeAddResult, "xsd:string"))
 				{	soap_flag_AnDanSLTypeAddResult1--;
 					continue;
 				}
@@ -2161,6 +2482,21 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeAddResponse * SOAP_FMAC4 soap_in__tempuri__AnDan
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDanSLTypeAddResponse * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeAddResponse(struct soap *soap, _tempuri__AnDanSLTypeAddResponse *d, _tempuri__AnDanSLTypeAddResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDanSLTypeAddResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDanSLTypeAddResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDanSLTypeAddResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDanSLTypeAddResponse::AnDanSLTypeAddResult, &a->_tempuri__AnDanSLTypeAddResponse::AnDanSLTypeAddResult);
+	d->_tempuri__AnDanSLTypeAddResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDanSLTypeAddResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeAddResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -2217,7 +2553,7 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeAddResponse * SOAP_FMAC4 soap_get__tempuri__AnDa
 void _tempuri__AnDanSLTypeAdd::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__AnDanSLTypeAdd::XML_);
+	this->_tempuri__AnDanSLTypeAdd::XML_ = NULL;
 	/* transient soap skipped */
 }
 
@@ -2225,7 +2561,7 @@ void _tempuri__AnDanSLTypeAdd::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDanSLTypeAdd::XML_);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDanSLTypeAdd::XML_);
 #endif
 }
 
@@ -2239,7 +2575,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDanSLTypeAdd(struct soap *soap, c
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__AnDanSLTypeAdd), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:XML", -1, (char*const*)&a->_tempuri__AnDanSLTypeAdd::XML_, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:XML", -1, &a->_tempuri__AnDanSLTypeAdd::XML_, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -2269,7 +2605,7 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeAdd * SOAP_FMAC4 soap_in__tempuri__AnDanSLTypeAd
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_XML_1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:XML", (char**)&a->_tempuri__AnDanSLTypeAdd::XML_, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:XML", &a->_tempuri__AnDanSLTypeAdd::XML_, "xsd:string"))
 				{	soap_flag_XML_1--;
 					continue;
 				}
@@ -2290,6 +2626,21 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeAdd * SOAP_FMAC4 soap_in__tempuri__AnDanSLTypeAd
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeAdd(struct soap *soap, _tempuri__AnDanSLTypeAdd *d, _tempuri__AnDanSLTypeAdd const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDanSLTypeAdd*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDanSLTypeAdd, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDanSLTypeAdd(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDanSLTypeAdd::XML_, &a->_tempuri__AnDanSLTypeAdd::XML_);
+	d->_tempuri__AnDanSLTypeAdd::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeAdd(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -2346,7 +2697,7 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeAdd * SOAP_FMAC4 soap_get__tempuri__AnDanSLTypeA
 void _tempuri__AnDanSLTypeGetResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__AnDanSLTypeGetResponse::AnDanSLTypeGetResult);
+	this->_tempuri__AnDanSLTypeGetResponse::AnDanSLTypeGetResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -2354,7 +2705,7 @@ void _tempuri__AnDanSLTypeGetResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDanSLTypeGetResponse::AnDanSLTypeGetResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDanSLTypeGetResponse::AnDanSLTypeGetResult);
 #endif
 }
 
@@ -2370,7 +2721,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDanSLTypeGetResponse(struct soap 
 		return soap->error;
 	if (a->AnDanSLTypeGetResult)
 		soap_element_result(soap, "tempuri:AnDanSLTypeGetResult");
-	if (soap_out_string(soap, "tempuri:AnDanSLTypeGetResult", -1, (char*const*)&a->_tempuri__AnDanSLTypeGetResponse::AnDanSLTypeGetResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:AnDanSLTypeGetResult", -1, &a->_tempuri__AnDanSLTypeGetResponse::AnDanSLTypeGetResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -2400,7 +2751,7 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeGetResponse * SOAP_FMAC4 soap_in__tempuri__AnDan
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_AnDanSLTypeGetResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:AnDanSLTypeGetResult", (char**)&a->_tempuri__AnDanSLTypeGetResponse::AnDanSLTypeGetResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:AnDanSLTypeGetResult", &a->_tempuri__AnDanSLTypeGetResponse::AnDanSLTypeGetResult, "xsd:string"))
 				{	soap_flag_AnDanSLTypeGetResult1--;
 					continue;
 				}
@@ -2422,6 +2773,21 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeGetResponse * SOAP_FMAC4 soap_in__tempuri__AnDan
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDanSLTypeGetResponse * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeGetResponse(struct soap *soap, _tempuri__AnDanSLTypeGetResponse *d, _tempuri__AnDanSLTypeGetResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDanSLTypeGetResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDanSLTypeGetResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDanSLTypeGetResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDanSLTypeGetResponse::AnDanSLTypeGetResult, &a->_tempuri__AnDanSLTypeGetResponse::AnDanSLTypeGetResult);
+	d->_tempuri__AnDanSLTypeGetResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDanSLTypeGetResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeGetResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -2478,7 +2844,7 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeGetResponse * SOAP_FMAC4 soap_get__tempuri__AnDa
 void _tempuri__AnDanSLTypeGet::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__AnDanSLTypeGet::ADMCode);
+	this->_tempuri__AnDanSLTypeGet::ADMCode = NULL;
 	/* transient soap skipped */
 }
 
@@ -2486,7 +2852,7 @@ void _tempuri__AnDanSLTypeGet::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDanSLTypeGet::ADMCode);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDanSLTypeGet::ADMCode);
 #endif
 }
 
@@ -2500,7 +2866,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDanSLTypeGet(struct soap *soap, c
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__AnDanSLTypeGet), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:ADMCode", -1, (char*const*)&a->_tempuri__AnDanSLTypeGet::ADMCode, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:ADMCode", -1, &a->_tempuri__AnDanSLTypeGet::ADMCode, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -2530,7 +2896,7 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeGet * SOAP_FMAC4 soap_in__tempuri__AnDanSLTypeGe
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_ADMCode1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:ADMCode", (char**)&a->_tempuri__AnDanSLTypeGet::ADMCode, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:ADMCode", &a->_tempuri__AnDanSLTypeGet::ADMCode, "xsd:string"))
 				{	soap_flag_ADMCode1--;
 					continue;
 				}
@@ -2551,6 +2917,21 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeGet * SOAP_FMAC4 soap_in__tempuri__AnDanSLTypeGe
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_dup__tempuri__AnDanSLTypeGet(struct soap *soap, _tempuri__AnDanSLTypeGet *d, _tempuri__AnDanSLTypeGet const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDanSLTypeGet*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDanSLTypeGet, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDanSLTypeGet(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDanSLTypeGet::ADMCode, &a->_tempuri__AnDanSLTypeGet::ADMCode);
+	d->_tempuri__AnDanSLTypeGet::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_instantiate__tempuri__AnDanSLTypeGet(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -2607,7 +2988,7 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeGet * SOAP_FMAC4 soap_get__tempuri__AnDanSLTypeG
 void _tempuri__AnDan2PeoplePresentResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__AnDan2PeoplePresentResponse::AnDan2PeoplePresentResult);
+	this->_tempuri__AnDan2PeoplePresentResponse::AnDan2PeoplePresentResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -2615,7 +2996,7 @@ void _tempuri__AnDan2PeoplePresentResponse::soap_serialize(struct soap *soap) co
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDan2PeoplePresentResponse::AnDan2PeoplePresentResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDan2PeoplePresentResponse::AnDan2PeoplePresentResult);
 #endif
 }
 
@@ -2631,7 +3012,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan2PeoplePresentResponse(struct 
 		return soap->error;
 	if (a->AnDan2PeoplePresentResult)
 		soap_element_result(soap, "tempuri:AnDan2PeoplePresentResult");
-	if (soap_out_string(soap, "tempuri:AnDan2PeoplePresentResult", -1, (char*const*)&a->_tempuri__AnDan2PeoplePresentResponse::AnDan2PeoplePresentResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:AnDan2PeoplePresentResult", -1, &a->_tempuri__AnDan2PeoplePresentResponse::AnDan2PeoplePresentResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -2661,7 +3042,7 @@ SOAP_FMAC3 _tempuri__AnDan2PeoplePresentResponse * SOAP_FMAC4 soap_in__tempuri__
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_AnDan2PeoplePresentResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:AnDan2PeoplePresentResult", (char**)&a->_tempuri__AnDan2PeoplePresentResponse::AnDan2PeoplePresentResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:AnDan2PeoplePresentResult", &a->_tempuri__AnDan2PeoplePresentResponse::AnDan2PeoplePresentResult, "xsd:string"))
 				{	soap_flag_AnDan2PeoplePresentResult1--;
 					continue;
 				}
@@ -2683,6 +3064,21 @@ SOAP_FMAC3 _tempuri__AnDan2PeoplePresentResponse * SOAP_FMAC4 soap_in__tempuri__
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDan2PeoplePresentResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan2PeoplePresentResponse(struct soap *soap, _tempuri__AnDan2PeoplePresentResponse *d, _tempuri__AnDan2PeoplePresentResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDan2PeoplePresentResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDan2PeoplePresentResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDan2PeoplePresentResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDan2PeoplePresentResponse::AnDan2PeoplePresentResult, &a->_tempuri__AnDan2PeoplePresentResponse::AnDan2PeoplePresentResult);
+	d->_tempuri__AnDan2PeoplePresentResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDan2PeoplePresentResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan2PeoplePresentResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -2739,7 +3135,7 @@ SOAP_FMAC3 _tempuri__AnDan2PeoplePresentResponse * SOAP_FMAC4 soap_get__tempuri_
 void _tempuri__AnDan2PeoplePresent::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__AnDan2PeoplePresent::ADMCode);
+	this->_tempuri__AnDan2PeoplePresent::ADMCode = NULL;
 	/* transient soap skipped */
 }
 
@@ -2747,7 +3143,7 @@ void _tempuri__AnDan2PeoplePresent::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDan2PeoplePresent::ADMCode);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDan2PeoplePresent::ADMCode);
 #endif
 }
 
@@ -2761,7 +3157,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan2PeoplePresent(struct soap *so
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__AnDan2PeoplePresent), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:ADMCode", -1, (char*const*)&a->_tempuri__AnDan2PeoplePresent::ADMCode, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:ADMCode", -1, &a->_tempuri__AnDan2PeoplePresent::ADMCode, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -2791,7 +3187,7 @@ SOAP_FMAC3 _tempuri__AnDan2PeoplePresent * SOAP_FMAC4 soap_in__tempuri__AnDan2Pe
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_ADMCode1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:ADMCode", (char**)&a->_tempuri__AnDan2PeoplePresent::ADMCode, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:ADMCode", &a->_tempuri__AnDan2PeoplePresent::ADMCode, "xsd:string"))
 				{	soap_flag_ADMCode1--;
 					continue;
 				}
@@ -2812,6 +3208,21 @@ SOAP_FMAC3 _tempuri__AnDan2PeoplePresent * SOAP_FMAC4 soap_in__tempuri__AnDan2Pe
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_dup__tempuri__AnDan2PeoplePresent(struct soap *soap, _tempuri__AnDan2PeoplePresent *d, _tempuri__AnDan2PeoplePresent const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDan2PeoplePresent*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDan2PeoplePresent, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDan2PeoplePresent(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDan2PeoplePresent::ADMCode, &a->_tempuri__AnDan2PeoplePresent::ADMCode);
+	d->_tempuri__AnDan2PeoplePresent::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_instantiate__tempuri__AnDan2PeoplePresent(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -2868,7 +3279,7 @@ SOAP_FMAC3 _tempuri__AnDan2PeoplePresent * SOAP_FMAC4 soap_get__tempuri__AnDan2P
 void _tempuri__AnDan3AddUsersResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__AnDan3AddUsersResponse::AnDan3AddUsersResult);
+	this->_tempuri__AnDan3AddUsersResponse::AnDan3AddUsersResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -2876,7 +3287,7 @@ void _tempuri__AnDan3AddUsersResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDan3AddUsersResponse::AnDan3AddUsersResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDan3AddUsersResponse::AnDan3AddUsersResult);
 #endif
 }
 
@@ -2892,7 +3303,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan3AddUsersResponse(struct soap 
 		return soap->error;
 	if (a->AnDan3AddUsersResult)
 		soap_element_result(soap, "tempuri:AnDan3AddUsersResult");
-	if (soap_out_string(soap, "tempuri:AnDan3AddUsersResult", -1, (char*const*)&a->_tempuri__AnDan3AddUsersResponse::AnDan3AddUsersResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:AnDan3AddUsersResult", -1, &a->_tempuri__AnDan3AddUsersResponse::AnDan3AddUsersResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -2922,7 +3333,7 @@ SOAP_FMAC3 _tempuri__AnDan3AddUsersResponse * SOAP_FMAC4 soap_in__tempuri__AnDan
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_AnDan3AddUsersResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:AnDan3AddUsersResult", (char**)&a->_tempuri__AnDan3AddUsersResponse::AnDan3AddUsersResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:AnDan3AddUsersResult", &a->_tempuri__AnDan3AddUsersResponse::AnDan3AddUsersResult, "xsd:string"))
 				{	soap_flag_AnDan3AddUsersResult1--;
 					continue;
 				}
@@ -2944,6 +3355,21 @@ SOAP_FMAC3 _tempuri__AnDan3AddUsersResponse * SOAP_FMAC4 soap_in__tempuri__AnDan
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDan3AddUsersResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan3AddUsersResponse(struct soap *soap, _tempuri__AnDan3AddUsersResponse *d, _tempuri__AnDan3AddUsersResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDan3AddUsersResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDan3AddUsersResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDan3AddUsersResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDan3AddUsersResponse::AnDan3AddUsersResult, &a->_tempuri__AnDan3AddUsersResponse::AnDan3AddUsersResult);
+	d->_tempuri__AnDan3AddUsersResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDan3AddUsersResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan3AddUsersResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -3000,8 +3426,8 @@ SOAP_FMAC3 _tempuri__AnDan3AddUsersResponse * SOAP_FMAC4 soap_get__tempuri__AnDa
 void _tempuri__AnDan3AddUsers::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__AnDan3AddUsers::XML_);
-	soap_default_string(soap, &this->_tempuri__AnDan3AddUsers::TS_USCOREOPERATORS);
+	this->_tempuri__AnDan3AddUsers::XML_ = NULL;
+	this->_tempuri__AnDan3AddUsers::TS_USCOREOPERATORS = NULL;
 	/* transient soap skipped */
 }
 
@@ -3009,8 +3435,8 @@ void _tempuri__AnDan3AddUsers::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDan3AddUsers::XML_);
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDan3AddUsers::TS_USCOREOPERATORS);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDan3AddUsers::XML_);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDan3AddUsers::TS_USCOREOPERATORS);
 #endif
 }
 
@@ -3024,9 +3450,9 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan3AddUsers(struct soap *soap, c
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__AnDan3AddUsers), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:XML", -1, (char*const*)&a->_tempuri__AnDan3AddUsers::XML_, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:XML", -1, &a->_tempuri__AnDan3AddUsers::XML_, ""))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:TS_OPERATORS", -1, (char*const*)&a->_tempuri__AnDan3AddUsers::TS_USCOREOPERATORS, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:TS_OPERATORS", -1, &a->_tempuri__AnDan3AddUsers::TS_USCOREOPERATORS, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -3057,13 +3483,13 @@ SOAP_FMAC3 _tempuri__AnDan3AddUsers * SOAP_FMAC4 soap_in__tempuri__AnDan3AddUser
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_XML_1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:XML", (char**)&a->_tempuri__AnDan3AddUsers::XML_, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:XML", &a->_tempuri__AnDan3AddUsers::XML_, "xsd:string"))
 				{	soap_flag_XML_1--;
 					continue;
 				}
 			}
 			if (soap_flag_TS_USCOREOPERATORS1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:TS_OPERATORS", (char**)&a->_tempuri__AnDan3AddUsers::TS_USCOREOPERATORS, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:TS_OPERATORS", &a->_tempuri__AnDan3AddUsers::TS_USCOREOPERATORS, "xsd:string"))
 				{	soap_flag_TS_USCOREOPERATORS1--;
 					continue;
 				}
@@ -3084,6 +3510,22 @@ SOAP_FMAC3 _tempuri__AnDan3AddUsers * SOAP_FMAC4 soap_in__tempuri__AnDan3AddUser
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_dup__tempuri__AnDan3AddUsers(struct soap *soap, _tempuri__AnDan3AddUsers *d, _tempuri__AnDan3AddUsers const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDan3AddUsers*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDan3AddUsers, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDan3AddUsers(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDan3AddUsers::XML_, &a->_tempuri__AnDan3AddUsers::XML_);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDan3AddUsers::TS_USCOREOPERATORS, &a->_tempuri__AnDan3AddUsers::TS_USCOREOPERATORS);
+	d->_tempuri__AnDan3AddUsers::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_instantiate__tempuri__AnDan3AddUsers(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -3140,7 +3582,7 @@ SOAP_FMAC3 _tempuri__AnDan3AddUsers * SOAP_FMAC4 soap_get__tempuri__AnDan3AddUse
 void _tempuri__AnDan4UpdPeoplePresentResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__AnDan4UpdPeoplePresentResponse::AnDan4UpdPeoplePresentResult);
+	this->_tempuri__AnDan4UpdPeoplePresentResponse::AnDan4UpdPeoplePresentResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -3148,7 +3590,7 @@ void _tempuri__AnDan4UpdPeoplePresentResponse::soap_serialize(struct soap *soap)
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDan4UpdPeoplePresentResponse::AnDan4UpdPeoplePresentResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDan4UpdPeoplePresentResponse::AnDan4UpdPeoplePresentResult);
 #endif
 }
 
@@ -3164,7 +3606,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan4UpdPeoplePresentResponse(stru
 		return soap->error;
 	if (a->AnDan4UpdPeoplePresentResult)
 		soap_element_result(soap, "tempuri:AnDan4UpdPeoplePresentResult");
-	if (soap_out_string(soap, "tempuri:AnDan4UpdPeoplePresentResult", -1, (char*const*)&a->_tempuri__AnDan4UpdPeoplePresentResponse::AnDan4UpdPeoplePresentResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:AnDan4UpdPeoplePresentResult", -1, &a->_tempuri__AnDan4UpdPeoplePresentResponse::AnDan4UpdPeoplePresentResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -3194,7 +3636,7 @@ SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresentResponse * SOAP_FMAC4 soap_in__tempur
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_AnDan4UpdPeoplePresentResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:AnDan4UpdPeoplePresentResult", (char**)&a->_tempuri__AnDan4UpdPeoplePresentResponse::AnDan4UpdPeoplePresentResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:AnDan4UpdPeoplePresentResult", &a->_tempuri__AnDan4UpdPeoplePresentResponse::AnDan4UpdPeoplePresentResult, "xsd:string"))
 				{	soap_flag_AnDan4UpdPeoplePresentResult1--;
 					continue;
 				}
@@ -3216,6 +3658,21 @@ SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresentResponse * SOAP_FMAC4 soap_in__tempur
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresentResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan4UpdPeoplePresentResponse(struct soap *soap, _tempuri__AnDan4UpdPeoplePresentResponse *d, _tempuri__AnDan4UpdPeoplePresentResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDan4UpdPeoplePresentResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDan4UpdPeoplePresentResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDan4UpdPeoplePresentResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDan4UpdPeoplePresentResponse::AnDan4UpdPeoplePresentResult, &a->_tempuri__AnDan4UpdPeoplePresentResponse::AnDan4UpdPeoplePresentResult);
+	d->_tempuri__AnDan4UpdPeoplePresentResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresentResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan4UpdPeoplePresentResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -3272,7 +3729,7 @@ SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresentResponse * SOAP_FMAC4 soap_get__tempu
 void _tempuri__AnDan4UpdPeoplePresent::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__AnDan4UpdPeoplePresent::Presens);
+	this->_tempuri__AnDan4UpdPeoplePresent::Presens = NULL;
 	/* transient soap skipped */
 }
 
@@ -3280,7 +3737,7 @@ void _tempuri__AnDan4UpdPeoplePresent::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDan4UpdPeoplePresent::Presens);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDan4UpdPeoplePresent::Presens);
 #endif
 }
 
@@ -3294,7 +3751,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan4UpdPeoplePresent(struct soap 
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__AnDan4UpdPeoplePresent), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:Presens", -1, (char*const*)&a->_tempuri__AnDan4UpdPeoplePresent::Presens, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:Presens", -1, &a->_tempuri__AnDan4UpdPeoplePresent::Presens, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -3324,7 +3781,7 @@ SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC4 soap_in__tempuri__AnDan
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_Presens1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:Presens", (char**)&a->_tempuri__AnDan4UpdPeoplePresent::Presens, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:Presens", &a->_tempuri__AnDan4UpdPeoplePresent::Presens, "xsd:string"))
 				{	soap_flag_Presens1--;
 					continue;
 				}
@@ -3345,6 +3802,21 @@ SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC4 soap_in__tempuri__AnDan
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_dup__tempuri__AnDan4UpdPeoplePresent(struct soap *soap, _tempuri__AnDan4UpdPeoplePresent *d, _tempuri__AnDan4UpdPeoplePresent const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDan4UpdPeoplePresent*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDan4UpdPeoplePresent, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDan4UpdPeoplePresent(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDan4UpdPeoplePresent::Presens, &a->_tempuri__AnDan4UpdPeoplePresent::Presens);
+	d->_tempuri__AnDan4UpdPeoplePresent::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_instantiate__tempuri__AnDan4UpdPeoplePresent(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -3401,7 +3873,7 @@ SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC4 soap_get__tempuri__AnDa
 void _tempuri__AnDan1SendResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__AnDan1SendResponse::AnDan1SendResult);
+	this->_tempuri__AnDan1SendResponse::AnDan1SendResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -3409,7 +3881,7 @@ void _tempuri__AnDan1SendResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDan1SendResponse::AnDan1SendResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDan1SendResponse::AnDan1SendResult);
 #endif
 }
 
@@ -3425,7 +3897,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan1SendResponse(struct soap *soa
 		return soap->error;
 	if (a->AnDan1SendResult)
 		soap_element_result(soap, "tempuri:AnDan1SendResult");
-	if (soap_out_string(soap, "tempuri:AnDan1SendResult", -1, (char*const*)&a->_tempuri__AnDan1SendResponse::AnDan1SendResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:AnDan1SendResult", -1, &a->_tempuri__AnDan1SendResponse::AnDan1SendResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -3455,7 +3927,7 @@ SOAP_FMAC3 _tempuri__AnDan1SendResponse * SOAP_FMAC4 soap_in__tempuri__AnDan1Sen
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_AnDan1SendResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:AnDan1SendResult", (char**)&a->_tempuri__AnDan1SendResponse::AnDan1SendResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:AnDan1SendResult", &a->_tempuri__AnDan1SendResponse::AnDan1SendResult, "xsd:string"))
 				{	soap_flag_AnDan1SendResult1--;
 					continue;
 				}
@@ -3477,6 +3949,21 @@ SOAP_FMAC3 _tempuri__AnDan1SendResponse * SOAP_FMAC4 soap_in__tempuri__AnDan1Sen
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDan1SendResponse * SOAP_FMAC2 soap_dup__tempuri__AnDan1SendResponse(struct soap *soap, _tempuri__AnDan1SendResponse *d, _tempuri__AnDan1SendResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDan1SendResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDan1SendResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDan1SendResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDan1SendResponse::AnDan1SendResult, &a->_tempuri__AnDan1SendResponse::AnDan1SendResult);
+	d->_tempuri__AnDan1SendResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDan1SendResponse * SOAP_FMAC2 soap_instantiate__tempuri__AnDan1SendResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -3534,7 +4021,7 @@ void _tempuri__AnDan1Send::soap_default(struct soap *soap)
 {
 	this->soap = soap;
 	soap_default_bool(soap, &this->_tempuri__AnDan1Send::flag);
-	soap_default_string(soap, &this->_tempuri__AnDan1Send::XML_);
+	this->_tempuri__AnDan1Send::XML_ = NULL;
 	/* transient soap skipped */
 }
 
@@ -3542,7 +4029,7 @@ void _tempuri__AnDan1Send::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__AnDan1Send::XML_);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__AnDan1Send::XML_);
 #endif
 }
 
@@ -3558,7 +4045,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__AnDan1Send(struct soap *soap, const
 		return soap->error;
 	if (soap_out_bool(soap, "tempuri:flag", -1, &a->_tempuri__AnDan1Send::flag, ""))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:XML", -1, (char*const*)&a->_tempuri__AnDan1Send::XML_, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:XML", -1, &a->_tempuri__AnDan1Send::XML_, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -3595,7 +4082,7 @@ SOAP_FMAC3 _tempuri__AnDan1Send * SOAP_FMAC4 soap_in__tempuri__AnDan1Send(struct
 				}
 			}
 			if (soap_flag_XML_1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:XML", (char**)&a->_tempuri__AnDan1Send::XML_, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:XML", &a->_tempuri__AnDan1Send::XML_, "xsd:string"))
 				{	soap_flag_XML_1--;
 					continue;
 				}
@@ -3624,6 +4111,22 @@ SOAP_FMAC3 _tempuri__AnDan1Send * SOAP_FMAC4 soap_in__tempuri__AnDan1Send(struct
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDan1Send * SOAP_FMAC2 soap_dup__tempuri__AnDan1Send(struct soap *soap, _tempuri__AnDan1Send *d, _tempuri__AnDan1Send const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__AnDan1Send*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__AnDan1Send, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__AnDan1Send(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	d->_tempuri__AnDan1Send::flag = a->_tempuri__AnDan1Send::flag;
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__AnDan1Send::XML_, &a->_tempuri__AnDan1Send::XML_);
+	d->_tempuri__AnDan1Send::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__AnDan1Send * SOAP_FMAC2 soap_instantiate__tempuri__AnDan1Send(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -3680,7 +4183,7 @@ SOAP_FMAC3 _tempuri__AnDan1Send * SOAP_FMAC4 soap_get__tempuri__AnDan1Send(struc
 void _tempuri__LoginResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__LoginResponse::LoginResult);
+	this->_tempuri__LoginResponse::LoginResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -3688,7 +4191,7 @@ void _tempuri__LoginResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__LoginResponse::LoginResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__LoginResponse::LoginResult);
 #endif
 }
 
@@ -3704,7 +4207,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LoginResponse(struct soap *soap, co
 		return soap->error;
 	if (a->LoginResult)
 		soap_element_result(soap, "tempuri:LoginResult");
-	if (soap_out_string(soap, "tempuri:LoginResult", -1, (char*const*)&a->_tempuri__LoginResponse::LoginResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:LoginResult", -1, &a->_tempuri__LoginResponse::LoginResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -3734,7 +4237,7 @@ SOAP_FMAC3 _tempuri__LoginResponse * SOAP_FMAC4 soap_in__tempuri__LoginResponse(
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_LoginResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:LoginResult", (char**)&a->_tempuri__LoginResponse::LoginResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:LoginResult", &a->_tempuri__LoginResponse::LoginResult, "xsd:string"))
 				{	soap_flag_LoginResult1--;
 					continue;
 				}
@@ -3756,6 +4259,21 @@ SOAP_FMAC3 _tempuri__LoginResponse * SOAP_FMAC4 soap_in__tempuri__LoginResponse(
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__LoginResponse * SOAP_FMAC2 soap_dup__tempuri__LoginResponse(struct soap *soap, _tempuri__LoginResponse *d, _tempuri__LoginResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__LoginResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__LoginResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__LoginResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__LoginResponse::LoginResult, &a->_tempuri__LoginResponse::LoginResult);
+	d->_tempuri__LoginResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__LoginResponse * SOAP_FMAC2 soap_instantiate__tempuri__LoginResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -3812,9 +4330,9 @@ SOAP_FMAC3 _tempuri__LoginResponse * SOAP_FMAC4 soap_get__tempuri__LoginResponse
 void _tempuri__Login::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__Login::Role);
-	soap_default_string(soap, &this->_tempuri__Login::UserName);
-	soap_default_string(soap, &this->_tempuri__Login::UserPwd);
+	this->_tempuri__Login::Role = NULL;
+	this->_tempuri__Login::UserName = NULL;
+	this->_tempuri__Login::UserPwd = NULL;
 	/* transient soap skipped */
 }
 
@@ -3822,9 +4340,9 @@ void _tempuri__Login::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__Login::Role);
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__Login::UserName);
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__Login::UserPwd);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__Login::Role);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__Login::UserName);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__Login::UserPwd);
 #endif
 }
 
@@ -3838,11 +4356,11 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__Login(struct soap *soap, const char
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__Login), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:Role", -1, (char*const*)&a->_tempuri__Login::Role, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:Role", -1, &a->_tempuri__Login::Role, ""))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:UserName", -1, (char*const*)&a->_tempuri__Login::UserName, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:UserName", -1, &a->_tempuri__Login::UserName, ""))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:UserPwd", -1, (char*const*)&a->_tempuri__Login::UserPwd, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:UserPwd", -1, &a->_tempuri__Login::UserPwd, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -3874,19 +4392,19 @@ SOAP_FMAC3 _tempuri__Login * SOAP_FMAC4 soap_in__tempuri__Login(struct soap *soa
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_Role1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:Role", (char**)&a->_tempuri__Login::Role, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:Role", &a->_tempuri__Login::Role, "xsd:string"))
 				{	soap_flag_Role1--;
 					continue;
 				}
 			}
 			if (soap_flag_UserName1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:UserName", (char**)&a->_tempuri__Login::UserName, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:UserName", &a->_tempuri__Login::UserName, "xsd:string"))
 				{	soap_flag_UserName1--;
 					continue;
 				}
 			}
 			if (soap_flag_UserPwd1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:UserPwd", (char**)&a->_tempuri__Login::UserPwd, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:UserPwd", &a->_tempuri__Login::UserPwd, "xsd:string"))
 				{	soap_flag_UserPwd1--;
 					continue;
 				}
@@ -3907,6 +4425,23 @@ SOAP_FMAC3 _tempuri__Login * SOAP_FMAC4 soap_in__tempuri__Login(struct soap *soa
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__Login * SOAP_FMAC2 soap_dup__tempuri__Login(struct soap *soap, _tempuri__Login *d, _tempuri__Login const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__Login*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__Login, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__Login(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__Login::Role, &a->_tempuri__Login::Role);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__Login::UserName, &a->_tempuri__Login::UserName);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__Login::UserPwd, &a->_tempuri__Login::UserPwd);
+	d->_tempuri__Login::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__Login * SOAP_FMAC2 soap_instantiate__tempuri__Login(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -3963,7 +4498,7 @@ SOAP_FMAC3 _tempuri__Login * SOAP_FMAC4 soap_get__tempuri__Login(struct soap *so
 void _tempuri__GetPowerResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__GetPowerResponse::GetPowerResult);
+	this->_tempuri__GetPowerResponse::GetPowerResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -3971,7 +4506,7 @@ void _tempuri__GetPowerResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__GetPowerResponse::GetPowerResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__GetPowerResponse::GetPowerResult);
 #endif
 }
 
@@ -3987,7 +4522,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetPowerResponse(struct soap *soap,
 		return soap->error;
 	if (a->GetPowerResult)
 		soap_element_result(soap, "tempuri:GetPowerResult");
-	if (soap_out_string(soap, "tempuri:GetPowerResult", -1, (char*const*)&a->_tempuri__GetPowerResponse::GetPowerResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:GetPowerResult", -1, &a->_tempuri__GetPowerResponse::GetPowerResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -4017,7 +4552,7 @@ SOAP_FMAC3 _tempuri__GetPowerResponse * SOAP_FMAC4 soap_in__tempuri__GetPowerRes
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_GetPowerResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:GetPowerResult", (char**)&a->_tempuri__GetPowerResponse::GetPowerResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:GetPowerResult", &a->_tempuri__GetPowerResponse::GetPowerResult, "xsd:string"))
 				{	soap_flag_GetPowerResult1--;
 					continue;
 				}
@@ -4039,6 +4574,21 @@ SOAP_FMAC3 _tempuri__GetPowerResponse * SOAP_FMAC4 soap_in__tempuri__GetPowerRes
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__GetPowerResponse * SOAP_FMAC2 soap_dup__tempuri__GetPowerResponse(struct soap *soap, _tempuri__GetPowerResponse *d, _tempuri__GetPowerResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__GetPowerResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__GetPowerResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__GetPowerResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__GetPowerResponse::GetPowerResult, &a->_tempuri__GetPowerResponse::GetPowerResult);
+	d->_tempuri__GetPowerResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__GetPowerResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetPowerResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -4095,7 +4645,7 @@ SOAP_FMAC3 _tempuri__GetPowerResponse * SOAP_FMAC4 soap_get__tempuri__GetPowerRe
 void _tempuri__GetPower::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__GetPower::DeptID);
+	this->_tempuri__GetPower::DeptID = NULL;
 	/* transient soap skipped */
 }
 
@@ -4103,7 +4653,7 @@ void _tempuri__GetPower::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__GetPower::DeptID);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__GetPower::DeptID);
 #endif
 }
 
@@ -4117,7 +4667,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetPower(struct soap *soap, const c
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__GetPower), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:DeptID", -1, (char*const*)&a->_tempuri__GetPower::DeptID, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:DeptID", -1, &a->_tempuri__GetPower::DeptID, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -4147,7 +4697,7 @@ SOAP_FMAC3 _tempuri__GetPower * SOAP_FMAC4 soap_in__tempuri__GetPower(struct soa
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_DeptID1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:DeptID", (char**)&a->_tempuri__GetPower::DeptID, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:DeptID", &a->_tempuri__GetPower::DeptID, "xsd:string"))
 				{	soap_flag_DeptID1--;
 					continue;
 				}
@@ -4168,6 +4718,21 @@ SOAP_FMAC3 _tempuri__GetPower * SOAP_FMAC4 soap_in__tempuri__GetPower(struct soa
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__GetPower * SOAP_FMAC2 soap_dup__tempuri__GetPower(struct soap *soap, _tempuri__GetPower *d, _tempuri__GetPower const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__GetPower*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__GetPower, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__GetPower(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__GetPower::DeptID, &a->_tempuri__GetPower::DeptID);
+	d->_tempuri__GetPower::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__GetPower * SOAP_FMAC2 soap_instantiate__tempuri__GetPower(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -4224,7 +4789,7 @@ SOAP_FMAC3 _tempuri__GetPower * SOAP_FMAC4 soap_get__tempuri__GetPower(struct so
 void _tempuri__GetDeptResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__GetDeptResponse::GetDeptResult);
+	this->_tempuri__GetDeptResponse::GetDeptResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -4232,7 +4797,7 @@ void _tempuri__GetDeptResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__GetDeptResponse::GetDeptResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__GetDeptResponse::GetDeptResult);
 #endif
 }
 
@@ -4248,7 +4813,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetDeptResponse(struct soap *soap, 
 		return soap->error;
 	if (a->GetDeptResult)
 		soap_element_result(soap, "tempuri:GetDeptResult");
-	if (soap_out_string(soap, "tempuri:GetDeptResult", -1, (char*const*)&a->_tempuri__GetDeptResponse::GetDeptResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:GetDeptResult", -1, &a->_tempuri__GetDeptResponse::GetDeptResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -4278,7 +4843,7 @@ SOAP_FMAC3 _tempuri__GetDeptResponse * SOAP_FMAC4 soap_in__tempuri__GetDeptRespo
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_GetDeptResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:GetDeptResult", (char**)&a->_tempuri__GetDeptResponse::GetDeptResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:GetDeptResult", &a->_tempuri__GetDeptResponse::GetDeptResult, "xsd:string"))
 				{	soap_flag_GetDeptResult1--;
 					continue;
 				}
@@ -4300,6 +4865,21 @@ SOAP_FMAC3 _tempuri__GetDeptResponse * SOAP_FMAC4 soap_in__tempuri__GetDeptRespo
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__GetDeptResponse * SOAP_FMAC2 soap_dup__tempuri__GetDeptResponse(struct soap *soap, _tempuri__GetDeptResponse *d, _tempuri__GetDeptResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__GetDeptResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__GetDeptResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__GetDeptResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__GetDeptResponse::GetDeptResult, &a->_tempuri__GetDeptResponse::GetDeptResult);
+	d->_tempuri__GetDeptResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__GetDeptResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetDeptResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -4420,6 +5000,20 @@ SOAP_FMAC3 _tempuri__GetDept * SOAP_FMAC4 soap_in__tempuri__GetDept(struct soap 
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__GetDept * SOAP_FMAC2 soap_dup__tempuri__GetDept(struct soap *soap, _tempuri__GetDept *d, _tempuri__GetDept const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__GetDept*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__GetDept, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__GetDept(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	d->_tempuri__GetDept::soap = soap;
+	return d;
+}
+
 SOAP_FMAC1 _tempuri__GetDept * SOAP_FMAC2 soap_instantiate__tempuri__GetDept(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate__tempuri__GetDept(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -4474,7 +5068,7 @@ SOAP_FMAC3 _tempuri__GetDept * SOAP_FMAC4 soap_get__tempuri__GetDept(struct soap
 void _tempuri__DocAddResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__DocAddResponse::DocAddResult);
+	this->_tempuri__DocAddResponse::DocAddResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -4482,7 +5076,7 @@ void _tempuri__DocAddResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__DocAddResponse::DocAddResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__DocAddResponse::DocAddResult);
 #endif
 }
 
@@ -4498,7 +5092,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__DocAddResponse(struct soap *soap, c
 		return soap->error;
 	if (a->DocAddResult)
 		soap_element_result(soap, "tempuri:DocAddResult");
-	if (soap_out_string(soap, "tempuri:DocAddResult", -1, (char*const*)&a->_tempuri__DocAddResponse::DocAddResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:DocAddResult", -1, &a->_tempuri__DocAddResponse::DocAddResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -4528,7 +5122,7 @@ SOAP_FMAC3 _tempuri__DocAddResponse * SOAP_FMAC4 soap_in__tempuri__DocAddRespons
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_DocAddResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:DocAddResult", (char**)&a->_tempuri__DocAddResponse::DocAddResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:DocAddResult", &a->_tempuri__DocAddResponse::DocAddResult, "xsd:string"))
 				{	soap_flag_DocAddResult1--;
 					continue;
 				}
@@ -4550,6 +5144,21 @@ SOAP_FMAC3 _tempuri__DocAddResponse * SOAP_FMAC4 soap_in__tempuri__DocAddRespons
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__DocAddResponse * SOAP_FMAC2 soap_dup__tempuri__DocAddResponse(struct soap *soap, _tempuri__DocAddResponse *d, _tempuri__DocAddResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__DocAddResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__DocAddResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__DocAddResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__DocAddResponse::DocAddResult, &a->_tempuri__DocAddResponse::DocAddResult);
+	d->_tempuri__DocAddResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__DocAddResponse * SOAP_FMAC2 soap_instantiate__tempuri__DocAddResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -4606,9 +5215,9 @@ SOAP_FMAC3 _tempuri__DocAddResponse * SOAP_FMAC4 soap_get__tempuri__DocAddRespon
 void _tempuri__DocAdd::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__DocAdd::DocTypeCode);
-	soap_default_string(soap, &this->_tempuri__DocAdd::DocXmlMaster);
-	soap_default_string(soap, &this->_tempuri__DocAdd::DocXmlItems);
+	this->_tempuri__DocAdd::DocTypeCode = NULL;
+	this->_tempuri__DocAdd::DocXmlMaster = NULL;
+	this->_tempuri__DocAdd::DocXmlItems = NULL;
 	/* transient soap skipped */
 }
 
@@ -4616,9 +5225,9 @@ void _tempuri__DocAdd::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__DocAdd::DocTypeCode);
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__DocAdd::DocXmlMaster);
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__DocAdd::DocXmlItems);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__DocAdd::DocTypeCode);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__DocAdd::DocXmlMaster);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__DocAdd::DocXmlItems);
 #endif
 }
 
@@ -4632,11 +5241,11 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__DocAdd(struct soap *soap, const cha
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__DocAdd), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:DocTypeCode", -1, (char*const*)&a->_tempuri__DocAdd::DocTypeCode, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:DocTypeCode", -1, &a->_tempuri__DocAdd::DocTypeCode, ""))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:DocXmlMaster", -1, (char*const*)&a->_tempuri__DocAdd::DocXmlMaster, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:DocXmlMaster", -1, &a->_tempuri__DocAdd::DocXmlMaster, ""))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:DocXmlItems", -1, (char*const*)&a->_tempuri__DocAdd::DocXmlItems, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:DocXmlItems", -1, &a->_tempuri__DocAdd::DocXmlItems, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -4668,19 +5277,19 @@ SOAP_FMAC3 _tempuri__DocAdd * SOAP_FMAC4 soap_in__tempuri__DocAdd(struct soap *s
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_DocTypeCode1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:DocTypeCode", (char**)&a->_tempuri__DocAdd::DocTypeCode, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:DocTypeCode", &a->_tempuri__DocAdd::DocTypeCode, "xsd:string"))
 				{	soap_flag_DocTypeCode1--;
 					continue;
 				}
 			}
 			if (soap_flag_DocXmlMaster1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:DocXmlMaster", (char**)&a->_tempuri__DocAdd::DocXmlMaster, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:DocXmlMaster", &a->_tempuri__DocAdd::DocXmlMaster, "xsd:string"))
 				{	soap_flag_DocXmlMaster1--;
 					continue;
 				}
 			}
 			if (soap_flag_DocXmlItems1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:DocXmlItems", (char**)&a->_tempuri__DocAdd::DocXmlItems, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:DocXmlItems", &a->_tempuri__DocAdd::DocXmlItems, "xsd:string"))
 				{	soap_flag_DocXmlItems1--;
 					continue;
 				}
@@ -4701,6 +5310,23 @@ SOAP_FMAC3 _tempuri__DocAdd * SOAP_FMAC4 soap_in__tempuri__DocAdd(struct soap *s
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__DocAdd * SOAP_FMAC2 soap_dup__tempuri__DocAdd(struct soap *soap, _tempuri__DocAdd *d, _tempuri__DocAdd const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__DocAdd*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__DocAdd, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__DocAdd(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__DocAdd::DocTypeCode, &a->_tempuri__DocAdd::DocTypeCode);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__DocAdd::DocXmlMaster, &a->_tempuri__DocAdd::DocXmlMaster);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__DocAdd::DocXmlItems, &a->_tempuri__DocAdd::DocXmlItems);
+	d->_tempuri__DocAdd::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__DocAdd * SOAP_FMAC2 soap_instantiate__tempuri__DocAdd(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -4757,7 +5383,7 @@ SOAP_FMAC3 _tempuri__DocAdd * SOAP_FMAC4 soap_get__tempuri__DocAdd(struct soap *
 void _tempuri__ItemsAddResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__ItemsAddResponse::ItemsAddResult);
+	this->_tempuri__ItemsAddResponse::ItemsAddResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -4765,7 +5391,7 @@ void _tempuri__ItemsAddResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__ItemsAddResponse::ItemsAddResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__ItemsAddResponse::ItemsAddResult);
 #endif
 }
 
@@ -4781,7 +5407,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__ItemsAddResponse(struct soap *soap,
 		return soap->error;
 	if (a->ItemsAddResult)
 		soap_element_result(soap, "tempuri:ItemsAddResult");
-	if (soap_out_string(soap, "tempuri:ItemsAddResult", -1, (char*const*)&a->_tempuri__ItemsAddResponse::ItemsAddResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:ItemsAddResult", -1, &a->_tempuri__ItemsAddResponse::ItemsAddResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -4811,7 +5437,7 @@ SOAP_FMAC3 _tempuri__ItemsAddResponse * SOAP_FMAC4 soap_in__tempuri__ItemsAddRes
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_ItemsAddResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:ItemsAddResult", (char**)&a->_tempuri__ItemsAddResponse::ItemsAddResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:ItemsAddResult", &a->_tempuri__ItemsAddResponse::ItemsAddResult, "xsd:string"))
 				{	soap_flag_ItemsAddResult1--;
 					continue;
 				}
@@ -4833,6 +5459,21 @@ SOAP_FMAC3 _tempuri__ItemsAddResponse * SOAP_FMAC4 soap_in__tempuri__ItemsAddRes
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__ItemsAddResponse * SOAP_FMAC2 soap_dup__tempuri__ItemsAddResponse(struct soap *soap, _tempuri__ItemsAddResponse *d, _tempuri__ItemsAddResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__ItemsAddResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__ItemsAddResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__ItemsAddResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__ItemsAddResponse::ItemsAddResult, &a->_tempuri__ItemsAddResponse::ItemsAddResult);
+	d->_tempuri__ItemsAddResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__ItemsAddResponse * SOAP_FMAC2 soap_instantiate__tempuri__ItemsAddResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -4889,7 +5530,7 @@ SOAP_FMAC3 _tempuri__ItemsAddResponse * SOAP_FMAC4 soap_get__tempuri__ItemsAddRe
 void _tempuri__ItemsAdd::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__ItemsAdd::itemDocXml);
+	this->_tempuri__ItemsAdd::itemDocXml = NULL;
 	/* transient soap skipped */
 }
 
@@ -4897,7 +5538,7 @@ void _tempuri__ItemsAdd::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__ItemsAdd::itemDocXml);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__ItemsAdd::itemDocXml);
 #endif
 }
 
@@ -4911,7 +5552,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__ItemsAdd(struct soap *soap, const c
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__ItemsAdd), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:itemDocXml", -1, (char*const*)&a->_tempuri__ItemsAdd::itemDocXml, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:itemDocXml", -1, &a->_tempuri__ItemsAdd::itemDocXml, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -4941,7 +5582,7 @@ SOAP_FMAC3 _tempuri__ItemsAdd * SOAP_FMAC4 soap_in__tempuri__ItemsAdd(struct soa
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_itemDocXml1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:itemDocXml", (char**)&a->_tempuri__ItemsAdd::itemDocXml, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:itemDocXml", &a->_tempuri__ItemsAdd::itemDocXml, "xsd:string"))
 				{	soap_flag_itemDocXml1--;
 					continue;
 				}
@@ -4962,6 +5603,21 @@ SOAP_FMAC3 _tempuri__ItemsAdd * SOAP_FMAC4 soap_in__tempuri__ItemsAdd(struct soa
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__ItemsAdd * SOAP_FMAC2 soap_dup__tempuri__ItemsAdd(struct soap *soap, _tempuri__ItemsAdd *d, _tempuri__ItemsAdd const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__ItemsAdd*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__ItemsAdd, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__ItemsAdd(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__ItemsAdd::itemDocXml, &a->_tempuri__ItemsAdd::itemDocXml);
+	d->_tempuri__ItemsAdd::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__ItemsAdd * SOAP_FMAC2 soap_instantiate__tempuri__ItemsAdd(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -5018,7 +5674,7 @@ SOAP_FMAC3 _tempuri__ItemsAdd * SOAP_FMAC4 soap_get__tempuri__ItemsAdd(struct so
 void _tempuri__LineInventoryReturnResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__LineInventoryReturnResponse::LineInventoryReturnResult);
+	this->_tempuri__LineInventoryReturnResponse::LineInventoryReturnResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -5026,7 +5682,7 @@ void _tempuri__LineInventoryReturnResponse::soap_serialize(struct soap *soap) co
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__LineInventoryReturnResponse::LineInventoryReturnResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__LineInventoryReturnResponse::LineInventoryReturnResult);
 #endif
 }
 
@@ -5042,7 +5698,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventoryReturnResponse(struct 
 		return soap->error;
 	if (a->LineInventoryReturnResult)
 		soap_element_result(soap, "tempuri:LineInventoryReturnResult");
-	if (soap_out_string(soap, "tempuri:LineInventoryReturnResult", -1, (char*const*)&a->_tempuri__LineInventoryReturnResponse::LineInventoryReturnResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:LineInventoryReturnResult", -1, &a->_tempuri__LineInventoryReturnResponse::LineInventoryReturnResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -5072,7 +5728,7 @@ SOAP_FMAC3 _tempuri__LineInventoryReturnResponse * SOAP_FMAC4 soap_in__tempuri__
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_LineInventoryReturnResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:LineInventoryReturnResult", (char**)&a->_tempuri__LineInventoryReturnResponse::LineInventoryReturnResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:LineInventoryReturnResult", &a->_tempuri__LineInventoryReturnResponse::LineInventoryReturnResult, "xsd:string"))
 				{	soap_flag_LineInventoryReturnResult1--;
 					continue;
 				}
@@ -5094,6 +5750,21 @@ SOAP_FMAC3 _tempuri__LineInventoryReturnResponse * SOAP_FMAC4 soap_in__tempuri__
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__LineInventoryReturnResponse * SOAP_FMAC2 soap_dup__tempuri__LineInventoryReturnResponse(struct soap *soap, _tempuri__LineInventoryReturnResponse *d, _tempuri__LineInventoryReturnResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__LineInventoryReturnResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__LineInventoryReturnResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__LineInventoryReturnResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__LineInventoryReturnResponse::LineInventoryReturnResult, &a->_tempuri__LineInventoryReturnResponse::LineInventoryReturnResult);
+	d->_tempuri__LineInventoryReturnResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__LineInventoryReturnResponse * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryReturnResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -5150,7 +5821,7 @@ SOAP_FMAC3 _tempuri__LineInventoryReturnResponse * SOAP_FMAC4 soap_get__tempuri_
 void _tempuri__LineInventoryReturn::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__LineInventoryReturn::LRXml);
+	this->_tempuri__LineInventoryReturn::LRXml = NULL;
 	/* transient soap skipped */
 }
 
@@ -5158,7 +5829,7 @@ void _tempuri__LineInventoryReturn::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__LineInventoryReturn::LRXml);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__LineInventoryReturn::LRXml);
 #endif
 }
 
@@ -5172,7 +5843,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventoryReturn(struct soap *so
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__LineInventoryReturn), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:LRXml", -1, (char*const*)&a->_tempuri__LineInventoryReturn::LRXml, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:LRXml", -1, &a->_tempuri__LineInventoryReturn::LRXml, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -5202,7 +5873,7 @@ SOAP_FMAC3 _tempuri__LineInventoryReturn * SOAP_FMAC4 soap_in__tempuri__LineInve
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_LRXml1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:LRXml", (char**)&a->_tempuri__LineInventoryReturn::LRXml, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:LRXml", &a->_tempuri__LineInventoryReturn::LRXml, "xsd:string"))
 				{	soap_flag_LRXml1--;
 					continue;
 				}
@@ -5223,6 +5894,21 @@ SOAP_FMAC3 _tempuri__LineInventoryReturn * SOAP_FMAC4 soap_in__tempuri__LineInve
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__LineInventoryReturn * SOAP_FMAC2 soap_dup__tempuri__LineInventoryReturn(struct soap *soap, _tempuri__LineInventoryReturn *d, _tempuri__LineInventoryReturn const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__LineInventoryReturn*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__LineInventoryReturn, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__LineInventoryReturn(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__LineInventoryReturn::LRXml, &a->_tempuri__LineInventoryReturn::LRXml);
+	d->_tempuri__LineInventoryReturn::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__LineInventoryReturn * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryReturn(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -5279,7 +5965,7 @@ SOAP_FMAC3 _tempuri__LineInventoryReturn * SOAP_FMAC4 soap_get__tempuri__LineInv
 void _tempuri__LineInventoryUpdateResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__LineInventoryUpdateResponse::LineInventoryUpdateResult);
+	this->_tempuri__LineInventoryUpdateResponse::LineInventoryUpdateResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -5287,7 +5973,7 @@ void _tempuri__LineInventoryUpdateResponse::soap_serialize(struct soap *soap) co
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__LineInventoryUpdateResponse::LineInventoryUpdateResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__LineInventoryUpdateResponse::LineInventoryUpdateResult);
 #endif
 }
 
@@ -5303,7 +5989,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventoryUpdateResponse(struct 
 		return soap->error;
 	if (a->LineInventoryUpdateResult)
 		soap_element_result(soap, "tempuri:LineInventoryUpdateResult");
-	if (soap_out_string(soap, "tempuri:LineInventoryUpdateResult", -1, (char*const*)&a->_tempuri__LineInventoryUpdateResponse::LineInventoryUpdateResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:LineInventoryUpdateResult", -1, &a->_tempuri__LineInventoryUpdateResponse::LineInventoryUpdateResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -5333,7 +6019,7 @@ SOAP_FMAC3 _tempuri__LineInventoryUpdateResponse * SOAP_FMAC4 soap_in__tempuri__
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_LineInventoryUpdateResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:LineInventoryUpdateResult", (char**)&a->_tempuri__LineInventoryUpdateResponse::LineInventoryUpdateResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:LineInventoryUpdateResult", &a->_tempuri__LineInventoryUpdateResponse::LineInventoryUpdateResult, "xsd:string"))
 				{	soap_flag_LineInventoryUpdateResult1--;
 					continue;
 				}
@@ -5355,6 +6041,21 @@ SOAP_FMAC3 _tempuri__LineInventoryUpdateResponse * SOAP_FMAC4 soap_in__tempuri__
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__LineInventoryUpdateResponse * SOAP_FMAC2 soap_dup__tempuri__LineInventoryUpdateResponse(struct soap *soap, _tempuri__LineInventoryUpdateResponse *d, _tempuri__LineInventoryUpdateResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__LineInventoryUpdateResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__LineInventoryUpdateResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__LineInventoryUpdateResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__LineInventoryUpdateResponse::LineInventoryUpdateResult, &a->_tempuri__LineInventoryUpdateResponse::LineInventoryUpdateResult);
+	d->_tempuri__LineInventoryUpdateResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__LineInventoryUpdateResponse * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryUpdateResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -5411,7 +6112,7 @@ SOAP_FMAC3 _tempuri__LineInventoryUpdateResponse * SOAP_FMAC4 soap_get__tempuri_
 void _tempuri__LineInventoryUpdate::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__LineInventoryUpdate::LIXml);
+	this->_tempuri__LineInventoryUpdate::LIXml = NULL;
 	/* transient soap skipped */
 }
 
@@ -5419,7 +6120,7 @@ void _tempuri__LineInventoryUpdate::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__LineInventoryUpdate::LIXml);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__LineInventoryUpdate::LIXml);
 #endif
 }
 
@@ -5433,7 +6134,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventoryUpdate(struct soap *so
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__LineInventoryUpdate), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:LIXml", -1, (char*const*)&a->_tempuri__LineInventoryUpdate::LIXml, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:LIXml", -1, &a->_tempuri__LineInventoryUpdate::LIXml, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -5463,7 +6164,7 @@ SOAP_FMAC3 _tempuri__LineInventoryUpdate * SOAP_FMAC4 soap_in__tempuri__LineInve
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_LIXml1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:LIXml", (char**)&a->_tempuri__LineInventoryUpdate::LIXml, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:LIXml", &a->_tempuri__LineInventoryUpdate::LIXml, "xsd:string"))
 				{	soap_flag_LIXml1--;
 					continue;
 				}
@@ -5484,6 +6185,21 @@ SOAP_FMAC3 _tempuri__LineInventoryUpdate * SOAP_FMAC4 soap_in__tempuri__LineInve
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_dup__tempuri__LineInventoryUpdate(struct soap *soap, _tempuri__LineInventoryUpdate *d, _tempuri__LineInventoryUpdate const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__LineInventoryUpdate*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__LineInventoryUpdate, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__LineInventoryUpdate(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__LineInventoryUpdate::LIXml, &a->_tempuri__LineInventoryUpdate::LIXml);
+	d->_tempuri__LineInventoryUpdate::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryUpdate(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -5540,7 +6256,7 @@ SOAP_FMAC3 _tempuri__LineInventoryUpdate * SOAP_FMAC4 soap_get__tempuri__LineInv
 void _tempuri__LineInventoryResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__LineInventoryResponse::LineInventoryResult);
+	this->_tempuri__LineInventoryResponse::LineInventoryResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -5548,7 +6264,7 @@ void _tempuri__LineInventoryResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__LineInventoryResponse::LineInventoryResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__LineInventoryResponse::LineInventoryResult);
 #endif
 }
 
@@ -5564,7 +6280,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventoryResponse(struct soap *
 		return soap->error;
 	if (a->LineInventoryResult)
 		soap_element_result(soap, "tempuri:LineInventoryResult");
-	if (soap_out_string(soap, "tempuri:LineInventoryResult", -1, (char*const*)&a->_tempuri__LineInventoryResponse::LineInventoryResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:LineInventoryResult", -1, &a->_tempuri__LineInventoryResponse::LineInventoryResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -5594,7 +6310,7 @@ SOAP_FMAC3 _tempuri__LineInventoryResponse * SOAP_FMAC4 soap_in__tempuri__LineIn
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_LineInventoryResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:LineInventoryResult", (char**)&a->_tempuri__LineInventoryResponse::LineInventoryResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:LineInventoryResult", &a->_tempuri__LineInventoryResponse::LineInventoryResult, "xsd:string"))
 				{	soap_flag_LineInventoryResult1--;
 					continue;
 				}
@@ -5616,6 +6332,21 @@ SOAP_FMAC3 _tempuri__LineInventoryResponse * SOAP_FMAC4 soap_in__tempuri__LineIn
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__LineInventoryResponse * SOAP_FMAC2 soap_dup__tempuri__LineInventoryResponse(struct soap *soap, _tempuri__LineInventoryResponse *d, _tempuri__LineInventoryResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__LineInventoryResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__LineInventoryResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__LineInventoryResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__LineInventoryResponse::LineInventoryResult, &a->_tempuri__LineInventoryResponse::LineInventoryResult);
+	d->_tempuri__LineInventoryResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__LineInventoryResponse * SOAP_FMAC2 soap_instantiate__tempuri__LineInventoryResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -5672,10 +6403,10 @@ SOAP_FMAC3 _tempuri__LineInventoryResponse * SOAP_FMAC4 soap_get__tempuri__LineI
 void _tempuri__LineInventory::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__LineInventory::WorkLineCode);
-	soap_default_string(soap, &this->_tempuri__LineInventory::MCode);
-	soap_default_string(soap, &this->_tempuri__LineInventory::BatchNo);
-	soap_default_string(soap, &this->_tempuri__LineInventory::BarCode);
+	this->_tempuri__LineInventory::WorkLineCode = NULL;
+	this->_tempuri__LineInventory::MCode = NULL;
+	this->_tempuri__LineInventory::BatchNo = NULL;
+	this->_tempuri__LineInventory::BarCode = NULL;
 	/* transient soap skipped */
 }
 
@@ -5683,10 +6414,10 @@ void _tempuri__LineInventory::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__LineInventory::WorkLineCode);
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__LineInventory::MCode);
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__LineInventory::BatchNo);
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__LineInventory::BarCode);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__LineInventory::WorkLineCode);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__LineInventory::MCode);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__LineInventory::BatchNo);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__LineInventory::BarCode);
 #endif
 }
 
@@ -5700,13 +6431,13 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__LineInventory(struct soap *soap, co
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__LineInventory), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:WorkLineCode", -1, (char*const*)&a->_tempuri__LineInventory::WorkLineCode, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:WorkLineCode", -1, &a->_tempuri__LineInventory::WorkLineCode, ""))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:MCode", -1, (char*const*)&a->_tempuri__LineInventory::MCode, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:MCode", -1, &a->_tempuri__LineInventory::MCode, ""))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:BatchNo", -1, (char*const*)&a->_tempuri__LineInventory::BatchNo, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:BatchNo", -1, &a->_tempuri__LineInventory::BatchNo, ""))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:BarCode", -1, (char*const*)&a->_tempuri__LineInventory::BarCode, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:BarCode", -1, &a->_tempuri__LineInventory::BarCode, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -5739,25 +6470,25 @@ SOAP_FMAC3 _tempuri__LineInventory * SOAP_FMAC4 soap_in__tempuri__LineInventory(
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_WorkLineCode1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:WorkLineCode", (char**)&a->_tempuri__LineInventory::WorkLineCode, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:WorkLineCode", &a->_tempuri__LineInventory::WorkLineCode, "xsd:string"))
 				{	soap_flag_WorkLineCode1--;
 					continue;
 				}
 			}
 			if (soap_flag_MCode1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:MCode", (char**)&a->_tempuri__LineInventory::MCode, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:MCode", &a->_tempuri__LineInventory::MCode, "xsd:string"))
 				{	soap_flag_MCode1--;
 					continue;
 				}
 			}
 			if (soap_flag_BatchNo1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:BatchNo", (char**)&a->_tempuri__LineInventory::BatchNo, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:BatchNo", &a->_tempuri__LineInventory::BatchNo, "xsd:string"))
 				{	soap_flag_BatchNo1--;
 					continue;
 				}
 			}
 			if (soap_flag_BarCode1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:BarCode", (char**)&a->_tempuri__LineInventory::BarCode, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:BarCode", &a->_tempuri__LineInventory::BarCode, "xsd:string"))
 				{	soap_flag_BarCode1--;
 					continue;
 				}
@@ -5778,6 +6509,24 @@ SOAP_FMAC3 _tempuri__LineInventory * SOAP_FMAC4 soap_in__tempuri__LineInventory(
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__LineInventory * SOAP_FMAC2 soap_dup__tempuri__LineInventory(struct soap *soap, _tempuri__LineInventory *d, _tempuri__LineInventory const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__LineInventory*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__LineInventory, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__LineInventory(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__LineInventory::WorkLineCode, &a->_tempuri__LineInventory::WorkLineCode);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__LineInventory::MCode, &a->_tempuri__LineInventory::MCode);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__LineInventory::BatchNo, &a->_tempuri__LineInventory::BatchNo);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__LineInventory::BarCode, &a->_tempuri__LineInventory::BarCode);
+	d->_tempuri__LineInventory::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__LineInventory * SOAP_FMAC2 soap_instantiate__tempuri__LineInventory(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -5834,7 +6583,7 @@ SOAP_FMAC3 _tempuri__LineInventory * SOAP_FMAC4 soap_get__tempuri__LineInventory
 void _tempuri__WorkOrderResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__WorkOrderResponse::WorkOrderResult);
+	this->_tempuri__WorkOrderResponse::WorkOrderResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -5842,7 +6591,7 @@ void _tempuri__WorkOrderResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__WorkOrderResponse::WorkOrderResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__WorkOrderResponse::WorkOrderResult);
 #endif
 }
 
@@ -5858,7 +6607,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__WorkOrderResponse(struct soap *soap
 		return soap->error;
 	if (a->WorkOrderResult)
 		soap_element_result(soap, "tempuri:WorkOrderResult");
-	if (soap_out_string(soap, "tempuri:WorkOrderResult", -1, (char*const*)&a->_tempuri__WorkOrderResponse::WorkOrderResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:WorkOrderResult", -1, &a->_tempuri__WorkOrderResponse::WorkOrderResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -5888,7 +6637,7 @@ SOAP_FMAC3 _tempuri__WorkOrderResponse * SOAP_FMAC4 soap_in__tempuri__WorkOrderR
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_WorkOrderResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:WorkOrderResult", (char**)&a->_tempuri__WorkOrderResponse::WorkOrderResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:WorkOrderResult", &a->_tempuri__WorkOrderResponse::WorkOrderResult, "xsd:string"))
 				{	soap_flag_WorkOrderResult1--;
 					continue;
 				}
@@ -5910,6 +6659,21 @@ SOAP_FMAC3 _tempuri__WorkOrderResponse * SOAP_FMAC4 soap_in__tempuri__WorkOrderR
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__WorkOrderResponse * SOAP_FMAC2 soap_dup__tempuri__WorkOrderResponse(struct soap *soap, _tempuri__WorkOrderResponse *d, _tempuri__WorkOrderResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__WorkOrderResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__WorkOrderResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__WorkOrderResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__WorkOrderResponse::WorkOrderResult, &a->_tempuri__WorkOrderResponse::WorkOrderResult);
+	d->_tempuri__WorkOrderResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__WorkOrderResponse * SOAP_FMAC2 soap_instantiate__tempuri__WorkOrderResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -5966,7 +6730,7 @@ SOAP_FMAC3 _tempuri__WorkOrderResponse * SOAP_FMAC4 soap_get__tempuri__WorkOrder
 void _tempuri__WorkOrder::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__WorkOrder::WorkOrderXml);
+	this->_tempuri__WorkOrder::WorkOrderXml = NULL;
 	/* transient soap skipped */
 }
 
@@ -5974,7 +6738,7 @@ void _tempuri__WorkOrder::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__WorkOrder::WorkOrderXml);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__WorkOrder::WorkOrderXml);
 #endif
 }
 
@@ -5988,7 +6752,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__WorkOrder(struct soap *soap, const 
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__WorkOrder), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:WorkOrderXml", -1, (char*const*)&a->_tempuri__WorkOrder::WorkOrderXml, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:WorkOrderXml", -1, &a->_tempuri__WorkOrder::WorkOrderXml, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -6018,7 +6782,7 @@ SOAP_FMAC3 _tempuri__WorkOrder * SOAP_FMAC4 soap_in__tempuri__WorkOrder(struct s
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_WorkOrderXml1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:WorkOrderXml", (char**)&a->_tempuri__WorkOrder::WorkOrderXml, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:WorkOrderXml", &a->_tempuri__WorkOrder::WorkOrderXml, "xsd:string"))
 				{	soap_flag_WorkOrderXml1--;
 					continue;
 				}
@@ -6039,6 +6803,21 @@ SOAP_FMAC3 _tempuri__WorkOrder * SOAP_FMAC4 soap_in__tempuri__WorkOrder(struct s
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__WorkOrder * SOAP_FMAC2 soap_dup__tempuri__WorkOrder(struct soap *soap, _tempuri__WorkOrder *d, _tempuri__WorkOrder const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__WorkOrder*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__WorkOrder, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__WorkOrder(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__WorkOrder::WorkOrderXml, &a->_tempuri__WorkOrder::WorkOrderXml);
+	d->_tempuri__WorkOrder::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__WorkOrder * SOAP_FMAC2 soap_instantiate__tempuri__WorkOrder(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -6095,7 +6874,7 @@ SOAP_FMAC3 _tempuri__WorkOrder * SOAP_FMAC4 soap_get__tempuri__WorkOrder(struct 
 void _tempuri__ToolingTimesResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__ToolingTimesResponse::ToolingTimesResult);
+	this->_tempuri__ToolingTimesResponse::ToolingTimesResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -6103,7 +6882,7 @@ void _tempuri__ToolingTimesResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__ToolingTimesResponse::ToolingTimesResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__ToolingTimesResponse::ToolingTimesResult);
 #endif
 }
 
@@ -6119,7 +6898,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__ToolingTimesResponse(struct soap *s
 		return soap->error;
 	if (a->ToolingTimesResult)
 		soap_element_result(soap, "tempuri:ToolingTimesResult");
-	if (soap_out_string(soap, "tempuri:ToolingTimesResult", -1, (char*const*)&a->_tempuri__ToolingTimesResponse::ToolingTimesResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:ToolingTimesResult", -1, &a->_tempuri__ToolingTimesResponse::ToolingTimesResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -6149,7 +6928,7 @@ SOAP_FMAC3 _tempuri__ToolingTimesResponse * SOAP_FMAC4 soap_in__tempuri__Tooling
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_ToolingTimesResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:ToolingTimesResult", (char**)&a->_tempuri__ToolingTimesResponse::ToolingTimesResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:ToolingTimesResult", &a->_tempuri__ToolingTimesResponse::ToolingTimesResult, "xsd:string"))
 				{	soap_flag_ToolingTimesResult1--;
 					continue;
 				}
@@ -6171,6 +6950,21 @@ SOAP_FMAC3 _tempuri__ToolingTimesResponse * SOAP_FMAC4 soap_in__tempuri__Tooling
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__ToolingTimesResponse * SOAP_FMAC2 soap_dup__tempuri__ToolingTimesResponse(struct soap *soap, _tempuri__ToolingTimesResponse *d, _tempuri__ToolingTimesResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__ToolingTimesResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__ToolingTimesResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__ToolingTimesResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__ToolingTimesResponse::ToolingTimesResult, &a->_tempuri__ToolingTimesResponse::ToolingTimesResult);
+	d->_tempuri__ToolingTimesResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__ToolingTimesResponse * SOAP_FMAC2 soap_instantiate__tempuri__ToolingTimesResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -6227,8 +7021,8 @@ SOAP_FMAC3 _tempuri__ToolingTimesResponse * SOAP_FMAC4 soap_get__tempuri__Toolin
 void _tempuri__ToolingTimes::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__ToolingTimes::BillCode);
-	soap_default_string(soap, &this->_tempuri__ToolingTimes::DeviceCode);
+	this->_tempuri__ToolingTimes::BillCode = NULL;
+	this->_tempuri__ToolingTimes::DeviceCode = NULL;
 	soap_default_int(soap, &this->_tempuri__ToolingTimes::Times);
 	/* transient soap skipped */
 }
@@ -6237,8 +7031,8 @@ void _tempuri__ToolingTimes::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__ToolingTimes::BillCode);
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__ToolingTimes::DeviceCode);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__ToolingTimes::BillCode);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__ToolingTimes::DeviceCode);
 #endif
 }
 
@@ -6252,9 +7046,9 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__ToolingTimes(struct soap *soap, con
 	(void)soap; (void)tag; (void)id; (void)a; (void)type; /* appease -Wall -Werror */
 	if (soap_element_begin_out(soap, tag, soap_embedded_id(soap, id, a, SOAP_TYPE__tempuri__ToolingTimes), type))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:BillCode", -1, (char*const*)&a->_tempuri__ToolingTimes::BillCode, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:BillCode", -1, &a->_tempuri__ToolingTimes::BillCode, ""))
 		return soap->error;
-	if (soap_out_string(soap, "tempuri:DeviceCode", -1, (char*const*)&a->_tempuri__ToolingTimes::DeviceCode, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:DeviceCode", -1, &a->_tempuri__ToolingTimes::DeviceCode, ""))
 		return soap->error;
 	if (soap_out_int(soap, "tempuri:Times", -1, &a->_tempuri__ToolingTimes::Times, ""))
 		return soap->error;
@@ -6288,13 +7082,13 @@ SOAP_FMAC3 _tempuri__ToolingTimes * SOAP_FMAC4 soap_in__tempuri__ToolingTimes(st
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_BillCode1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:BillCode", (char**)&a->_tempuri__ToolingTimes::BillCode, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:BillCode", &a->_tempuri__ToolingTimes::BillCode, "xsd:string"))
 				{	soap_flag_BillCode1--;
 					continue;
 				}
 			}
 			if (soap_flag_DeviceCode1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:DeviceCode", (char**)&a->_tempuri__ToolingTimes::DeviceCode, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:DeviceCode", &a->_tempuri__ToolingTimes::DeviceCode, "xsd:string"))
 				{	soap_flag_DeviceCode1--;
 					continue;
 				}
@@ -6329,6 +7123,23 @@ SOAP_FMAC3 _tempuri__ToolingTimes * SOAP_FMAC4 soap_in__tempuri__ToolingTimes(st
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__ToolingTimes * SOAP_FMAC2 soap_dup__tempuri__ToolingTimes(struct soap *soap, _tempuri__ToolingTimes *d, _tempuri__ToolingTimes const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__ToolingTimes*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__ToolingTimes, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__ToolingTimes(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__ToolingTimes::BillCode, &a->_tempuri__ToolingTimes::BillCode);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__ToolingTimes::DeviceCode, &a->_tempuri__ToolingTimes::DeviceCode);
+	d->_tempuri__ToolingTimes::Times = a->_tempuri__ToolingTimes::Times;
+	d->_tempuri__ToolingTimes::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__ToolingTimes * SOAP_FMAC2 soap_instantiate__tempuri__ToolingTimes(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -6385,7 +7196,7 @@ SOAP_FMAC3 _tempuri__ToolingTimes * SOAP_FMAC4 soap_get__tempuri__ToolingTimes(s
 void _tempuri__GetDocCodeResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__GetDocCodeResponse::GetDocCodeResult);
+	this->_tempuri__GetDocCodeResponse::GetDocCodeResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -6393,7 +7204,7 @@ void _tempuri__GetDocCodeResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__GetDocCodeResponse::GetDocCodeResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__GetDocCodeResponse::GetDocCodeResult);
 #endif
 }
 
@@ -6409,7 +7220,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetDocCodeResponse(struct soap *soa
 		return soap->error;
 	if (a->GetDocCodeResult)
 		soap_element_result(soap, "tempuri:GetDocCodeResult");
-	if (soap_out_string(soap, "tempuri:GetDocCodeResult", -1, (char*const*)&a->_tempuri__GetDocCodeResponse::GetDocCodeResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:GetDocCodeResult", -1, &a->_tempuri__GetDocCodeResponse::GetDocCodeResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -6439,7 +7250,7 @@ SOAP_FMAC3 _tempuri__GetDocCodeResponse * SOAP_FMAC4 soap_in__tempuri__GetDocCod
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_GetDocCodeResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:GetDocCodeResult", (char**)&a->_tempuri__GetDocCodeResponse::GetDocCodeResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:GetDocCodeResult", &a->_tempuri__GetDocCodeResponse::GetDocCodeResult, "xsd:string"))
 				{	soap_flag_GetDocCodeResult1--;
 					continue;
 				}
@@ -6461,6 +7272,21 @@ SOAP_FMAC3 _tempuri__GetDocCodeResponse * SOAP_FMAC4 soap_in__tempuri__GetDocCod
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__GetDocCodeResponse * SOAP_FMAC2 soap_dup__tempuri__GetDocCodeResponse(struct soap *soap, _tempuri__GetDocCodeResponse *d, _tempuri__GetDocCodeResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__GetDocCodeResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__GetDocCodeResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__GetDocCodeResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__GetDocCodeResponse::GetDocCodeResult, &a->_tempuri__GetDocCodeResponse::GetDocCodeResult);
+	d->_tempuri__GetDocCodeResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__GetDocCodeResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetDocCodeResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -6599,6 +7425,21 @@ SOAP_FMAC3 _tempuri__GetDocCode * SOAP_FMAC4 soap_in__tempuri__GetDocCode(struct
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__GetDocCode * SOAP_FMAC2 soap_dup__tempuri__GetDocCode(struct soap *soap, _tempuri__GetDocCode *d, _tempuri__GetDocCode const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__GetDocCode*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__GetDocCode, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__GetDocCode(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	d->_tempuri__GetDocCode::DocValue = a->_tempuri__GetDocCode::DocValue;
+	d->_tempuri__GetDocCode::soap = soap;
+	return d;
+}
+
 SOAP_FMAC1 _tempuri__GetDocCode * SOAP_FMAC2 soap_instantiate__tempuri__GetDocCode(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate__tempuri__GetDocCode(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -6653,7 +7494,7 @@ SOAP_FMAC3 _tempuri__GetDocCode * SOAP_FMAC4 soap_get__tempuri__GetDocCode(struc
 void _tempuri__GetDateResponse::soap_default(struct soap *soap)
 {
 	this->soap = soap;
-	soap_default_string(soap, &this->_tempuri__GetDateResponse::GetDateResult);
+	this->_tempuri__GetDateResponse::GetDateResult = NULL;
 	/* transient soap skipped */
 }
 
@@ -6661,7 +7502,7 @@ void _tempuri__GetDateResponse::soap_serialize(struct soap *soap) const
 {
 	(void)soap; /* appease -Wall -Werror */
 #ifndef WITH_NOIDREF
-	soap_serialize_string(soap, (char*const*)&this->_tempuri__GetDateResponse::GetDateResult);
+	soap_serialize_PointerTostd__string(soap, &this->_tempuri__GetDateResponse::GetDateResult);
 #endif
 }
 
@@ -6677,7 +7518,7 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_out__tempuri__GetDateResponse(struct soap *soap, 
 		return soap->error;
 	if (a->GetDateResult)
 		soap_element_result(soap, "tempuri:GetDateResult");
-	if (soap_out_string(soap, "tempuri:GetDateResult", -1, (char*const*)&a->_tempuri__GetDateResponse::GetDateResult, ""))
+	if (soap_out_PointerTostd__string(soap, "tempuri:GetDateResult", -1, &a->_tempuri__GetDateResponse::GetDateResult, ""))
 		return soap->error;
 	return soap_element_end_out(soap, tag);
 }
@@ -6707,7 +7548,7 @@ SOAP_FMAC3 _tempuri__GetDateResponse * SOAP_FMAC4 soap_in__tempuri__GetDateRespo
 		for (;;)
 		{	soap->error = SOAP_TAG_MISMATCH;
 			if (soap_flag_GetDateResult1 && (soap->error == SOAP_TAG_MISMATCH || soap->error == SOAP_NO_TAG))
-			{	if (soap_in_string(soap, "tempuri:GetDateResult", (char**)&a->_tempuri__GetDateResponse::GetDateResult, "xsd:string"))
+			{	if (soap_in_PointerTostd__string(soap, "tempuri:GetDateResult", &a->_tempuri__GetDateResponse::GetDateResult, "xsd:string"))
 				{	soap_flag_GetDateResult1--;
 					continue;
 				}
@@ -6729,6 +7570,21 @@ SOAP_FMAC3 _tempuri__GetDateResponse * SOAP_FMAC4 soap_in__tempuri__GetDateRespo
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__GetDateResponse * SOAP_FMAC2 soap_dup__tempuri__GetDateResponse(struct soap *soap, _tempuri__GetDateResponse *d, _tempuri__GetDateResponse const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__GetDateResponse*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__GetDateResponse, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__GetDateResponse(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTostd__string(soap, &d->_tempuri__GetDateResponse::GetDateResult, &a->_tempuri__GetDateResponse::GetDateResult);
+	d->_tempuri__GetDateResponse::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__GetDateResponse * SOAP_FMAC2 soap_instantiate__tempuri__GetDateResponse(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -6847,6 +7703,20 @@ SOAP_FMAC3 _tempuri__GetDate * SOAP_FMAC4 soap_in__tempuri__GetDate(struct soap 
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__GetDate * SOAP_FMAC2 soap_dup__tempuri__GetDate(struct soap *soap, _tempuri__GetDate *d, _tempuri__GetDate const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (_tempuri__GetDate*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE__tempuri__GetDate, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new__tempuri__GetDate(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	d->_tempuri__GetDate::soap = soap;
+	return d;
 }
 
 SOAP_FMAC1 _tempuri__GetDate * SOAP_FMAC2 soap_instantiate__tempuri__GetDate(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -7052,6 +7922,28 @@ SOAP_FMAC3 struct SOAP_ENV__Fault * SOAP_FMAC4 soap_in_SOAP_ENV__Fault(struct so
 	return a;
 }
 
+SOAP_FMAC1 struct SOAP_ENV__Fault * SOAP_FMAC2 soap_dup_SOAP_ENV__Fault(struct soap *soap, struct SOAP_ENV__Fault *d, struct SOAP_ENV__Fault const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct SOAP_ENV__Fault*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE_SOAP_ENV__Fault, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new_SOAP_ENV__Fault(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup__QName(soap, &d->faultcode, &a->faultcode);
+	soap_dup_string(soap, &d->faultstring, &a->faultstring);
+	soap_dup_string(soap, &d->faultactor, &a->faultactor);
+	soap_dup_PointerToSOAP_ENV__Detail(soap, &d->detail, &a->detail);
+	soap_dup_PointerToSOAP_ENV__Code(soap, &d->SOAP_ENV__Code, &a->SOAP_ENV__Code);
+	soap_dup_PointerToSOAP_ENV__Reason(soap, &d->SOAP_ENV__Reason, &a->SOAP_ENV__Reason);
+	soap_dup_string(soap, &d->SOAP_ENV__Node, &a->SOAP_ENV__Node);
+	soap_dup_string(soap, &d->SOAP_ENV__Role, &a->SOAP_ENV__Role);
+	soap_dup_PointerToSOAP_ENV__Detail(soap, &d->SOAP_ENV__Detail, &a->SOAP_ENV__Detail);
+	return d;
+}
+
 SOAP_FMAC1 struct SOAP_ENV__Fault * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Fault(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_SOAP_ENV__Fault(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -7158,6 +8050,20 @@ SOAP_FMAC3 struct SOAP_ENV__Reason * SOAP_FMAC4 soap_in_SOAP_ENV__Reason(struct 
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 struct SOAP_ENV__Reason * SOAP_FMAC2 soap_dup_SOAP_ENV__Reason(struct soap *soap, struct SOAP_ENV__Reason *d, struct SOAP_ENV__Reason const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct SOAP_ENV__Reason*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE_SOAP_ENV__Reason, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new_SOAP_ENV__Reason(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_string(soap, &d->SOAP_ENV__Text, &a->SOAP_ENV__Text);
+	return d;
 }
 
 SOAP_FMAC1 struct SOAP_ENV__Reason * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Reason(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -7275,6 +8181,21 @@ SOAP_FMAC3 struct SOAP_ENV__Detail * SOAP_FMAC4 soap_in_SOAP_ENV__Detail(struct 
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 struct SOAP_ENV__Detail * SOAP_FMAC2 soap_dup_SOAP_ENV__Detail(struct soap *soap, struct SOAP_ENV__Detail *d, struct SOAP_ENV__Detail const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct SOAP_ENV__Detail*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE_SOAP_ENV__Detail, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new_SOAP_ENV__Detail(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	d->__any = soap_strdup(soap, (char*)a->__any);
+	d->fault = a->fault ? soap_dupelement(soap, a->fault, d->__type = a->__type) : NULL;
+	return d;
 }
 
 SOAP_FMAC1 struct SOAP_ENV__Detail * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Detail(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -7395,6 +8316,23 @@ SOAP_FMAC3 struct SOAP_ENV__Code * SOAP_FMAC4 soap_in_SOAP_ENV__Code(struct soap
 	return a;
 }
 
+SOAP_FMAC1 struct SOAP_ENV__Code * SOAP_FMAC2 soap_dup_SOAP_ENV__Code(struct soap *soap, struct SOAP_ENV__Code *d, struct SOAP_ENV__Code const*a)
+{
+	struct soap_plist *pp = NULL;
+	char *mark = NULL;
+	if (!a)
+		return NULL;
+	if (!d && ((d = (struct SOAP_ENV__Code*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE_SOAP_ENV__Code, &pp, &mark)) || soap_mark_cycle(soap, pp)))
+		return d;
+	if (!d && !(d = soap_new_SOAP_ENV__Code(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup__QName(soap, &d->SOAP_ENV__Value, &a->SOAP_ENV__Value);
+	soap_dup_PointerToSOAP_ENV__Code(soap, &d->SOAP_ENV__Subcode, &a->SOAP_ENV__Subcode);
+	soap_unmark(soap, mark);
+	return d;
+}
+
 SOAP_FMAC1 struct SOAP_ENV__Code * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Code(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate_SOAP_ENV__Code(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -7488,6 +8426,19 @@ SOAP_FMAC3 struct SOAP_ENV__Header * SOAP_FMAC4 soap_in_SOAP_ENV__Header(struct 
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 struct SOAP_ENV__Header * SOAP_FMAC2 soap_dup_SOAP_ENV__Header(struct soap *soap, struct SOAP_ENV__Header *d, struct SOAP_ENV__Header const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct SOAP_ENV__Header*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE_SOAP_ENV__Header, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new_SOAP_ENV__Header(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	return d;
 }
 
 SOAP_FMAC1 struct SOAP_ENV__Header * SOAP_FMAC2 soap_instantiate_SOAP_ENV__Header(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -7584,6 +8535,20 @@ SOAP_FMAC3 struct __tempuri__AnDanSLTypeAdd_ * SOAP_FMAC4 soap_in___tempuri__AnD
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__AnDanSLTypeAdd_ * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeAdd_(struct soap *soap, struct __tempuri__AnDanSLTypeAdd_ *d, struct __tempuri__AnDanSLTypeAdd_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDanSLTypeAdd_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDanSLTypeAdd_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDanSLTypeAdd_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDanSLTypeAdd(soap, &d->tempuri__AnDanSLTypeAdd, &a->tempuri__AnDanSLTypeAdd);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__AnDanSLTypeAdd_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeAdd_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__AnDanSLTypeAdd_(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -7674,6 +8639,20 @@ SOAP_FMAC3 struct __tempuri__AnDanSLTypeGet_ * SOAP_FMAC4 soap_in___tempuri__AnD
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__AnDanSLTypeGet_ * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeGet_(struct soap *soap, struct __tempuri__AnDanSLTypeGet_ *d, struct __tempuri__AnDanSLTypeGet_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDanSLTypeGet_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDanSLTypeGet_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDanSLTypeGet_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDanSLTypeGet(soap, &d->tempuri__AnDanSLTypeGet, &a->tempuri__AnDanSLTypeGet);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__AnDanSLTypeGet_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeGet_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -7768,6 +8747,20 @@ SOAP_FMAC3 struct __tempuri__AnDan2PeoplePresent_ * SOAP_FMAC4 soap_in___tempuri
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__AnDan2PeoplePresent_ * SOAP_FMAC2 soap_dup___tempuri__AnDan2PeoplePresent_(struct soap *soap, struct __tempuri__AnDan2PeoplePresent_ *d, struct __tempuri__AnDan2PeoplePresent_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDan2PeoplePresent_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDan2PeoplePresent_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDan2PeoplePresent_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDan2PeoplePresent(soap, &d->tempuri__AnDan2PeoplePresent, &a->tempuri__AnDan2PeoplePresent);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__AnDan2PeoplePresent_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan2PeoplePresent_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__AnDan2PeoplePresent_(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -7858,6 +8851,20 @@ SOAP_FMAC3 struct __tempuri__AnDan3AddUsers_ * SOAP_FMAC4 soap_in___tempuri__AnD
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__AnDan3AddUsers_ * SOAP_FMAC2 soap_dup___tempuri__AnDan3AddUsers_(struct soap *soap, struct __tempuri__AnDan3AddUsers_ *d, struct __tempuri__AnDan3AddUsers_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDan3AddUsers_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDan3AddUsers_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDan3AddUsers_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDan3AddUsers(soap, &d->tempuri__AnDan3AddUsers, &a->tempuri__AnDan3AddUsers);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__AnDan3AddUsers_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan3AddUsers_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -7952,6 +8959,20 @@ SOAP_FMAC3 struct __tempuri__AnDan4UpdPeoplePresent_ * SOAP_FMAC4 soap_in___temp
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__AnDan4UpdPeoplePresent_ * SOAP_FMAC2 soap_dup___tempuri__AnDan4UpdPeoplePresent_(struct soap *soap, struct __tempuri__AnDan4UpdPeoplePresent_ *d, struct __tempuri__AnDan4UpdPeoplePresent_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDan4UpdPeoplePresent_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDan4UpdPeoplePresent_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDan4UpdPeoplePresent(soap, &d->tempuri__AnDan4UpdPeoplePresent, &a->tempuri__AnDan4UpdPeoplePresent);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__AnDan4UpdPeoplePresent_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan4UpdPeoplePresent_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__AnDan4UpdPeoplePresent_(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -8042,6 +9063,20 @@ SOAP_FMAC3 struct __tempuri__AnDan1Send_ * SOAP_FMAC4 soap_in___tempuri__AnDan1S
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__AnDan1Send_ * SOAP_FMAC2 soap_dup___tempuri__AnDan1Send_(struct soap *soap, struct __tempuri__AnDan1Send_ *d, struct __tempuri__AnDan1Send_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDan1Send_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDan1Send_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDan1Send_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDan1Send(soap, &d->tempuri__AnDan1Send, &a->tempuri__AnDan1Send);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__AnDan1Send_ * SOAP_FMAC2 soap_instantiate___tempuri__AnDan1Send_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -8136,6 +9171,20 @@ SOAP_FMAC3 struct __tempuri__Login_ * SOAP_FMAC4 soap_in___tempuri__Login_(struc
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__Login_ * SOAP_FMAC2 soap_dup___tempuri__Login_(struct soap *soap, struct __tempuri__Login_ *d, struct __tempuri__Login_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__Login_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__Login_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__Login_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__Login(soap, &d->tempuri__Login, &a->tempuri__Login);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__Login_ * SOAP_FMAC2 soap_instantiate___tempuri__Login_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__Login_(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -8226,6 +9275,20 @@ SOAP_FMAC3 struct __tempuri__GetPower_ * SOAP_FMAC4 soap_in___tempuri__GetPower_
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__GetPower_ * SOAP_FMAC2 soap_dup___tempuri__GetPower_(struct soap *soap, struct __tempuri__GetPower_ *d, struct __tempuri__GetPower_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__GetPower_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__GetPower_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__GetPower_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__GetPower(soap, &d->tempuri__GetPower, &a->tempuri__GetPower);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__GetPower_ * SOAP_FMAC2 soap_instantiate___tempuri__GetPower_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -8320,6 +9383,20 @@ SOAP_FMAC3 struct __tempuri__GetDept_ * SOAP_FMAC4 soap_in___tempuri__GetDept_(s
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__GetDept_ * SOAP_FMAC2 soap_dup___tempuri__GetDept_(struct soap *soap, struct __tempuri__GetDept_ *d, struct __tempuri__GetDept_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__GetDept_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__GetDept_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__GetDept_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__GetDept(soap, &d->tempuri__GetDept, &a->tempuri__GetDept);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__GetDept_ * SOAP_FMAC2 soap_instantiate___tempuri__GetDept_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__GetDept_(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -8410,6 +9487,20 @@ SOAP_FMAC3 struct __tempuri__DocAdd_ * SOAP_FMAC4 soap_in___tempuri__DocAdd_(str
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__DocAdd_ * SOAP_FMAC2 soap_dup___tempuri__DocAdd_(struct soap *soap, struct __tempuri__DocAdd_ *d, struct __tempuri__DocAdd_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__DocAdd_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__DocAdd_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__DocAdd_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__DocAdd(soap, &d->tempuri__DocAdd, &a->tempuri__DocAdd);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__DocAdd_ * SOAP_FMAC2 soap_instantiate___tempuri__DocAdd_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -8504,6 +9595,20 @@ SOAP_FMAC3 struct __tempuri__ItemsAdd_ * SOAP_FMAC4 soap_in___tempuri__ItemsAdd_
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__ItemsAdd_ * SOAP_FMAC2 soap_dup___tempuri__ItemsAdd_(struct soap *soap, struct __tempuri__ItemsAdd_ *d, struct __tempuri__ItemsAdd_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__ItemsAdd_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__ItemsAdd_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__ItemsAdd_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__ItemsAdd(soap, &d->tempuri__ItemsAdd, &a->tempuri__ItemsAdd);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__ItemsAdd_ * SOAP_FMAC2 soap_instantiate___tempuri__ItemsAdd_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__ItemsAdd_(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -8594,6 +9699,20 @@ SOAP_FMAC3 struct __tempuri__LineInventoryReturn_ * SOAP_FMAC4 soap_in___tempuri
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__LineInventoryReturn_ * SOAP_FMAC2 soap_dup___tempuri__LineInventoryReturn_(struct soap *soap, struct __tempuri__LineInventoryReturn_ *d, struct __tempuri__LineInventoryReturn_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__LineInventoryReturn_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__LineInventoryReturn_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__LineInventoryReturn_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__LineInventoryReturn(soap, &d->tempuri__LineInventoryReturn, &a->tempuri__LineInventoryReturn);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__LineInventoryReturn_ * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryReturn_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -8688,6 +9807,20 @@ SOAP_FMAC3 struct __tempuri__LineInventoryUpdate_ * SOAP_FMAC4 soap_in___tempuri
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__LineInventoryUpdate_ * SOAP_FMAC2 soap_dup___tempuri__LineInventoryUpdate_(struct soap *soap, struct __tempuri__LineInventoryUpdate_ *d, struct __tempuri__LineInventoryUpdate_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__LineInventoryUpdate_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__LineInventoryUpdate_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__LineInventoryUpdate_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__LineInventoryUpdate(soap, &d->tempuri__LineInventoryUpdate, &a->tempuri__LineInventoryUpdate);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__LineInventoryUpdate_ * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryUpdate_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__LineInventoryUpdate_(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -8778,6 +9911,20 @@ SOAP_FMAC3 struct __tempuri__LineInventory_ * SOAP_FMAC4 soap_in___tempuri__Line
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__LineInventory_ * SOAP_FMAC2 soap_dup___tempuri__LineInventory_(struct soap *soap, struct __tempuri__LineInventory_ *d, struct __tempuri__LineInventory_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__LineInventory_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__LineInventory_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__LineInventory_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__LineInventory(soap, &d->tempuri__LineInventory, &a->tempuri__LineInventory);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__LineInventory_ * SOAP_FMAC2 soap_instantiate___tempuri__LineInventory_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -8872,6 +10019,20 @@ SOAP_FMAC3 struct __tempuri__WorkOrder_ * SOAP_FMAC4 soap_in___tempuri__WorkOrde
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__WorkOrder_ * SOAP_FMAC2 soap_dup___tempuri__WorkOrder_(struct soap *soap, struct __tempuri__WorkOrder_ *d, struct __tempuri__WorkOrder_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__WorkOrder_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__WorkOrder_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__WorkOrder_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__WorkOrder(soap, &d->tempuri__WorkOrder, &a->tempuri__WorkOrder);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__WorkOrder_ * SOAP_FMAC2 soap_instantiate___tempuri__WorkOrder_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__WorkOrder_(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -8962,6 +10123,20 @@ SOAP_FMAC3 struct __tempuri__ToolingTimes_ * SOAP_FMAC4 soap_in___tempuri__Tooli
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__ToolingTimes_ * SOAP_FMAC2 soap_dup___tempuri__ToolingTimes_(struct soap *soap, struct __tempuri__ToolingTimes_ *d, struct __tempuri__ToolingTimes_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__ToolingTimes_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__ToolingTimes_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__ToolingTimes_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__ToolingTimes(soap, &d->tempuri__ToolingTimes, &a->tempuri__ToolingTimes);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__ToolingTimes_ * SOAP_FMAC2 soap_instantiate___tempuri__ToolingTimes_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -9056,6 +10231,20 @@ SOAP_FMAC3 struct __tempuri__GetDocCode_ * SOAP_FMAC4 soap_in___tempuri__GetDocC
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__GetDocCode_ * SOAP_FMAC2 soap_dup___tempuri__GetDocCode_(struct soap *soap, struct __tempuri__GetDocCode_ *d, struct __tempuri__GetDocCode_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__GetDocCode_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__GetDocCode_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__GetDocCode_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__GetDocCode(soap, &d->tempuri__GetDocCode, &a->tempuri__GetDocCode);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__GetDocCode_ * SOAP_FMAC2 soap_instantiate___tempuri__GetDocCode_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__GetDocCode_(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -9146,6 +10335,20 @@ SOAP_FMAC3 struct __tempuri__GetDate_ * SOAP_FMAC4 soap_in___tempuri__GetDate_(s
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__GetDate_ * SOAP_FMAC2 soap_dup___tempuri__GetDate_(struct soap *soap, struct __tempuri__GetDate_ *d, struct __tempuri__GetDate_ const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__GetDate_*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__GetDate_, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__GetDate_(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__GetDate(soap, &d->tempuri__GetDate, &a->tempuri__GetDate);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__GetDate_ * SOAP_FMAC2 soap_instantiate___tempuri__GetDate_(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -9240,6 +10443,20 @@ SOAP_FMAC3 struct __tempuri__AnDanSLTypeAdd * SOAP_FMAC4 soap_in___tempuri__AnDa
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeAdd(struct soap *soap, struct __tempuri__AnDanSLTypeAdd *d, struct __tempuri__AnDanSLTypeAdd const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDanSLTypeAdd*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDanSLTypeAdd, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDanSLTypeAdd(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDanSLTypeAdd(soap, &d->tempuri__AnDanSLTypeAdd, &a->tempuri__AnDanSLTypeAdd);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__AnDanSLTypeAdd * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeAdd(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__AnDanSLTypeAdd(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -9330,6 +10547,20 @@ SOAP_FMAC3 struct __tempuri__AnDanSLTypeGet * SOAP_FMAC4 soap_in___tempuri__AnDa
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_dup___tempuri__AnDanSLTypeGet(struct soap *soap, struct __tempuri__AnDanSLTypeGet *d, struct __tempuri__AnDanSLTypeGet const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDanSLTypeGet*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDanSLTypeGet, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDanSLTypeGet(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDanSLTypeGet(soap, &d->tempuri__AnDanSLTypeGet, &a->tempuri__AnDanSLTypeGet);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__AnDanSLTypeGet * SOAP_FMAC2 soap_instantiate___tempuri__AnDanSLTypeGet(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -9424,6 +10655,20 @@ SOAP_FMAC3 struct __tempuri__AnDan2PeoplePresent * SOAP_FMAC4 soap_in___tempuri_
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_dup___tempuri__AnDan2PeoplePresent(struct soap *soap, struct __tempuri__AnDan2PeoplePresent *d, struct __tempuri__AnDan2PeoplePresent const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDan2PeoplePresent*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDan2PeoplePresent, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDan2PeoplePresent(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDan2PeoplePresent(soap, &d->tempuri__AnDan2PeoplePresent, &a->tempuri__AnDan2PeoplePresent);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__AnDan2PeoplePresent * SOAP_FMAC2 soap_instantiate___tempuri__AnDan2PeoplePresent(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__AnDan2PeoplePresent(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -9514,6 +10759,20 @@ SOAP_FMAC3 struct __tempuri__AnDan3AddUsers * SOAP_FMAC4 soap_in___tempuri__AnDa
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_dup___tempuri__AnDan3AddUsers(struct soap *soap, struct __tempuri__AnDan3AddUsers *d, struct __tempuri__AnDan3AddUsers const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDan3AddUsers*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDan3AddUsers, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDan3AddUsers(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDan3AddUsers(soap, &d->tempuri__AnDan3AddUsers, &a->tempuri__AnDan3AddUsers);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__AnDan3AddUsers * SOAP_FMAC2 soap_instantiate___tempuri__AnDan3AddUsers(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -9608,6 +10867,20 @@ SOAP_FMAC3 struct __tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC4 soap_in___tempu
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_dup___tempuri__AnDan4UpdPeoplePresent(struct soap *soap, struct __tempuri__AnDan4UpdPeoplePresent *d, struct __tempuri__AnDan4UpdPeoplePresent const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDan4UpdPeoplePresent*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDan4UpdPeoplePresent, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDan4UpdPeoplePresent(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDan4UpdPeoplePresent(soap, &d->tempuri__AnDan4UpdPeoplePresent, &a->tempuri__AnDan4UpdPeoplePresent);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__AnDan4UpdPeoplePresent * SOAP_FMAC2 soap_instantiate___tempuri__AnDan4UpdPeoplePresent(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__AnDan4UpdPeoplePresent(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -9698,6 +10971,20 @@ SOAP_FMAC3 struct __tempuri__AnDan1Send * SOAP_FMAC4 soap_in___tempuri__AnDan1Se
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__AnDan1Send * SOAP_FMAC2 soap_dup___tempuri__AnDan1Send(struct soap *soap, struct __tempuri__AnDan1Send *d, struct __tempuri__AnDan1Send const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__AnDan1Send*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__AnDan1Send, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__AnDan1Send(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__AnDan1Send(soap, &d->tempuri__AnDan1Send, &a->tempuri__AnDan1Send);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__AnDan1Send * SOAP_FMAC2 soap_instantiate___tempuri__AnDan1Send(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -9792,6 +11079,20 @@ SOAP_FMAC3 struct __tempuri__Login * SOAP_FMAC4 soap_in___tempuri__Login(struct 
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__Login * SOAP_FMAC2 soap_dup___tempuri__Login(struct soap *soap, struct __tempuri__Login *d, struct __tempuri__Login const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__Login*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__Login, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__Login(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__Login(soap, &d->tempuri__Login, &a->tempuri__Login);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__Login * SOAP_FMAC2 soap_instantiate___tempuri__Login(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__Login(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -9882,6 +11183,20 @@ SOAP_FMAC3 struct __tempuri__GetPower * SOAP_FMAC4 soap_in___tempuri__GetPower(s
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__GetPower * SOAP_FMAC2 soap_dup___tempuri__GetPower(struct soap *soap, struct __tempuri__GetPower *d, struct __tempuri__GetPower const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__GetPower*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__GetPower, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__GetPower(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__GetPower(soap, &d->tempuri__GetPower, &a->tempuri__GetPower);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__GetPower * SOAP_FMAC2 soap_instantiate___tempuri__GetPower(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -9976,6 +11291,20 @@ SOAP_FMAC3 struct __tempuri__GetDept * SOAP_FMAC4 soap_in___tempuri__GetDept(str
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__GetDept * SOAP_FMAC2 soap_dup___tempuri__GetDept(struct soap *soap, struct __tempuri__GetDept *d, struct __tempuri__GetDept const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__GetDept*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__GetDept, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__GetDept(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__GetDept(soap, &d->tempuri__GetDept, &a->tempuri__GetDept);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__GetDept * SOAP_FMAC2 soap_instantiate___tempuri__GetDept(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__GetDept(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -10066,6 +11395,20 @@ SOAP_FMAC3 struct __tempuri__DocAdd * SOAP_FMAC4 soap_in___tempuri__DocAdd(struc
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__DocAdd * SOAP_FMAC2 soap_dup___tempuri__DocAdd(struct soap *soap, struct __tempuri__DocAdd *d, struct __tempuri__DocAdd const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__DocAdd*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__DocAdd, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__DocAdd(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__DocAdd(soap, &d->tempuri__DocAdd, &a->tempuri__DocAdd);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__DocAdd * SOAP_FMAC2 soap_instantiate___tempuri__DocAdd(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -10160,6 +11503,20 @@ SOAP_FMAC3 struct __tempuri__ItemsAdd * SOAP_FMAC4 soap_in___tempuri__ItemsAdd(s
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__ItemsAdd * SOAP_FMAC2 soap_dup___tempuri__ItemsAdd(struct soap *soap, struct __tempuri__ItemsAdd *d, struct __tempuri__ItemsAdd const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__ItemsAdd*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__ItemsAdd, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__ItemsAdd(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__ItemsAdd(soap, &d->tempuri__ItemsAdd, &a->tempuri__ItemsAdd);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__ItemsAdd * SOAP_FMAC2 soap_instantiate___tempuri__ItemsAdd(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__ItemsAdd(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -10250,6 +11607,20 @@ SOAP_FMAC3 struct __tempuri__LineInventoryReturn * SOAP_FMAC4 soap_in___tempuri_
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__LineInventoryReturn * SOAP_FMAC2 soap_dup___tempuri__LineInventoryReturn(struct soap *soap, struct __tempuri__LineInventoryReturn *d, struct __tempuri__LineInventoryReturn const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__LineInventoryReturn*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__LineInventoryReturn, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__LineInventoryReturn(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__LineInventoryReturn(soap, &d->tempuri__LineInventoryReturn, &a->tempuri__LineInventoryReturn);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__LineInventoryReturn * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryReturn(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -10344,6 +11715,20 @@ SOAP_FMAC3 struct __tempuri__LineInventoryUpdate * SOAP_FMAC4 soap_in___tempuri_
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_dup___tempuri__LineInventoryUpdate(struct soap *soap, struct __tempuri__LineInventoryUpdate *d, struct __tempuri__LineInventoryUpdate const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__LineInventoryUpdate*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__LineInventoryUpdate, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__LineInventoryUpdate(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__LineInventoryUpdate(soap, &d->tempuri__LineInventoryUpdate, &a->tempuri__LineInventoryUpdate);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__LineInventoryUpdate * SOAP_FMAC2 soap_instantiate___tempuri__LineInventoryUpdate(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__LineInventoryUpdate(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -10434,6 +11819,20 @@ SOAP_FMAC3 struct __tempuri__LineInventory * SOAP_FMAC4 soap_in___tempuri__LineI
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__LineInventory * SOAP_FMAC2 soap_dup___tempuri__LineInventory(struct soap *soap, struct __tempuri__LineInventory *d, struct __tempuri__LineInventory const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__LineInventory*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__LineInventory, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__LineInventory(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__LineInventory(soap, &d->tempuri__LineInventory, &a->tempuri__LineInventory);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__LineInventory * SOAP_FMAC2 soap_instantiate___tempuri__LineInventory(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -10528,6 +11927,20 @@ SOAP_FMAC3 struct __tempuri__WorkOrder * SOAP_FMAC4 soap_in___tempuri__WorkOrder
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__WorkOrder * SOAP_FMAC2 soap_dup___tempuri__WorkOrder(struct soap *soap, struct __tempuri__WorkOrder *d, struct __tempuri__WorkOrder const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__WorkOrder*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__WorkOrder, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__WorkOrder(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__WorkOrder(soap, &d->tempuri__WorkOrder, &a->tempuri__WorkOrder);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__WorkOrder * SOAP_FMAC2 soap_instantiate___tempuri__WorkOrder(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__WorkOrder(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -10618,6 +12031,20 @@ SOAP_FMAC3 struct __tempuri__ToolingTimes * SOAP_FMAC4 soap_in___tempuri__Toolin
 				return NULL;
 		}
 	return a;
+}
+
+SOAP_FMAC1 struct __tempuri__ToolingTimes * SOAP_FMAC2 soap_dup___tempuri__ToolingTimes(struct soap *soap, struct __tempuri__ToolingTimes *d, struct __tempuri__ToolingTimes const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__ToolingTimes*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__ToolingTimes, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__ToolingTimes(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__ToolingTimes(soap, &d->tempuri__ToolingTimes, &a->tempuri__ToolingTimes);
+	return d;
 }
 
 SOAP_FMAC1 struct __tempuri__ToolingTimes * SOAP_FMAC2 soap_instantiate___tempuri__ToolingTimes(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
@@ -10712,6 +12139,20 @@ SOAP_FMAC3 struct __tempuri__GetDocCode * SOAP_FMAC4 soap_in___tempuri__GetDocCo
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__GetDocCode * SOAP_FMAC2 soap_dup___tempuri__GetDocCode(struct soap *soap, struct __tempuri__GetDocCode *d, struct __tempuri__GetDocCode const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__GetDocCode*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__GetDocCode, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__GetDocCode(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__GetDocCode(soap, &d->tempuri__GetDocCode, &a->tempuri__GetDocCode);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__GetDocCode * SOAP_FMAC2 soap_instantiate___tempuri__GetDocCode(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__GetDocCode(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -10804,6 +12245,20 @@ SOAP_FMAC3 struct __tempuri__GetDate * SOAP_FMAC4 soap_in___tempuri__GetDate(str
 	return a;
 }
 
+SOAP_FMAC1 struct __tempuri__GetDate * SOAP_FMAC2 soap_dup___tempuri__GetDate(struct soap *soap, struct __tempuri__GetDate *d, struct __tempuri__GetDate const*a)
+{
+	struct soap_plist *pp = NULL;
+	if (!a)
+		return NULL;
+	if (!d && (d = (struct __tempuri__GetDate*)soap_mark_lookup(soap, (const void*)a, SOAP_TYPE___tempuri__GetDate, &pp, NULL)))
+		return d;
+	if (!d && !(d = soap_new___tempuri__GetDate(soap)))
+		return NULL; /* ERROR */
+	soap_mark_dup(soap, (void*)d, pp);
+	soap_dup_PointerTo_tempuri__GetDate(soap, &d->tempuri__GetDate, &a->tempuri__GetDate);
+	return d;
+}
+
 SOAP_FMAC1 struct __tempuri__GetDate * SOAP_FMAC2 soap_instantiate___tempuri__GetDate(struct soap *soap, int n, const char *type, const char *arrayType, size_t *size)
 {
 	DBGLOG(TEST, SOAP_MESSAGE(fdebug, "soap_instantiate___tempuri__GetDate(%p, %d, %s, %s)\n", (void*)soap, n, type?type:"", arrayType?arrayType:""));
@@ -10886,6 +12341,19 @@ SOAP_FMAC3 struct SOAP_ENV__Reason ** SOAP_FMAC4 soap_in_PointerToSOAP_ENV__Reas
 	return a;
 }
 
+SOAP_FMAC1 struct SOAP_ENV__Reason * * SOAP_FMAC2 soap_dup_PointerToSOAP_ENV__Reason(struct soap *soap, struct SOAP_ENV__Reason * *d, struct SOAP_ENV__Reason *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (struct SOAP_ENV__Reason **)soap_malloc(soap, sizeof(struct SOAP_ENV__Reason *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = soap_dup_SOAP_ENV__Reason(soap, NULL, *a);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerToSOAP_ENV__Reason(struct soap *soap, struct SOAP_ENV__Reason *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerToSOAP_ENV__Reason(soap, tag ? tag : "SOAP-ENV:Reason", -2, a, type))
@@ -10942,6 +12410,19 @@ SOAP_FMAC3 struct SOAP_ENV__Detail ** SOAP_FMAC4 soap_in_PointerToSOAP_ENV__Deta
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 struct SOAP_ENV__Detail * * SOAP_FMAC2 soap_dup_PointerToSOAP_ENV__Detail(struct soap *soap, struct SOAP_ENV__Detail * *d, struct SOAP_ENV__Detail *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (struct SOAP_ENV__Detail **)soap_malloc(soap, sizeof(struct SOAP_ENV__Detail *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = soap_dup_SOAP_ENV__Detail(soap, NULL, *a);
+	else
+		*d = NULL;
+	return d;
 }
 
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerToSOAP_ENV__Detail(struct soap *soap, struct SOAP_ENV__Detail *const*a, const char *tag, const char *type)
@@ -11005,6 +12486,19 @@ SOAP_FMAC3 struct SOAP_ENV__Code ** SOAP_FMAC4 soap_in_PointerToSOAP_ENV__Code(s
 	return a;
 }
 
+SOAP_FMAC1 struct SOAP_ENV__Code * * SOAP_FMAC2 soap_dup_PointerToSOAP_ENV__Code(struct soap *soap, struct SOAP_ENV__Code * *d, struct SOAP_ENV__Code *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (struct SOAP_ENV__Code **)soap_malloc(soap, sizeof(struct SOAP_ENV__Code *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = soap_dup_SOAP_ENV__Code(soap, NULL, *a);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerToSOAP_ENV__Code(struct soap *soap, struct SOAP_ENV__Code *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerToSOAP_ENV__Code(soap, tag ? tag : "SOAP-ENV:Code", -2, a, type))
@@ -11066,6 +12560,19 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeAdd ** SOAP_FMAC4 soap_in_PointerTo_tempuri__AnD
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__AnDanSLTypeAdd * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDanSLTypeAdd(struct soap *soap, _tempuri__AnDanSLTypeAdd * *d, _tempuri__AnDanSLTypeAdd *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__AnDanSLTypeAdd **)soap_malloc(soap, sizeof(_tempuri__AnDanSLTypeAdd *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDanSLTypeAdd(struct soap *soap, _tempuri__AnDanSLTypeAdd *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerTo_tempuri__AnDanSLTypeAdd(soap, tag ? tag : "tempuri:AnDanSLTypeAdd", -2, a, type))
@@ -11123,6 +12630,19 @@ SOAP_FMAC3 _tempuri__AnDanSLTypeGet ** SOAP_FMAC4 soap_in_PointerTo_tempuri__AnD
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDanSLTypeGet * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDanSLTypeGet(struct soap *soap, _tempuri__AnDanSLTypeGet * *d, _tempuri__AnDanSLTypeGet *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__AnDanSLTypeGet **)soap_malloc(soap, sizeof(_tempuri__AnDanSLTypeGet *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
 }
 
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDanSLTypeGet(struct soap *soap, _tempuri__AnDanSLTypeGet *const*a, const char *tag, const char *type)
@@ -11184,6 +12704,19 @@ SOAP_FMAC3 _tempuri__AnDan2PeoplePresent ** SOAP_FMAC4 soap_in_PointerTo_tempuri
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__AnDan2PeoplePresent * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDan2PeoplePresent(struct soap *soap, _tempuri__AnDan2PeoplePresent * *d, _tempuri__AnDan2PeoplePresent *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__AnDan2PeoplePresent **)soap_malloc(soap, sizeof(_tempuri__AnDan2PeoplePresent *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDan2PeoplePresent(struct soap *soap, _tempuri__AnDan2PeoplePresent *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerTo_tempuri__AnDan2PeoplePresent(soap, tag ? tag : "tempuri:AnDan2PeoplePresent", -2, a, type))
@@ -11241,6 +12774,19 @@ SOAP_FMAC3 _tempuri__AnDan3AddUsers ** SOAP_FMAC4 soap_in_PointerTo_tempuri__AnD
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDan3AddUsers * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDan3AddUsers(struct soap *soap, _tempuri__AnDan3AddUsers * *d, _tempuri__AnDan3AddUsers *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__AnDan3AddUsers **)soap_malloc(soap, sizeof(_tempuri__AnDan3AddUsers *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
 }
 
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDan3AddUsers(struct soap *soap, _tempuri__AnDan3AddUsers *const*a, const char *tag, const char *type)
@@ -11302,6 +12848,19 @@ SOAP_FMAC3 _tempuri__AnDan4UpdPeoplePresent ** SOAP_FMAC4 soap_in_PointerTo_temp
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__AnDan4UpdPeoplePresent * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDan4UpdPeoplePresent(struct soap *soap, _tempuri__AnDan4UpdPeoplePresent * *d, _tempuri__AnDan4UpdPeoplePresent *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__AnDan4UpdPeoplePresent **)soap_malloc(soap, sizeof(_tempuri__AnDan4UpdPeoplePresent *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDan4UpdPeoplePresent(struct soap *soap, _tempuri__AnDan4UpdPeoplePresent *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerTo_tempuri__AnDan4UpdPeoplePresent(soap, tag ? tag : "tempuri:AnDan4UpdPeoplePresent", -2, a, type))
@@ -11359,6 +12918,19 @@ SOAP_FMAC3 _tempuri__AnDan1Send ** SOAP_FMAC4 soap_in_PointerTo_tempuri__AnDan1S
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__AnDan1Send * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__AnDan1Send(struct soap *soap, _tempuri__AnDan1Send * *d, _tempuri__AnDan1Send *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__AnDan1Send **)soap_malloc(soap, sizeof(_tempuri__AnDan1Send *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
 }
 
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__AnDan1Send(struct soap *soap, _tempuri__AnDan1Send *const*a, const char *tag, const char *type)
@@ -11420,6 +12992,19 @@ SOAP_FMAC3 _tempuri__Login ** SOAP_FMAC4 soap_in_PointerTo_tempuri__Login(struct
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__Login * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__Login(struct soap *soap, _tempuri__Login * *d, _tempuri__Login *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__Login **)soap_malloc(soap, sizeof(_tempuri__Login *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__Login(struct soap *soap, _tempuri__Login *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerTo_tempuri__Login(soap, tag ? tag : "tempuri:Login", -2, a, type))
@@ -11477,6 +13062,19 @@ SOAP_FMAC3 _tempuri__GetPower ** SOAP_FMAC4 soap_in_PointerTo_tempuri__GetPower(
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__GetPower * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__GetPower(struct soap *soap, _tempuri__GetPower * *d, _tempuri__GetPower *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__GetPower **)soap_malloc(soap, sizeof(_tempuri__GetPower *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
 }
 
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__GetPower(struct soap *soap, _tempuri__GetPower *const*a, const char *tag, const char *type)
@@ -11538,6 +13136,19 @@ SOAP_FMAC3 _tempuri__GetDept ** SOAP_FMAC4 soap_in_PointerTo_tempuri__GetDept(st
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__GetDept * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__GetDept(struct soap *soap, _tempuri__GetDept * *d, _tempuri__GetDept *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__GetDept **)soap_malloc(soap, sizeof(_tempuri__GetDept *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__GetDept(struct soap *soap, _tempuri__GetDept *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerTo_tempuri__GetDept(soap, tag ? tag : "tempuri:GetDept", -2, a, type))
@@ -11595,6 +13206,19 @@ SOAP_FMAC3 _tempuri__DocAdd ** SOAP_FMAC4 soap_in_PointerTo_tempuri__DocAdd(stru
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__DocAdd * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__DocAdd(struct soap *soap, _tempuri__DocAdd * *d, _tempuri__DocAdd *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__DocAdd **)soap_malloc(soap, sizeof(_tempuri__DocAdd *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
 }
 
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__DocAdd(struct soap *soap, _tempuri__DocAdd *const*a, const char *tag, const char *type)
@@ -11656,6 +13280,19 @@ SOAP_FMAC3 _tempuri__ItemsAdd ** SOAP_FMAC4 soap_in_PointerTo_tempuri__ItemsAdd(
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__ItemsAdd * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__ItemsAdd(struct soap *soap, _tempuri__ItemsAdd * *d, _tempuri__ItemsAdd *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__ItemsAdd **)soap_malloc(soap, sizeof(_tempuri__ItemsAdd *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__ItemsAdd(struct soap *soap, _tempuri__ItemsAdd *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerTo_tempuri__ItemsAdd(soap, tag ? tag : "tempuri:ItemsAdd", -2, a, type))
@@ -11713,6 +13350,19 @@ SOAP_FMAC3 _tempuri__LineInventoryReturn ** SOAP_FMAC4 soap_in_PointerTo_tempuri
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__LineInventoryReturn * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__LineInventoryReturn(struct soap *soap, _tempuri__LineInventoryReturn * *d, _tempuri__LineInventoryReturn *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__LineInventoryReturn **)soap_malloc(soap, sizeof(_tempuri__LineInventoryReturn *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
 }
 
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__LineInventoryReturn(struct soap *soap, _tempuri__LineInventoryReturn *const*a, const char *tag, const char *type)
@@ -11774,6 +13424,19 @@ SOAP_FMAC3 _tempuri__LineInventoryUpdate ** SOAP_FMAC4 soap_in_PointerTo_tempuri
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__LineInventoryUpdate * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__LineInventoryUpdate(struct soap *soap, _tempuri__LineInventoryUpdate * *d, _tempuri__LineInventoryUpdate *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__LineInventoryUpdate **)soap_malloc(soap, sizeof(_tempuri__LineInventoryUpdate *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__LineInventoryUpdate(struct soap *soap, _tempuri__LineInventoryUpdate *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerTo_tempuri__LineInventoryUpdate(soap, tag ? tag : "tempuri:LineInventoryUpdate", -2, a, type))
@@ -11831,6 +13494,19 @@ SOAP_FMAC3 _tempuri__LineInventory ** SOAP_FMAC4 soap_in_PointerTo_tempuri__Line
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__LineInventory * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__LineInventory(struct soap *soap, _tempuri__LineInventory * *d, _tempuri__LineInventory *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__LineInventory **)soap_malloc(soap, sizeof(_tempuri__LineInventory *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
 }
 
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__LineInventory(struct soap *soap, _tempuri__LineInventory *const*a, const char *tag, const char *type)
@@ -11892,6 +13568,19 @@ SOAP_FMAC3 _tempuri__WorkOrder ** SOAP_FMAC4 soap_in_PointerTo_tempuri__WorkOrde
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__WorkOrder * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__WorkOrder(struct soap *soap, _tempuri__WorkOrder * *d, _tempuri__WorkOrder *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__WorkOrder **)soap_malloc(soap, sizeof(_tempuri__WorkOrder *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__WorkOrder(struct soap *soap, _tempuri__WorkOrder *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerTo_tempuri__WorkOrder(soap, tag ? tag : "tempuri:WorkOrder", -2, a, type))
@@ -11949,6 +13638,19 @@ SOAP_FMAC3 _tempuri__ToolingTimes ** SOAP_FMAC4 soap_in_PointerTo_tempuri__Tooli
 			return NULL;
 	}
 	return a;
+}
+
+SOAP_FMAC1 _tempuri__ToolingTimes * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__ToolingTimes(struct soap *soap, _tempuri__ToolingTimes * *d, _tempuri__ToolingTimes *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__ToolingTimes **)soap_malloc(soap, sizeof(_tempuri__ToolingTimes *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
 }
 
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__ToolingTimes(struct soap *soap, _tempuri__ToolingTimes *const*a, const char *tag, const char *type)
@@ -12010,6 +13712,19 @@ SOAP_FMAC3 _tempuri__GetDocCode ** SOAP_FMAC4 soap_in_PointerTo_tempuri__GetDocC
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__GetDocCode * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__GetDocCode(struct soap *soap, _tempuri__GetDocCode * *d, _tempuri__GetDocCode *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__GetDocCode **)soap_malloc(soap, sizeof(_tempuri__GetDocCode *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__GetDocCode(struct soap *soap, _tempuri__GetDocCode *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerTo_tempuri__GetDocCode(soap, tag ? tag : "tempuri:GetDocCode", -2, a, type))
@@ -12069,6 +13784,19 @@ SOAP_FMAC3 _tempuri__GetDate ** SOAP_FMAC4 soap_in_PointerTo_tempuri__GetDate(st
 	return a;
 }
 
+SOAP_FMAC1 _tempuri__GetDate * * SOAP_FMAC2 soap_dup_PointerTo_tempuri__GetDate(struct soap *soap, _tempuri__GetDate * *d, _tempuri__GetDate *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (_tempuri__GetDate **)soap_malloc(soap, sizeof(_tempuri__GetDate *))))
+		return NULL; /* ERROR */
+	if (*a)
+		*d = (*a)->soap_dup(soap);
+	else
+		*d = NULL;
+	return d;
+}
+
 SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__GetDate(struct soap *soap, _tempuri__GetDate *const*a, const char *tag, const char *type)
 {
 	if (soap_out_PointerTo_tempuri__GetDate(soap, tag ? tag : "tempuri:GetDate", -2, a, type))
@@ -12079,6 +13807,73 @@ SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTo_tempuri__GetDate(struct soap *soap,
 SOAP_FMAC3 _tempuri__GetDate ** SOAP_FMAC4 soap_get_PointerTo_tempuri__GetDate(struct soap *soap, _tempuri__GetDate **p, const char *tag, const char *type)
 {
 	if ((p = soap_in_PointerTo_tempuri__GetDate(soap, tag, p, type)))
+		if (soap_getindependent(soap))
+			return NULL;
+	return p;
+}
+
+SOAP_FMAC3 void SOAP_FMAC4 soap_serialize_PointerTostd__string(struct soap *soap, std::string *const*a)
+{
+	(void)soap; (void)a; /* appease -Wall -Werror */
+#ifndef WITH_NOIDREF
+	if (!soap_reference(soap, *a, SOAP_TYPE_std__string))
+		soap_serialize_std__string(soap, *a);
+#endif
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_out_PointerTostd__string(struct soap *soap, const char *tag, int id, std::string *const*a, const char *type)
+{
+	id = soap_element_id(soap, tag, id, *a, NULL, 0, type, SOAP_TYPE_std__string, NULL);
+	if (id < 0)
+		return soap->error;
+	return soap_out_std__string(soap, tag, id, *a, type);
+}
+
+SOAP_FMAC3 std::string ** SOAP_FMAC4 soap_in_PointerTostd__string(struct soap *soap, const char *tag, std::string **a, const char *type)
+{
+	(void)type; /* appease -Wall -Werror */
+	if (soap_element_begin_in(soap, tag, 1, NULL))
+		return NULL;
+	if (!a)
+		if (!(a = (std::string **)soap_malloc(soap, sizeof(std::string *))))
+			return NULL;
+	*a = NULL;
+	if (!soap->null && *soap->href != '#')
+	{	soap_revert(soap);
+		if (!(*a = soap_in_std__string(soap, tag, *a, type)))
+			return NULL;
+	}
+	else
+	{	a = (std::string **)soap_id_lookup(soap, soap->href, (void**)a, SOAP_TYPE_std__string, sizeof(std::string), 0, NULL);
+		if (soap->body && soap_element_end_in(soap, tag))
+			return NULL;
+	}
+	return a;
+}
+
+SOAP_FMAC1 std::string * * SOAP_FMAC2 soap_dup_PointerTostd__string(struct soap *soap, std::string * *d, std::string *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (std::string **)soap_malloc(soap, sizeof(std::string *))))
+		return NULL; /* ERROR */
+	if (*a && (*d = soap_new_std__string(soap)))
+		**d = **a;
+	else
+		*d = NULL;
+	return d;
+}
+
+SOAP_FMAC3 int SOAP_FMAC4 soap_put_PointerTostd__string(struct soap *soap, std::string *const*a, const char *tag, const char *type)
+{
+	if (soap_out_PointerTostd__string(soap, tag ? tag : "string", -2, a, type))
+		return soap->error;
+	return soap_putindependent(soap);
+}
+
+SOAP_FMAC3 std::string ** SOAP_FMAC4 soap_get_PointerTostd__string(struct soap *soap, std::string **p, const char *tag, const char *type)
+{
+	if ((p = soap_in_PointerTostd__string(soap, tag, p, type)))
 		if (soap_getindependent(soap))
 			return NULL;
 	return p;
@@ -12135,6 +13930,23 @@ SOAP_FMAC3 char * * SOAP_FMAC4 soap_in_string(struct soap *soap, const char *tag
 {
 	a = soap_instring(soap, tag, a, type, SOAP_TYPE_string, 1, 0, -1, NULL);
 	return a;
+}
+
+SOAP_FMAC1 char * * SOAP_FMAC2 soap_dup_string(struct soap *soap, char * *d, char *const*a)
+{
+	if (!a)
+		return NULL;
+	if (!d && !(d = (char **)soap_malloc(soap, sizeof(char *))))
+		return NULL; /* ERROR */
+	*d = NULL;
+	if (*a)
+	{	struct soap_plist *pp = NULL;
+		if (!(*d = (char *)soap_mark_lookup(soap, (const void*)*a, SOAP_TYPE_string, &pp, NULL)))
+			soap_mark_dup(soap, *d = soap_strdup(soap, *a), pp);
+	}
+	else
+		*d = NULL;
+	return d;
 }
 
 SOAP_FMAC3 char * * SOAP_FMAC4 soap_new_string(struct soap *soap, int n)
